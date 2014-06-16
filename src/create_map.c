@@ -26,6 +26,14 @@ int main()
 	read_art("../ASCII art/house_frodo.txt", 31, 0);
 	read_art("../ASCII art/mordor_tower.txt", 40, SIZE_COLUMN - 86);
 
+	if (size_row < 50)
+	{
+		endwin();
+		printf("The terminal's dimension isn't big enough.\n");
+		printf("We suggest you use a smaller font.\n");
+		return 0;
+	}
+
 	while(1)
 	{
 		erase();
