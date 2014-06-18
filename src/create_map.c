@@ -6,15 +6,17 @@
 
 int main()
 {
-	int col = 0;
+	int col = 0, lim_map;
 
 	initscr();
+	noecho();
 	get_dimension();
 	aloc_map();
 	init_map();
 
 	read_art("ASCII art/house_frodo.txt", 31, 0);
 	read_art("ASCII art/mordor_tower.txt", 40, SIZE_COLUMN - 86);
+	lim_map = sqrt(pow(size_col-SIZE_COLUMN+1, 2));
 
 	while(1)
 	{
@@ -27,7 +29,7 @@ int main()
 					col-=2;
 				break;
 			case 'd':
-				if (col < sqrt((size_col-299)*(size_col-299)))
+				if ((col < lim_map) && (SIZE_COLUMN > size_col))
 					col+=2;
 				break;
 			case 'k':

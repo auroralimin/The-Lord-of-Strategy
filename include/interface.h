@@ -1,7 +1,8 @@
 #define SIZE_COLUMN 300
+#define MINIMUM_ROW 41
 
-extern int size_row, size_col;
-extern char **map;
+int size_row, size_col;
+char **map;
 
 void get_dimension();
 void aloc_map();

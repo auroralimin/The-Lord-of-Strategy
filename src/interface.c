@@ -10,15 +10,15 @@ void get_dimension()
 {
 	getmaxyx(stdscr, size_row, size_col);
 
-	if (size_row < 50)
+	if (size_row < MINIMUM_ROW)
 	{
 		endwin();
-		printf("%d\n", size_row);
 		printf("The terminal's dimension isn't big enough.\n");
 		printf("We suggest you use a smaller font.\n");
 		exit (1);
 	}
 }
+
 void aloc_map()
 {
 	map = (char**) calloc(size_row, sizeof(char*));
@@ -59,7 +59,7 @@ void read_art(char *file_name, int art_row, int art_col)
 void printw_map(int col)
 {
 	for (int i = 0; i < size_row; i++)
-		for (int j = 0; j < size_col; j++)
+		for (int j = 0; (j < SIZE_COLUMN) && (j < size_col); j++)
 			mvprintw(i, j, "%c", map[i][j + col]);
 	refresh();
 }
