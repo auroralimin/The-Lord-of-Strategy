@@ -1,10 +1,21 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <ncurses.h>
+#include "basis.h"
 #include "interface.h"
 
-int size_row, size_col;
-char **map;
+char *name_filearts[] = { "ASCII art/race_blank.txt",
+	                  "ASCII art/hobbit.txt",
+			  "ASCII art/elf.txt",
+			  "ASCII art/dwarf.txt",
+			  "ASCII art/ent.txt",
+			  "ASCII art/goblin.txt",
+			  "ASCII art/orc.txt",
+			  "ASCII art/warg.txt",
+			  "ASCII art/troll.txt"
+};
+
+char mat_races[N_RACES + 1][RACE_HEIGHT][RACE_WIDTH];
 
 void get_dimension()
 {
@@ -19,31 +30,11 @@ void get_dimension()
 	}
 }
 
-void aloc_map()
-{
-	map = (char**) calloc(size_row, sizeof(char*));
-	for (int i = 0; i < size_row; i++)
-		map[i] = (char*) calloc(SIZE_COLUMN, sizeof(char));
-}
-
-void init_map(){
-	for (int i = 0; i < size_row; i++)
-		for (int j = 0; j < SIZE_COLUMN; j++)
-                   map[i][j] = '\0';
-}
-
-void read_art(char *file_name, int art_row, int art_col)
+void load_basicmap(char *file_name, int art_row, int art_col)
 {
 	FILE *fp = NULL;
 
-	fp = fopen(file_name, "r");
-	if (fp == NULL)
-	{
-		free_map();
-		endwin();
-		printf("Arquivo %s inexistente\n", file_name);
-		exit(1);
-	}
+	fp = read_file(file_name);
 
 	for (int i = size_row - art_row; i < size_row; i++)
 	{
@@ -64,9 +55,31 @@ void printw_map(int col)
 	refresh();
 }
 
-void free_map()
+void get_art()
 {
-	for (int i = 0; i < size_row; i++)
-		free(map[i]);
-	free(map);
+	FILE *fp = NULL;
+
+	for (int i = 0; i <= N_RACES; i++)
+	{
+		fp = read_file(name_filearts[i]);
+		for (int j = 0; j < 15; j++)
+		{
+			fscanf(fp, "%[^\n]s", mat_races[i][j]);
+			fgetc(fp);
+			if (feof(fp))
+				break;
+		}
+		fclose(fp);
+	}
+}
+
+void printw_unit(unit chr)
+{
+	for (int i = RACE_HEIGHT - chr.height; i < RACE_HEIGHT; i++)
+	{
+		move(chr.position[0] + i, chr.position[1]);
+		for (int j = 0; j < RACE_WIDTH; j++)
+			printw("%c", mat_races[chr.race][i][j]);
+		printw("\n");
+	}
 }
