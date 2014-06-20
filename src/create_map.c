@@ -1,6 +1,6 @@
-#include <stdio.h>
 #include <stdlib.h>
 #include <ncurses.h>
+#include <unistd.h>
 #include <math.h>
 #include "basis.h"
 #include "interface.h"
@@ -8,23 +8,17 @@
 
 int main()
 {
-	int lim_map, i = 0;
-	unit vet[8];
+	int lim_map;
+	unit hobbit;
 
 	initscr();
 	noecho();
+
 	get_dimension();
 	aloc_map();
 	init_map();
 	get_art();
-	vet[0] = race_init(HOBBIT);
-	vet[1] = race_init(ELF);
-	vet[2] = race_init(DWARF);
-	vet[3] = race_init(ENT);
-	vet[4] = race_init(GOBLIN);
-	vet[5] = race_init(ORC);
-	vet[6] = race_init(WARG);
-	vet[7] = race_init(TROLL);
+	hobbit = race_init(HOBBIT);
 
 	load_build("ASCII art/house_frodo.txt", FRODO_ROW, FRODO_COL);
 	load_build("ASCII art/mordor_tower.txt", MORDOR_ROW, MORDOR_COL);
@@ -33,9 +27,11 @@ int main()
 	while(1)
 	{
 		erase();
-		printmap_unit(vet[i]);
-		printmap_unit(vet[i+4]);
+		printmap_unit(hobbit);
 		printw_map();
+		clear_unit(hobbit);
+		move_unit(&hobbit);
+		timeout(500);
 		switch (getch())
 		{
 			case 'a':
@@ -52,11 +48,6 @@ int main()
 				endwin();
 				return 0;
 		}
-		clear_unit(vet[i]);
-		clear_unit(vet[i+4]);
-		i++;
-		if (i == 4)
-			i = 0;
 	}
 
 	free_map();

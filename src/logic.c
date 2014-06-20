@@ -15,10 +15,10 @@ static char *name_filearts[] = { "ASCII art/race_blank.txt",
 };
 
 static unit attr[] = {
-{HOBBIT, 100, 1, 10, 10, {19-FRODO_ROW, 40}, {0, 0}, RIGHT, 100},
-{ELF, 130, 4, 40, 12, {17-FRODO_ROW, 40}, {0, 0}, RIGHT, 200},
-{DWARF, 250, 2, 30, 10, {19-FRODO_ROW, 40}, {0, 0}, RIGHT, 250},
-{ENT, 500, 1, 50, 15, {14-FRODO_ROW, 40}, {0, 0}, RIGHT, 300},
+{HOBBIT, 100, 1, 10, 10, {19-FRODO_ROW, 40}, {0, MORDOR_COL}, RIGHT, 100},
+{ELF, 130, 4, 40, 12, {17-FRODO_ROW, 40}, {0, MORDOR_COL}, RIGHT, 200},
+{DWARF, 250, 2, 30, 10, {19-FRODO_ROW, 40}, {0, MORDOR_COL}, RIGHT, 250},
+{ENT, 500, 1, 50, 15, {14-FRODO_ROW, 40}, {0, MORDOR_COL}, RIGHT, 300},
 {GOBLIN, 100, 1, 10, 10, {30-MORDOR_ROW, 34+MORDOR_COL}, {0, 0}, LEFT, 100},
 {ORC, 200, 2, 30, 12, {28-MORDOR_ROW, 34+MORDOR_COL}, {0, 0}, LEFT, 200},
 {WARG, 120, 5, 25, 8, {32-MORDOR_ROW, 34+MORDOR_COL}, {0, 0}, LEFT, 250},
@@ -121,4 +121,13 @@ void clear_unit(unit chr)
 		load_build("ASCII art/house_frodo.txt", FRODO_ROW, FRODO_COL);
 	else if (col > MORDOR_COL)
 		load_build("ASCII art/mordor_tower.txt",MORDOR_ROW,MORDOR_COL);
+}
+
+void move_unit(unit *chr)
+{
+	if (chr->position[1]+28 <= chr->destination[1])
+	{
+		chr->position[0] = size_row - chr->height;
+		chr->position[1]+= 9;
+	}
 }
