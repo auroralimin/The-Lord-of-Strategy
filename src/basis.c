@@ -15,6 +15,7 @@ static unit attr[] = {
 
 char **map;
 int size_row, size_col;
+int term_col;
 
 /* aloca uma matriz na memoria para guardar o mapa do jogo */
 void aloc_map()

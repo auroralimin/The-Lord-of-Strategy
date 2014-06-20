@@ -3,8 +3,10 @@
 #define SIZE_COLUMN 1530
 #define MINIMUM_ROW 41
 
+#define MORDOR_WIDTH 86
 #define MORDOR_ROW 40
-#define MORDOR_COL SIZE_COLUMN - 86
+#define MORDOR_COL SIZE_COLUMN - MORDOR_WIDTH
+#define FRODO_WIDTH 127
 #define FRODO_ROW 31
 #define FRODO_COL 0
 
@@ -71,6 +73,7 @@ typedef struct str_player
 
 extern char **map;
 extern int size_row, size_col;
+extern int term_col;
 
 void aloc_map();
 void init_map();

@@ -18,7 +18,8 @@ char *name_filearts[] = { "ASCII art/race_blank.txt",
 
 char mat_races[N_RACES + 1][RACE_HEIGHT][RACE_WIDTH];
 
-/* alerta o usuario se a janela do terminal nao tiver altura suficiente para o jogo */
+/* alerta o usuario se a janela do terminal nao tiver altura suficiente
+para o jogo */
 void get_dimension()
 {
 	getmaxyx(stdscr, size_row, size_col);
@@ -33,7 +34,7 @@ void get_dimension()
 }
 
 /* carrega o mapa com as fortalezas do jogador e do computador */
-void load_basicmap(char *file_name, int art_row, int art_col)
+void load_build(char *file_name, int art_row, int art_col)
 {
 	FILE *fp = NULL;
 
@@ -51,11 +52,11 @@ void load_basicmap(char *file_name, int art_row, int art_col)
 }
 
 /* printa o mapa na janela do terminal */
-void printw_map(int col)
+void printw_map()
 {
 	for (int i = 0; i < size_row; i++)
 		for (int j = 0; (j < SIZE_COLUMN) && (j < size_col); j++)
-			mvprintw(i, j, "%c", map[i][j + col]);
+			mvprintw(i, j, "%c", map[i][j + term_col]);
 	refresh();
 }
 
@@ -94,4 +95,21 @@ void printmap_unit(unit chr)
 		col = chr.position[1];
 		row++;
 	}
+}
+
+void clear_unit(unit chr)
+{
+	int row = chr.position[0], col = chr.position[1];
+
+	for (int i = RACE_HEIGHT - chr.height; i < RACE_HEIGHT; i++)
+	{
+		for (int j = 0; j < RACE_WIDTH; j++)
+			map[row][col++] = ' ';
+		col = chr.position[1];
+		row++;
+	}
+	if (col < FRODO_WIDTH)
+		load_build("ASCII art/house_frodo.txt", FRODO_ROW, FRODO_COL);
+	else if (col > MORDOR_COL)
+		load_build("ASCII art/mordor_tower.txt",MORDOR_ROW,MORDOR_COL);
 }
