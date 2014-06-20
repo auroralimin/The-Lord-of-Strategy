@@ -4,20 +4,6 @@
 #include "basis.h"
 #include "interface.h"
 
-/* matriz contendo o endereço da ascii art do jogo */
-char *name_filearts[] = { "ASCII art/race_blank.txt",
-	                  "ASCII art/hobbit.txt",
-			  "ASCII art/elf.txt",
-			  "ASCII art/dwarf.txt",
-			  "ASCII art/ent.txt",
-			  "ASCII art/goblin.txt",
-			  "ASCII art/orc.txt",
-			  "ASCII art/warg.txt",
-			  "ASCII art/troll.txt"
-};
-
-char mat_races[N_RACES + 1][RACE_HEIGHT][RACE_WIDTH];
-
 /* alerta o usuario se a janela do terminal nao tiver altura suficiente
 para o jogo */
 void get_dimension()
@@ -33,24 +19,6 @@ void get_dimension()
 	}
 }
 
-/* carrega o mapa com as fortalezas do jogador e do computador */
-void load_build(char *file_name, int art_row, int art_col)
-{
-	FILE *fp = NULL;
-
-	fp = read_file(file_name);
-
-	for (int i = size_row - art_row; i < size_row; i++)
-	{
-		fscanf(fp, "%[^\n]s", map[i] + art_col);
-		fgetc(fp);
-		if (feof(fp))
-			break;
-	}
-	fclose(fp);
-
-}
-
 /* printa o mapa na janela do terminal */
 void printw_map()
 {
@@ -58,58 +26,4 @@ void printw_map()
 		for (int j = 0; (j < SIZE_COLUMN) && (j < size_col); j++)
 			mvprintw(i, j, "%c", map[i][j + term_col]);
 	refresh();
-}
-
-/* le a ascii art das racas */
-void get_art()
-{
-	FILE *fp = NULL;
-
-	for (int i = 0; i <= N_RACES; i++)
-	{
-		fp = read_file(name_filearts[i]);
-		for (int j = 0; j < 15; j++)
-		{
-			fscanf(fp, "%[^\n]s", mat_races[i][j]);
-			fgetc(fp);
-			if (feof(fp))
-				break;
-		}
-		fclose(fp);
-	}
-}
-
-/* printa as unidades na tela do terminal */
-void printmap_unit(unit chr)
-{
-	int row = chr.position[0], col = chr.position[1];
-
-	for (int i = RACE_HEIGHT - chr.height; i < RACE_HEIGHT; i++)
-	{
-		for (int j = 0; j < RACE_WIDTH; j++)
-		{
-			if (mat_races[chr.race][i][j] != ' ')
-				map[row][col] = mat_races[chr.race][i][j];
-			col++;
-		}
-		col = chr.position[1];
-		row++;
-	}
-}
-
-void clear_unit(unit chr)
-{
-	int row = chr.position[0], col = chr.position[1];
-
-	for (int i = RACE_HEIGHT - chr.height; i < RACE_HEIGHT; i++)
-	{
-		for (int j = 0; j < RACE_WIDTH; j++)
-			map[row][col++] = ' ';
-		col = chr.position[1];
-		row++;
-	}
-	if (col < FRODO_WIDTH)
-		load_build("ASCII art/house_frodo.txt", FRODO_ROW, FRODO_COL);
-	else if (col > MORDOR_COL)
-		load_build("ASCII art/mordor_tower.txt",MORDOR_ROW,MORDOR_COL);
 }

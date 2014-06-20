@@ -4,6 +4,7 @@
 #include <math.h>
 #include "basis.h"
 #include "interface.h"
+#include "logic.h"
 
 int main()
 {

@@ -79,4 +79,3 @@ void aloc_map();
 void init_map();
 void free_map();
 FILE* read_file(char *name);
-unit race_init(int race);
