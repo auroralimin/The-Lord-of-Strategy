@@ -3,19 +3,20 @@
 #include "basis.h"
 
 static unit attributes[] = {
-	{HOBBIT, 100, 1, 10, 10, {18, 40}, {0, 0}, RIGHT},
-	{ELF, 130, 4, 40, 12, {16, 40}, {0, 0}, RIGHT},
-	{DWARF, 250, 2, 30, 10, {18, 40}, {0, 0}, RIGHT},
-	{ENT, 500, 1, 50, 15, {13, 40}, {0, 0}, RIGHT},
-	{GOBLIN, 100, 1, 10, 10, {29+MORDOR_ROW, 32+MORDOR_COL}, {0, 0}, LEFT},
-	{ORC, 200, 2, 30, 12, {27+MORDOR_ROW, 32+MORDOR_COL}, {0, 0}, LEFT},
-	{WARG, 120, 5, 25, 8, {31+MORDOR_ROW, 32+MORDOR_COL}, {0, 0}, LEFT},
-	{TROLL, 500, 1, 50, 15, {24+MORDOR_ROW, 32+MORDOR_COL}, {0, 0}, LEFT}
+	{HOBBIT, 100, 1, 10, 10, {0, 0}, {0, 0}, RIGHT, 100},
+	{ELF, 130, 4, 40, 12, {0, 0}, {0, 0}, RIGHT, 200},
+	{DWARF, 250, 2, 30, 10, {0, 0}, {0, 0}, RIGHT, 250},
+	{ENT, 500, 1, 50, 15, {0, 0}, {0, 0}, RIGHT, 300},
+	{GOBLIN, 100, 1, 10, 10, {0, 0}, {0, 0}, LEFT, 100},
+	{ORC, 200, 2, 30, 12, {0, 0}, {0, 0}, LEFT, 200},
+	{WARG, 120, 5, 25, 8, {0, 0}, {0, 0}, LEFT, 250},
+	{TROLL, 500, 1, 50, 15, {0, 0}, {0, 0}, LEFT, 300}
 };
 
 char **map;
 int size_row, size_col;
 
+/* aloca uma matriz na memoria para guardar o mapa do jogo */
 void aloc_map()
 {
 	map = (char**) calloc(size_row, sizeof(char*));
@@ -23,12 +24,14 @@ void aloc_map()
 		map[i] = (char*) calloc(SIZE_COLUMN, sizeof(char));
 }
 
+/* inicializa o mapa com espaços */
 void init_map(){
 	for (int i = 0; i < size_row; i++)
 		for (int j = 0; j < SIZE_COLUMN; j++)
                    map[i][j] = ' ';
 }
 
+/* libera o mapa */
 void free_map()
 {
 	for (int i = 0; i < size_row; i++)
@@ -36,6 +39,7 @@ void free_map()
 	free(map);
 }
 
+/* le os arquivos .txt contendo a ascii art do jogo */
 FILE* read_file(char *name)
 {
 	FILE *fp = NULL;
@@ -52,6 +56,7 @@ FILE* read_file(char *name)
 	return fp;
 }
 
+/* inicializa as unidades com os atributos pre-definidos */
 unit race_init(int race)
 {
 	unit new_unit;
@@ -69,6 +74,7 @@ unit race_init(int race)
 			new_unit.destination[0] = attributes[i].destination[0];
 			new_unit.destination[1] = attributes[i].destination[1];
 			new_unit.direction = attributes[i].direction;
+			new_unit.spwan_time = attributes[i].direction;
 			break;
 		}
 	return new_unit;

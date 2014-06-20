@@ -4,6 +4,7 @@
 #include "basis.h"
 #include "interface.h"
 
+/* matriz contendo o endereço da ascii art do jogo */
 char *name_filearts[] = { "ASCII art/race_blank.txt",
 	                  "ASCII art/hobbit.txt",
 			  "ASCII art/elf.txt",
@@ -17,6 +18,7 @@ char *name_filearts[] = { "ASCII art/race_blank.txt",
 
 char mat_races[N_RACES + 1][RACE_HEIGHT][RACE_WIDTH];
 
+/* alerta o usuario se a janela do terminal nao tiver altura suficiente para o jogo */
 void get_dimension()
 {
 	getmaxyx(stdscr, size_row, size_col);
@@ -30,6 +32,7 @@ void get_dimension()
 	}
 }
 
+/* carrega o mapa com as fortalezas do jogador e do computador */
 void load_basicmap(char *file_name, int art_row, int art_col)
 {
 	FILE *fp = NULL;
@@ -47,6 +50,7 @@ void load_basicmap(char *file_name, int art_row, int art_col)
 
 }
 
+/* printa o mapa na janela do terminal */
 void printw_map(int col)
 {
 	for (int i = 0; i < size_row; i++)
@@ -55,6 +59,7 @@ void printw_map(int col)
 	refresh();
 }
 
+/* le a ascii art das racas */
 void get_art()
 {
 	FILE *fp = NULL;
@@ -73,6 +78,7 @@ void get_art()
 	}
 }
 
+/* printa as unidades na tela do terminal */
 void printw_unit(unit chr)
 {
 	for (int i = RACE_HEIGHT - chr.height; i < RACE_HEIGHT; i++)
