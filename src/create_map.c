@@ -8,6 +8,7 @@
 int main()
 {
 	int col = 0, lim_map;
+	unit hobbit, goblin;
 
 	initscr();
 	noecho();
@@ -15,15 +16,20 @@ int main()
 	aloc_map();
 	init_map();
 	get_art();
+	goblin = race_init(GOBLIN);
+	hobbit = race_init(HOBBIT);
 
 	load_basicmap("ASCII art/house_frodo.txt", FRODO_ROW, FRODO_COL);
 	load_basicmap("ASCII art/mordor_tower.txt", MORDOR_ROW, MORDOR_COL);
+	printmap_unit(goblin);
+	printmap_unit(hobbit);
 	lim_map = sqrt(pow(size_col-SIZE_COLUMN+1, 2));
 
 	while(1)
 	{
 		erase();
 		printw_map(col);
+
 		switch (getch())
 		{
 			case 'a':

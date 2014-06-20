@@ -79,13 +79,19 @@ void get_art()
 }
 
 /* printa as unidades na tela do terminal */
-void printw_unit(unit chr)
+void printmap_unit(unit chr)
 {
+	int row = chr.position[0], col = chr.position[1];
+
 	for (int i = RACE_HEIGHT - chr.height; i < RACE_HEIGHT; i++)
 	{
-		move(chr.position[0] + i, chr.position[1]);
 		for (int j = 0; j < RACE_WIDTH; j++)
-			printw("%c", mat_races[chr.race][i][j]);
-		printw("\n");
+		{
+			if (mat_races[chr.race][i][j] != ' ')
+				map[row][col] = mat_races[chr.race][i][j];
+			col++;
+		}
+		col = chr.position[1];
+		row++;
 	}
 }
