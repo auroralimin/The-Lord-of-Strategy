@@ -1,8 +1,19 @@
-#include <stdio.h>
-
+#define REFRESH_TIME 500000
 #define SIZE_COLUMN 1530
 #define MINIMUM_ROW 41
 #define MINIMUN_COL 110
+
+#define STATUS_MOUSE_MOVED 0
+#define STATUS_MOUSE_CLICK 1
+#define STATUS_UP 2
+#define STATUS_DOWN 3
+#define STATUS_ENTER 4
+#define STATUS_RIGHT 5
+#define STATUS_LEFT 6
+#define STATUS_EXIT -1
+
+#define EXIT 'k'
+#define ENTER '\n'
 
 #define MENU_ROW 40
 #define MENU_COL 110
@@ -80,11 +91,18 @@ typedef struct str_player
 	int food;
 } player;
 
+
+extern pthread_mutex_t l_key, l_sync;
+extern int key_status;
+extern MEVENT event;
 extern char **map;
+extern int lim_map;
 extern int size_row, size_col;
 extern int term_col;
 extern char **options[N_OPTIONS];
 
+void init_locks();
+void init_thread(pthread_t *thread);
 void aloc_map();
 void init_map();
 void free_map();

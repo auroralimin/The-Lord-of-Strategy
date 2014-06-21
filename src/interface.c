@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ncurses.h>
+#include <pthread.h>
 #include "basis.h"
 #include "interface.h"
 #include "logic.h"
@@ -58,10 +59,10 @@ void destroy_win(WINDOW **local_win)
 	delwin(*local_win);
 	*local_win = NULL;
 }
+
 void menu()
 {
 	int opt = 1, x, y, n = 1;
-	MEVENT event;
 
 	menu_win = NULL;
 	y = (size_row-MENU_ROW)/2;
@@ -70,43 +71,37 @@ void menu()
 
 	aloc_options();
 	init_options();
-	print_menu(menu_win, opt);
-	system("TERM=xterm-1003");
 
 	while(n)
 	{
+		print_menu(menu_win, opt);
 		keypad(menu_win, TRUE);
-		switch (getch())
-		{
-		case (KEY_MOUSE):
-			if(getmouse(&event) == OK)
-				opt = report_option(event.y-3, event.x-3, y, x);
-			if (event.bstate == BUTTON1_CLICKED)
-				n = click_option(opt);
-			print_menu(menu_win, opt);
-			break;
-
-		case (KEY_DOWN):
-			if (opt != N_OPTIONS)
-				opt++;
-			else
-				opt = 0;
-			print_menu(menu_win, opt);
-			break;
-
-		case (KEY_UP):
-			if (opt != 0)
-				opt--;
-			else
-				opt = N_OPTIONS;
-			print_menu(menu_win, opt);
-			break;
-
-		case ('\n'):
-			n = click_option(opt);
-			break;
-		}
 		refresh();
+		pthread_mutex_lock(&l_key);
+
+		switch (key_status)
+		{
+			case (STATUS_MOUSE_MOVED):
+				opt = report_option(event.y-3, event.x-3, y, x);
+				break;
+			case (STATUS_DOWN):
+				if (opt != N_OPTIONS)
+					opt++;
+				else
+					opt = 0;
+				break;
+			case (STATUS_UP):
+				if (opt != 0)
+					opt--;
+				else
+					opt = N_OPTIONS;
+				break;
+			case (STATUS_MOUSE_CLICK):
+			case (STATUS_ENTER):
+				n = click_option(opt);
+				break;
+		}
+		pthread_mutex_unlock(&l_key);
 	}
 }
 

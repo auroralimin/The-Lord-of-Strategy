@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <ncurses.h>
+#include <pthread.h>
 #include <unistd.h>
 #include <math.h>
 #include "basis.h"
@@ -8,12 +9,16 @@
 
 int main()
 {
-	int lim_map;
 	unit hobbit;
+	pthread_t key_thread;
 
+	init_locks();
 	init_interface();
+	init_thread(&key_thread);
+
 	menu();
 	init_interface();
+	keypad(stdscr, TRUE);
 
 	aloc_map();
 	init_map();
@@ -26,28 +31,13 @@ int main()
 
 	while(1)
 	{
-		erase();
 		printmap_unit(hobbit);
+		pthread_mutex_lock(&l_sync);
 		printw_map();
 		clear_unit(hobbit);
+		pthread_mutex_unlock(&l_sync);
 		move_unit(&hobbit);
-		timeout(500);
-		switch (getch())
-		{
-			case 'a':
-				if (term_col > 0)
-					term_col-=9;
-				break;
-			case 'd':
-				if ((term_col < lim_map) &&
-				   (SIZE_COLUMN > size_col))
-					term_col+=9;
-				break;
-			case 'k':
-				free_map();
-				endwin();
-				return 0;
-		}
+		usleep(REFRESH_TIME);
 	}
 
 	free_map();

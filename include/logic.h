@@ -1,3 +1,4 @@
+void* read_key(void *arg);
 void init_options();
 int report_option(int mouse_row, int mouse_col, int start_y, int start_x);
 unit race_init(int race);

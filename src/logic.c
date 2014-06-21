@@ -1,21 +1,25 @@
 #include <stdio.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <ncurses.h>
+#include <pthread.h>
 #include "basis.h"
 #include "logic.h"
+#include "interface.h"
 
 char *options_files[] = { "ASCII art/new_game.txt",
 			"ASCII art/load_game.txt",
 			"ASCII art/exit.txt"};
 
 /* matriz contendo o endereço da ascii art do jogo */
-static char *name_filearts[] = { "ASCII art/race_blank.txt",
-	                  "ASCII art/hobbit.txt",
-			  "ASCII art/elf.txt",
-			  "ASCII art/dwarf.txt",
-			  "ASCII art/ent.txt",
-			  "ASCII art/goblin.txt",
-			  "ASCII art/orc.txt",
-			  "ASCII art/warg.txt",
-			  "ASCII art/troll.txt"
+static char *name_filearts[] = { "ASCII art/hobbit.txt",
+			         "ASCII art/elf.txt",
+				 "ASCII art/dwarf.txt",
+				 "ASCII art/ent.txt",
+				 "ASCII art/goblin.txt",
+				 "ASCII art/orc.txt",
+				 "ASCII art/warg.txt",
+				 "ASCII art/troll.txt"
 };
 
 static unit attr[] = {
@@ -30,6 +34,58 @@ static unit attr[] = {
 };
 
 char mat_races[N_RACES + 1][RACE_HEIGHT][RACE_WIDTH];
+
+void* read_key(void *arg)
+{
+	while (1)
+	{
+		pthread_mutex_lock(&l_key);
+		switch(getch())
+		{
+			case (KEY_MOUSE):
+				if(getmouse(&event) == OK)
+				{
+					key_status = STATUS_MOUSE_MOVED;
+					if (event.bstate == BUTTON1_CLICKED)
+						key_status = STATUS_MOUSE_CLICK;
+				}
+				break;
+			case (KEY_UP):
+				key_status = STATUS_UP;
+				break;
+			case (KEY_DOWN):
+				key_status = STATUS_DOWN;
+				break;
+			case (KEY_RIGHT):
+				if ((term_col < lim_map) &&
+				   (SIZE_COLUMN > size_col))
+				{
+					pthread_mutex_lock(&l_sync);
+					term_col+=9;
+					printw_map();
+					pthread_mutex_unlock(&l_sync);
+				}
+				break;
+			case (KEY_LEFT):
+				if (term_col > 0)
+				{
+					term_col-=9;
+					printw_map();
+				}
+				break;
+			case (EXIT):
+				free_map();
+				endwin();
+				exit(1);
+			case (ENTER):
+				key_status = STATUS_ENTER;
+		}
+		pthread_mutex_unlock(&l_key);
+		usleep(2);
+	}
+
+	return arg;
+}
 
 void init_options()
 {
@@ -102,7 +158,7 @@ void get_art()
 {
 	FILE *fp = NULL;
 
-	for (int i = 0; i <= N_RACES; i++)
+	for (int i = 0; i < N_RACES; i++)
 	{
 		fp = read_file(name_filearts[i]);
 		for (int j = 0; j < 15; j++)
@@ -125,8 +181,8 @@ void printmap_unit(unit chr)
 	{
 		for (int j = 0; j < RACE_WIDTH; j++)
 		{
-			if (mat_races[chr.race][i][j] != ' ')
-				map[row][col] = mat_races[chr.race][i][j];
+			if (mat_races[chr.race-1][i][j] != ' ')
+				map[row][col] = mat_races[chr.race-1][i][j];
 			col++;
 		}
 		col = chr.position[1];
