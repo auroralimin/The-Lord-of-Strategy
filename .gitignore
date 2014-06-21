@@ -1,5 +1,6 @@
-#executable name
+#executables names
 test
+game
 
 #objects
 *.o
