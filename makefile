@@ -4,7 +4,7 @@ SDIR = src
 IDIR = include
 ODIR = obj
 
-_OBJ = basis.o logic.o interface.o create_map.o
+_OBJ = basis.o logic.o interface.o main.o
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 
 CFLAGS = -I$(IDIR) -Wall -Wextra -g
