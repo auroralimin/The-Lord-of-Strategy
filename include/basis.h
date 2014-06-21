@@ -1,3 +1,5 @@
+#include <ncurses.h>
+
 #define REFRESH_TIME 500000
 #define SIZE_COLUMN 1530
 #define MINIMUM_ROW 41

@@ -1,5 +1,4 @@
 #include <stdlib.h>
-#include <ncurses.h>
 #include <pthread.h>
 #include "basis.h"
 #include "logic.h"
