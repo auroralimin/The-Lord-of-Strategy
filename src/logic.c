@@ -52,7 +52,7 @@ int report_option(int mouse_row, int mouse_col, int start_y, int start_x)
 	if ((mouse_row > start_y) && (mouse_row < start_y + MENU_ROW - 2) &&
 	   (mouse_col > start_x) && (mouse_col < start_x + MENU_COL - 2))
 		return 1 + (mouse_row / 13);
-	return -1;
+	return 0;
 }
 
 /* inicializa as unidades com os atributos pre-definidos */

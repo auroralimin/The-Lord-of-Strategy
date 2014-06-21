@@ -11,10 +11,10 @@ int main()
 	int lim_map;
 	unit hobbit;
 
-	initscr();
-	noecho();
+	init_interface();
+	menu();
+	init_interface();
 
-	get_dimension();
 	aloc_map();
 	init_map();
 	get_art();

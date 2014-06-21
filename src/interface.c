@@ -4,6 +4,9 @@
 #include <ncurses.h>
 #include "basis.h"
 #include "interface.h"
+#include "logic.h"
+
+WINDOW *menu_win;
 
 void init_interface()
 {
@@ -54,6 +57,70 @@ void destroy_win(WINDOW **local_win)
 	wrefresh(*local_win);
 	delwin(*local_win);
 	*local_win = NULL;
+}
+void menu()
+{
+	int opt = 1, x, y, n = 1;
+	MEVENT event;
+
+	menu_win = NULL;
+	y = (size_row-MENU_ROW)/2;
+	x = (size_col-MENU_COL)/2;
+	menu_win = create_win(MENU_ROW, MENU_COL, y, x);
+
+	aloc_options();
+	init_options();
+	print_menu(menu_win, opt);
+	system("TERM=xterm-1003");
+
+	while(n)
+	{
+		keypad(menu_win, TRUE);
+		switch (getch())
+		{
+		case (KEY_MOUSE):
+			if(getmouse(&event) == OK)
+				opt = report_option(event.y-3, event.x-3, y, x);
+			if (event.bstate == BUTTON1_CLICKED)
+				n = click_option(opt);
+			print_menu(menu_win, opt);
+			break;
+
+		case (KEY_DOWN):
+			if (opt != N_OPTIONS)
+				opt++;
+			else
+				opt = 0;
+			print_menu(menu_win, opt);
+			break;
+
+		case (KEY_UP):
+			if (opt != 0)
+				opt--;
+			else
+				opt = N_OPTIONS;
+			print_menu(menu_win, opt);
+			break;
+
+		case ('\n'):
+			n = click_option(opt);
+			break;
+		}
+		refresh();
+	}
+}
+
+int click_option(int option)
+{
+	if (option == 1)
+		return 0;
+	if (option == 3)
+	{
+		endwin();
+		exit(1);
+	}
+
+	return 1;
 }
 
 void print_menu(WINDOW *menu_win, int highlight)
