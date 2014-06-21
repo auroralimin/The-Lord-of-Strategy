@@ -1,4 +1,4 @@
-CC = gcc
+CC = clang
 
 SDIR = src
 IDIR = include
@@ -13,8 +13,9 @@ CFLAGS = -I$(IDIR) -Wall -Wextra -g
 LIBS = -lncurses -lm -pthread -lcunit
 
 SPLINT = splint
-SPLINTFLAGS = -weak +infloops +sysdirerrors -compdef \
-              -warnposix -type -fixedformalarray -annotationerror \
+SPLINTFLAGS = -weak -type +sysdirerrors -compdef -retvalother\
+              +line-len 80 -warnposix +infloops -fixedformalarray \
+	      -annotationerror \
 
 SPLINT_SOURCE = src/basis.c src/logic.c src/interface.c src/main.c
 
