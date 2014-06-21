@@ -47,14 +47,23 @@ int clean_interface(void)
 /* basis tests fucntions */
 void aloc_map_test(void)
 {
+	int i;
+
 	aloc_map();
 	CU_ASSERT(map != NULL);
+
+	for (i = 0; i < size_row; i++)
+		CU_ASSERT(map[i] != NULL);
 }
 
 void init_map_test(void)
 {
+	int i, j;
+
 	init_map();
-	CU_ASSERT(map[0][0] == ' ');
+	for (i = 0; i < size_row; i++)
+		for (j = 0; j < SIZE_COLUMN; j++)
+			CU_ASSERT(map[i][j] == ' ');
 }
 
 void free_map_test(void)
@@ -66,12 +75,27 @@ void free_map_test(void)
 void read_file_test(void)
 {
 	CU_ASSERT((read_file("ASCII art/hobbit.txt")) != NULL);
+	CU_ASSERT((read_file("ASCII art/elf.txt")) != NULL);
+	CU_ASSERT((read_file("ASCII art/dwarf.txt")) != NULL);
+	CU_ASSERT((read_file("ASCII art/ent.txt")) != NULL);
+	CU_ASSERT((read_file("ASCII art/goblin.txt")) != NULL);
+	CU_ASSERT((read_file("ASCII art/orc.txt")) != NULL);
+	CU_ASSERT((read_file("ASCII art/warg.txt")) != NULL);
+	CU_ASSERT((read_file("ASCII art/troll.txt")) != NULL);
+	CU_ASSERT((read_file("ASCII art/house_frodo.txt")) != NULL);
+	CU_ASSERT((read_file("ASCII art/mordor_tower.txt")) != NULL);
+	CU_ASSERT((read_file("ASCII art/new_game.txt")) != NULL);
+	CU_ASSERT((read_file("ASCII art/load_game.txt")) != NULL);
+	CU_ASSERT((read_file("ASCII art/exit.txt")) != NULL);
 }
 
 void aloc_options_test(void)
 {
 	aloc_options();
 	CU_ASSERT(options != NULL);
+	CU_ASSERT(options[0] != NULL);
+	CU_ASSERT(options[1] != NULL);
+	CU_ASSERT(options[2] != NULL);
 }
 
 /* logic tests functions */
@@ -79,11 +103,14 @@ void init_options_test(void)
 {
 	init_options();
 	CU_ASSERT(options != NULL);
+	CU_ASSERT(options[0][1][1] != ' ');
+	CU_ASSERT(options[1][0][4] != ' ');
+	CU_ASSERT(options[2][3][3] != ' ');
 }
 
 void race_init_test(void)
 {
-	unit hobbit = race_init(HOBBIT);
+	hobbit = race_init(HOBBIT);
 	CU_ASSERT(hobbit.race == HOBBIT);
 	CU_ASSERT(hobbit.hp == 100);
 	CU_ASSERT(hobbit.spd == 1);
@@ -92,8 +119,9 @@ void race_init_test(void)
 
 void load_build_test(void)
 {
-	CU_ASSERT((load_build("ASCII art/frodo_house.txt",
-	FRODO_ROW, FRODO_COL) == 1);
+	int aux = load_build("ASCII art/house_frodo.txt", FRODO_ROW, FRODO_COL);
+
+	CU_ASSERT(aux == 1);
 }
 
 void get_art_test(void)
@@ -120,7 +148,7 @@ void move_unit_test(void)
 	int aux;
 
 	aux = hobbit.position[1];
-	move_unit(hobbit);
+	move_unit(&hobbit);
 
 	CU_ASSERT(hobbit.position[0] == size_row - hobbit.height);
 	CU_ASSERT(hobbit.position[1] == aux + 9);

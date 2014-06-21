@@ -57,8 +57,12 @@ void free_map()
 	int i;
 
 	for (i = 0; i < size_row; i++)
-		if(map[i] != NULL)
+	{
+		if (map == NULL)
+			break;
+		if (map[i] != NULL)
 			free(map[i]);
+	}
 	if (map != NULL)
 	{
 		free(map);
