@@ -97,6 +97,7 @@ void menu()
 					opt = N_OPTIONS;
 				break;
 			case (STATUS_MOUSE_CLICK):
+				opt = report_option(event.y-3, event.x-3, y, x);
 			case (STATUS_ENTER):
 				n = click_option(opt);
 				break;
@@ -120,7 +121,7 @@ int click_option(int option)
 
 void print_menu(WINDOW *menu_win, int highlight)
 {
-	int i, row = 3, col = 3;
+	int i, j, row = 3, col = 3;
 
 	for(i = 0; i < N_OPTIONS; ++i)
 	{
@@ -129,7 +130,7 @@ void print_menu(WINDOW *menu_win, int highlight)
 			wattron(menu_win, COLOR_PAIR(1));
 		else
 			wattron(menu_win, COLOR_PAIR(2));
-		for(int j = 0; j < OPTIONS_WIDTH; j++)
+		for(j = 0; j < OPTIONS_WIDTH; j++)
 			mvwprintw(menu_win, row++, col, "%s", options[i][j]);
 		row+=4;
 	}
@@ -142,8 +143,10 @@ void print_menu(WINDOW *menu_win, int highlight)
 /* printa o mapa na janela do terminal */
 void printw_map()
 {
-	for (int i = 0; i < size_row; i++)
-		for (int j = 0; (j < SIZE_COLUMN) && (j < size_col); j++)
+	int i, j;
+
+	for (i = 0; i < size_row; i++)
+		for (j = 0; (j < SIZE_COLUMN) && (j < size_col); j++)
 			mvprintw(i, j, "%c", map[i][j + term_col]);
 	refresh();
 }

@@ -33,22 +33,29 @@ void init_thread(pthread_t *thread)
 /* aloca uma matriz na memoria para guardar o mapa do jogo */
 void aloc_map()
 {
+	int i;
+
 	map = (char**) calloc(size_row, sizeof(char*));
-	for (int i = 0; i < size_row; i++)
+	for (i = 0; i < size_row; i++)
 		map[i] = (char*) calloc(SIZE_COLUMN, sizeof(char));
 }
 
 /* inicializa o mapa com espaços */
-void init_map(){
-	for (int i = 0; i < size_row; i++)
-		for (int j = 0; j < SIZE_COLUMN; j++)
+void init_map()
+{
+	int i, j;
+
+	for (i = 0; i < size_row; i++)
+		for (j = 0; j < SIZE_COLUMN; j++)
                    map[i][j] = ' ';
 }
 
 /* libera o mapa */
 void free_map()
 {
-	for (int i = 0; i < size_row; i++)
+	int i;
+
+	for (i = 0; i < size_row; i++)
 		if(map[i] != NULL)
 			free(map[i]);
 	if (map != NULL)
@@ -77,10 +84,12 @@ FILE* read_file(char *name)
 
 void aloc_options()
 {
-	for (int i = 0; i < N_OPTIONS; i++)
+	int i, j;
+
+	for (i = 0; i < N_OPTIONS; i++)
 	{
 		options[i] = (char**) calloc(OPTIONS_WIDTH, sizeof(char*));
-		for (int j = 0; j < OPTIONS_WIDTH; j++)
+		for (j = 0; j < OPTIONS_WIDTH; j++)
 			options[i][j] = calloc(options_len[i],sizeof(char));
 	}
 }

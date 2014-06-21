@@ -89,12 +89,13 @@ void* read_key(void *arg)
 
 void init_options()
 {
+	int i, j;
 	FILE *fp = NULL;
 
-	for (int i = 0; i < N_OPTIONS; i++)
+	for (i = 0; i < N_OPTIONS; i++)
 	{
 		fp = read_file(options_files[i]);
-		for (int j = 0; j < OPTIONS_WIDTH; j++)
+		for (j = 0; j < OPTIONS_WIDTH; j++)
 		{
 			fscanf(fp, "%[^\n]s", options[i][j]);
 			fgetc(fp);
@@ -114,9 +115,10 @@ int report_option(int mouse_row, int mouse_col, int start_y, int start_x)
 /* inicializa as unidades com os atributos pre-definidos */
 unit race_init(int race)
 {
+	int i;
 	unit new_unit;
 
-	for (int i = 0; i < N_RACES; i++)
+	for (i = 0; i < N_RACES; i++)
 		if (attr[i].race == race)
 		{
 			new_unit.race = attr[i].race;
@@ -138,11 +140,12 @@ unit race_init(int race)
 /* carrega o mapa com as fortalezas do jogador e do computador */
 void load_build(char *file_name, int art_row, int art_col)
 {
+	int i;
 	FILE *fp = NULL;
 
 	fp = read_file(file_name);
 
-	for (int i = size_row - art_row; i < size_row; i++)
+	for (i = size_row - art_row; i < size_row; i++)
 	{
 		fscanf(fp, "%[^\n]s", map[i] + art_col);
 		fgetc(fp);
@@ -156,12 +159,13 @@ void load_build(char *file_name, int art_row, int art_col)
 /* le a ascii art das racas */
 void get_art()
 {
+	int i, j;
 	FILE *fp = NULL;
 
-	for (int i = 0; i < N_RACES; i++)
+	for (i = 0; i < N_RACES; i++)
 	{
 		fp = read_file(name_filearts[i]);
-		for (int j = 0; j < 15; j++)
+		for (j = 0; j < 15; j++)
 		{
 			fscanf(fp, "%[^\n]s", mat_races[i][j]);
 			fgetc(fp);
@@ -175,11 +179,11 @@ void get_art()
 /* printa as unidades na tela do terminal */
 void printmap_unit(unit chr)
 {
-	int row = chr.position[0], col = chr.position[1];
+	int i, j, row = chr.position[0], col = chr.position[1];
 
-	for (int i = RACE_HEIGHT - chr.height; i < RACE_HEIGHT; i++)
+	for (i = RACE_HEIGHT - chr.height; i < RACE_HEIGHT; i++)
 	{
-		for (int j = 0; j < RACE_WIDTH; j++)
+		for (j = 0; j < RACE_WIDTH; j++)
 		{
 			if (mat_races[chr.race-1][i][j] != ' ')
 				map[row][col] = mat_races[chr.race-1][i][j];
@@ -192,11 +196,11 @@ void printmap_unit(unit chr)
 
 void clear_unit(unit chr)
 {
-	int row = chr.position[0], col = chr.position[1];
+	int i, j, row = chr.position[0], col = chr.position[1];
 
-	for (int i = RACE_HEIGHT - chr.height; i < RACE_HEIGHT; i++)
+	for (i = RACE_HEIGHT - chr.height; i < RACE_HEIGHT; i++)
 	{
-		for (int j = 0; j < RACE_WIDTH; j++)
+		for (j = 0; j < RACE_WIDTH; j++)
 			map[row][col++] = ' ';
 		col = chr.position[1];
 		row++;
