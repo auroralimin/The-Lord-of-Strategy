@@ -8,6 +8,7 @@
 void init_interface()
 {
 	initscr();
+	raw();
 	cbreak();
 	start_color();
 	noecho();
@@ -68,7 +69,7 @@ void print_menu(WINDOW *menu_win, int highlight)
 			wattron(menu_win, COLOR_PAIR(2));
 		for(int j = 0; j < OPTIONS_WIDTH; j++)
 			mvwprintw(menu_win, row++, col, "%s", options[i][j]);
-		row+=3;
+		row+=4;
 	}
 	wattroff(menu_win, COLOR_PAIR(1));
 	wattroff(menu_win, COLOR_PAIR(2));
