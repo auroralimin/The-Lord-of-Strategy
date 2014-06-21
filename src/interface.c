@@ -11,7 +11,7 @@ WINDOW *menu_win;
 
 void init_interface()
 {
-	initscr();
+	stdscr = initscr();
 	raw();
 	cbreak();
 	start_color();

@@ -4,6 +4,7 @@
 #include "logic.h"
 
 pthread_mutex_t l_key, l_sync;
+pthread_t key_thread;
 int key_status;
 MEVENT event;
 char **map;
@@ -20,9 +21,9 @@ void init_locks()
 	pthread_mutex_init(&l_sync, NULL);
 }
 
-void init_thread(pthread_t *thread)
+void init_thread()
 {
-	if (pthread_create(thread, NULL, &read_key, NULL))
+	if (pthread_create(&key_thread, NULL, &read_key, NULL))
 	{
 		endwin();
 		fprintf(stderr, "Cannot create thread read_key\n");

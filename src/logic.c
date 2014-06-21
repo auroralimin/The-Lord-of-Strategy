@@ -134,6 +134,7 @@ unit race_init(int race)
 			new_unit.spwan_time = attr[i].spwan_time;
 			break;
 		}
+
 	return new_unit;
 }
 

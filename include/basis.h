@@ -95,6 +95,7 @@ typedef struct str_player
 
 
 extern pthread_mutex_t l_key, l_sync;
+extern pthread_t key_thread;
 extern int key_status;
 extern MEVENT event;
 extern char **map;
@@ -104,7 +105,7 @@ extern int term_col;
 extern char **options[N_OPTIONS];
 
 void init_locks();
-void init_thread(pthread_t *thread);
+void init_thread();
 void aloc_map();
 void init_map();
 void free_map();

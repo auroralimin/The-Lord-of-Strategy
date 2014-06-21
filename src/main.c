@@ -10,11 +10,10 @@
 int main()
 {
 	unit hobbit;
-	pthread_t key_thread;
 
 	init_locks();
 	init_interface();
-	init_thread(&key_thread);
+	init_thread();
 
 	menu();
 	init_interface();
