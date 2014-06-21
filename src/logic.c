@@ -2,6 +2,10 @@
 #include "basis.h"
 #include "logic.h"
 
+char *options_files[] = { "ASCII art/new_game.txt",
+			"ASCII art/load_game.txt",
+			"ASCII art/exit.txt"};
+
 /* matriz contendo o endereço da ascii art do jogo */
 static char *name_filearts[] = { "ASCII art/race_blank.txt",
 	                  "ASCII art/hobbit.txt",
@@ -26,6 +30,22 @@ static unit attr[] = {
 };
 
 char mat_races[N_RACES + 1][RACE_HEIGHT][RACE_WIDTH];
+
+void init_options()
+{
+	FILE *fp = NULL;
+
+	for (int i = 0; i < N_OPTIONS; i++)
+	{
+		fp = read_file(options_files[i]);
+		for (int j = 0; j < OPTIONS_WIDTH; j++)
+		{
+			fscanf(fp, "%[^\n]s", options[i][j]);
+			fgetc(fp);
+		}
+		fclose(fp);
+	}
+}
 
 /* inicializa as unidades com os atributos pre-definidos */
 unit race_init(int race)

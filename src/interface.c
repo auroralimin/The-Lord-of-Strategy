@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <ncurses.h>
 #include "basis.h"
 #include "interface.h"
@@ -12,6 +13,9 @@ void init_interface()
 	noecho();
 	curs_set(0);
 	keypad(stdscr, TRUE);
+	mousemask(ALL_MOUSE_EVENTS, NULL);
+	init_pair(1, COLOR_CYAN, COLOR_BLACK);
+	init_pair(2, COLOR_GREEN, COLOR_BLACK);
 	get_dimension();
 }
 
@@ -21,7 +25,7 @@ void get_dimension()
 {
 	getmaxyx(stdscr, size_row, size_col);
 
-	if (size_row < MINIMUM_ROW)
+	if ((size_row < MINIMUM_ROW) || (size_col < MINIMUN_COL))
 	{
 		endwin();
 		printf("The terminal's dimension isn't big enough.\n");
@@ -30,7 +34,7 @@ void get_dimension()
 	}
 }
 
-WINDOW *create_win(int win_y, int win_x, int starty, int startx)
+WINDOW* create_win(int win_y, int win_x, int starty, int startx)
 {
 	WINDOW *local_win;
 
@@ -49,6 +53,27 @@ void destroy_win(WINDOW **local_win)
 	wrefresh(*local_win);
 	delwin(*local_win);
 	*local_win = NULL;
+}
+
+void print_menu(WINDOW *menu_win, int highlight)
+{
+	int i, row = 3, col = 3;
+
+	for(i = 0; i < N_OPTIONS; ++i)
+	{
+		col = (MENU_COL-strlen(options[i][0]))/2;
+		if(highlight == i + 1)
+			wattron(menu_win, COLOR_PAIR(1));
+		else
+			wattron(menu_win, COLOR_PAIR(2));
+		for(int j = 0; j < OPTIONS_WIDTH; j++)
+			mvwprintw(menu_win, row++, col, "%s", options[i][j]);
+		row+=3;
+	}
+	wattroff(menu_win, COLOR_PAIR(1));
+	wattroff(menu_win, COLOR_PAIR(2));
+	box(menu_win, 0, 0);
+	wrefresh(menu_win);
 }
 
 /* printa o mapa na janela do terminal */

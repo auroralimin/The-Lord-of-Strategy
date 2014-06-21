@@ -5,6 +5,9 @@
 char **map;
 int size_row, size_col;
 int term_col;
+char **options[N_OPTIONS];
+
+int options_len[] = { NEW_GAME, LOAD_GAME, EXIT_GAME};
 
 /* aloca uma matriz na memoria para guardar o mapa do jogo */
 void aloc_map()
@@ -45,3 +48,14 @@ FILE* read_file(char *name)
 
 	return fp;
 }
+
+void aloc_options()
+{
+	for (int i = 0; i < N_OPTIONS; i++)
+	{
+		options[i] = (char**) calloc(OPTIONS_WIDTH, sizeof(char*));
+		for (int j = 0; j < OPTIONS_WIDTH; j++)
+			options[i][j] = calloc(options_len[i],sizeof(char));
+	}
+}
+

@@ -2,6 +2,15 @@
 
 #define SIZE_COLUMN 1530
 #define MINIMUM_ROW 41
+#define MINIMUN_COL 110
+
+#define MENU_ROW 40
+#define MENU_COL 110
+#define N_OPTIONS 3
+#define OPTIONS_WIDTH 8
+#define NEW_GAME 92
+#define LOAD_GAME 105
+#define EXIT_GAME 41
 
 #define MORDOR_WIDTH 86
 #define MORDOR_ROW 40
@@ -74,8 +83,10 @@ typedef struct str_player
 extern char **map;
 extern int size_row, size_col;
 extern int term_col;
+extern char **options[N_OPTIONS];
 
 void aloc_map();
 void init_map();
 void free_map();
 FILE* read_file(char *name);
+void aloc_options();
