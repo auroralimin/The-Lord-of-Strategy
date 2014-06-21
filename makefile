@@ -12,6 +12,12 @@ OBJ2 = $(patsubst %,$(ODIR)/%,$(_OBJ2))
 CFLAGS = -I$(IDIR) -Wall -Wextra -g
 LIBS = -lncurses -lm -pthread -lcunit
 
+SPLINT = splint
+SPLINTFLAGS = -weak +infloops +sysdirerrors -compdef \
+              -warnposix -type -fixedformalarray -annotationerror \
+
+SPLINT_SOURCE = src/basis.c src/logic.c src/interface.c src/main.c
+
 main: game
 cunit: test
 
@@ -24,6 +30,9 @@ game: $(OBJ1)
 
 test: $(OBJ2)
 	$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
+
+splinttest:
+	$(SPLINT) $(SPLINTFLAGS) -I $(IDIR) $(SPLINT_SOURCE)
 
 .PHONY: clean
 
