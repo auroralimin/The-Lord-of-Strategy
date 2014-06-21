@@ -8,3 +8,5 @@ obj/*
 #vim temporary files
 *.swp
 *.swo
+*.swn
+*.swm
