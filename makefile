@@ -8,7 +8,7 @@ _OBJ = basis.o logic.o interface.o main.o
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 
 CFLAGS = -I$(IDIR) -Wall -Wextra -g
-LIBS = -lncurses -lm
+LIBS = -lncurses -lm -pthread
 
 all: test
 
