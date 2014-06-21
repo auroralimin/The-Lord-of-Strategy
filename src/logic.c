@@ -139,7 +139,7 @@ unit race_init(int race)
 }
 
 /* carrega o mapa com as fortalezas do jogador e do computador */
-void load_build(char *file_name, int art_row, int art_col)
+int load_build(char *file_name, int art_row, int art_col)
 {
 	int i;
 	FILE *fp = NULL;
@@ -155,10 +155,11 @@ void load_build(char *file_name, int art_row, int art_col)
 	}
 	fclose(fp);
 
+	return 1;
 }
 
 /* le a ascii art das racas */
-void get_art()
+int get_art()
 {
 	int i, j;
 	FILE *fp = NULL;
@@ -175,6 +176,8 @@ void get_art()
 		}
 		fclose(fp);
 	}
+
+	return 1;
 }
 
 /* printa as unidades na tela do terminal */
