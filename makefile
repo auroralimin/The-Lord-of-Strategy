@@ -1,4 +1,4 @@
-CC = clang
+CC = gcc
 
 SDIR = src
 IDIR = include
@@ -29,3 +29,4 @@ test: $(OBJ2)
 
 clean:
 	rm -f $(ODIR)/*.o core test
+	rm -f $(ODIR)/*.o core game
