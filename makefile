@@ -5,7 +5,7 @@ IDIR = include
 ODIR = obj
 
 _OBJ1 = basis.o logic.o interface.o main.o
-_OBJ2 = basis.o logic.o interface.o cUnit_main.o
+_OBJ2 = basis.o logic.o interface.o cunit_test.o cunit_main.o
 OBJ1 = $(patsubst %,$(ODIR)/%,$(_OBJ1))
 OBJ2 = $(patsubst %,$(ODIR)/%,$(_OBJ2))
 
@@ -14,7 +14,7 @@ LIBS = -lncurses -lm -pthread -lcunit
 
 SPLINT = splint
 SPLINTFLAGS = -weak -type +sysdirerrors -compdef -retvalother\
-              +line-len 80 -warnposix +infloops -fixedformalarray \
+               +line-len 80 -warnposix +infloops -fixedformalarray \
 	      -annotationerror \
 
 SPLINT_SOURCE = src/basis.c src/logic.c src/interface.c src/main.c
