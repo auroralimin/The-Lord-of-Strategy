@@ -1,8 +1,7 @@
 #include <ncurses.h>
 
 #define REFRESH_TIME 500000
-#define SIZE_COLUMN 1530
-#define MINIMUM_ROW 41
+#define MINIMUM_ROW 48
 #define MINIMUN_COL 110
 
 #define STATUS_MOUSE_MOVED 0
@@ -25,9 +24,11 @@
 #define LOAD_GAME 105
 #define EXIT_GAME 41
 
+#define MAP_ROW 40
+#define MAP_COL 1530
 #define MORDOR_WIDTH 86
 #define MORDOR_ROW 40
-#define MORDOR_COL SIZE_COLUMN - MORDOR_WIDTH
+#define MORDOR_COL MAP_COL - MORDOR_WIDTH
 #define FRODO_WIDTH 127
 #define FRODO_ROW 31
 #define FRODO_COL 0
@@ -106,6 +107,7 @@ extern char **options[N_OPTIONS];
 
 void init_locks();
 void init_thread();
+void prepare_map();
 void aloc_map();
 void init_map();
 void free_map();

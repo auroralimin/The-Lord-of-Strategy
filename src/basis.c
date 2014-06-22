@@ -31,14 +31,23 @@ void init_thread()
 	}
 }
 
+void prepare_map()
+{
+	aloc_map();
+	init_map();
+	get_art();
+	load_build("ASCII art/house_frodo.txt", FRODO_ROW, FRODO_COL);
+	load_build("ASCII art/mordor_tower.txt", MORDOR_ROW, MORDOR_COL);
+}
+
 /* aloca uma matriz na memoria para guardar o mapa do jogo */
 void aloc_map()
 {
 	int i;
 
-	map = (char**) calloc(size_row, sizeof(char*));
-	for (i = 0; i < size_row; i++)
-		map[i] = (char*) calloc(SIZE_COLUMN, sizeof(char));
+	map = (char**) calloc(MAP_ROW, sizeof(char*));
+	for (i = 0; i < MAP_ROW; i++)
+		map[i] = (char*) calloc(MAP_COL, sizeof(char));
 }
 
 /* inicializa o mapa com espaços */
@@ -46,8 +55,8 @@ void init_map()
 {
 	int i, j;
 
-	for (i = 0; i < size_row; i++)
-		for (j = 0; j < SIZE_COLUMN; j++)
+	for (i = 0; i < MAP_ROW; i++)
+		for (j = 0; j < MAP_COL; j++)
                    map[i][j] = ' ';
 }
 
@@ -56,15 +65,11 @@ void free_map()
 {
 	int i;
 
-	for (i = 0; i < size_row; i++)
-	{
-		if (map == NULL)
-			break;
-		if (map[i] != NULL)
-			free(map[i]);
-	}
 	if (map != NULL)
 	{
+		for (i = 0; i < MAP_ROW; i++)
+			if (map[i] != NULL)
+				free(map[i]);
 		free(map);
 		map = NULL;
 	}

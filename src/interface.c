@@ -8,6 +8,7 @@
 #include "logic.h"
 
 WINDOW *menu_win;
+WINDOW *map_win;
 
 void init_interface()
 {
@@ -21,6 +22,8 @@ void init_interface()
 	mousemask(ALL_MOUSE_EVENTS, NULL);
 	init_pair(1, COLOR_CYAN, COLOR_BLACK);
 	init_pair(2, COLOR_GREEN, COLOR_BLACK);
+	menu_win = NULL;
+	map_win = NULL;
 	get_dimension();
 }
 
@@ -74,7 +77,7 @@ void menu()
 
 	while(n)
 	{
-		print_menu(menu_win, opt);
+		wprintw_menu(opt);
 		keypad(menu_win, TRUE);
 		refresh();
 		pthread_mutex_lock(&l_key);
@@ -109,7 +112,10 @@ void menu()
 int click_option(int option)
 {
 	if (option == 1)
+	{
+		destroy_win(&menu_win);
 		return 0;
+	}
 	if (option == 3)
 	{
 		endwin();
@@ -119,7 +125,7 @@ int click_option(int option)
 	return 1;
 }
 
-void print_menu(WINDOW *menu_win, int highlight)
+void wprintw_menu(int highlight)
 {
 	int i, j, row = 3, col = 3;
 
@@ -140,13 +146,23 @@ void print_menu(WINDOW *menu_win, int highlight)
 	wrefresh(menu_win);
 }
 
+int createmap_win()
+{
+	map_win = create_win(MAP_ROW+2, size_col, (size_row-MAP_ROW-2)/2, 0);
+	if (map_win == NULL)
+		return -1;
+
+	return 1;
+}
+
 /* printa o mapa na janela do terminal */
-void printw_map()
+void wprintw_map()
 {
 	int i, j;
 
-	for (i = 0; i < size_row; i++)
-		for (j = 0; (j < SIZE_COLUMN) && (j < size_col); j++)
-			mvprintw(i, j, "%c", map[i][j + term_col]);
+	for (i = 1; i < MAP_ROW + 1; i++)
+		for (j = 1; (j < MAP_COL) && (j < size_col - 1); j++)
+			mvwprintw(map_win, i, j, "%c", map[i-1][j+term_col-1]);
 	refresh();
+	wrefresh(map_win);
 }

@@ -23,14 +23,14 @@ static char *name_filearts[] = { "ASCII art/hobbit.txt",
 };
 
 static unit attr[] = {
-{HOBBIT, 100, 1, 10, 10, {19-FRODO_ROW, 40}, {0, MORDOR_COL}, RIGHT, 100},
-{ELF, 130, 4, 40, 12, {17-FRODO_ROW, 40}, {0, MORDOR_COL}, RIGHT, 200},
-{DWARF, 250, 2, 30, 10, {19-FRODO_ROW, 40}, {0, MORDOR_COL}, RIGHT, 250},
-{ENT, 500, 1, 50, 15, {14-FRODO_ROW, 40}, {0, MORDOR_COL}, RIGHT, 300},
-{GOBLIN, 100, 1, 10, 10, {30-MORDOR_ROW, 34+MORDOR_COL}, {0, 0}, LEFT, 100},
-{ORC, 200, 2, 30, 12, {28-MORDOR_ROW, 34+MORDOR_COL}, {0, 0}, LEFT, 200},
-{WARG, 120, 5, 25, 8, {32-MORDOR_ROW, 34+MORDOR_COL}, {0, 0}, LEFT, 250},
-{TROLL, 500, 1, 50, 15, {25-MORDOR_ROW, 34+MORDOR_COL}, {0, 0}, LEFT, 300}
+{HOBBIT, 100, 1, 10, 10, {30, 40}, {0, MORDOR_COL}, RIGHT, 100},
+{ELF, 130, 4, 40, 12, {28, 40}, {0, MORDOR_COL}, RIGHT, 200},
+{DWARF, 250, 2, 30, 10, {30, 40}, {0, MORDOR_COL}, RIGHT, 250},
+{ENT, 500, 1, 50, 15, {25, 40}, {0, MORDOR_COL}, RIGHT, 300},
+{GOBLIN, 100, 1, 10, 10, {30, 34+MORDOR_COL}, {0, 0}, LEFT, 100},
+{ORC, 200, 2, 30, 12, {28, 34+MORDOR_COL}, {0, 0}, LEFT, 200},
+{WARG, 120, 5, 25, 8, {31, 34+MORDOR_COL}, {0, 0}, LEFT, 250},
+{TROLL, 500, 1, 50, 15, {25, 34+MORDOR_COL}, {0, 0}, LEFT, 300}
 };
 
 char mat_races[N_RACES + 1][RACE_HEIGHT][RACE_WIDTH];
@@ -58,11 +58,11 @@ void* read_key(void *arg)
 				break;
 			case (KEY_RIGHT):
 				if ((term_col < lim_map) &&
-				   (SIZE_COLUMN > size_col))
+				   (MAP_COL > size_col))
 				{
 					pthread_mutex_lock(&l_sync);
 					term_col+=9;
-					printw_map();
+					wprintw_map();
 					pthread_mutex_unlock(&l_sync);
 				}
 				break;
@@ -70,7 +70,7 @@ void* read_key(void *arg)
 				if (term_col > 0)
 				{
 					term_col-=9;
-					printw_map();
+					wprintw_map();
 				}
 				break;
 			case (EXIT):
@@ -126,7 +126,7 @@ unit race_init(int race)
 			new_unit.spd = attr[i].spd;
 			new_unit.dmg = attr[i].dmg;
 			new_unit.height = attr[i].height;
-			new_unit.position[0] = attr[i].position[0]+size_row;
+			new_unit.position[0] = attr[i].position[0];
 			new_unit.position[1] = attr[i].position[1];
 			new_unit.destination[0] = attr[i].destination[0];
 			new_unit.destination[1] = attr[i].destination[1];
@@ -146,7 +146,7 @@ int load_build(char *file_name, int art_row, int art_col)
 
 	fp = read_file(file_name);
 
-	for (i = size_row - art_row; i < size_row; i++)
+	for (i = MAP_ROW - art_row; i < MAP_ROW; i++)
 	{
 		fscanf(fp, "%[^\n]s", map[i] + art_col);
 		fgetc(fp);
@@ -219,7 +219,7 @@ void move_unit(unit *chr)
 {
 	if (chr->position[1]+28 <= chr->destination[1])
 	{
-		chr->position[0] = size_row - chr->height;
+		chr->position[0] = MAP_ROW - chr->height;
 		chr->position[1]+= 9;
 	}
 }
