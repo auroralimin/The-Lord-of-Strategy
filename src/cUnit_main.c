@@ -33,16 +33,16 @@ int clean_logic(void)
 	return 0;
 }
 
-/*
-int init_interface(void)
+int init_interf(void)
 {
 	return 0;
 }
 
 int clean_interface(void)
 {
+	endwin();
 	return 0;
-} */
+}
 
 /* basis tests fucntions */
 void aloc_map_test(void)
@@ -155,6 +155,11 @@ void move_unit_test(void)
 }
 
 /* interface tests functions */
+void click_test(void)
+{
+	CU_ASSERT((click_option(1)) == 0);
+	CU_ASSERT((click_option(2)) == 1);
+}
 
 int main()
 {
@@ -190,7 +195,7 @@ int main()
 	   ||(NULL==CU_add_test(pSuite_logic, "race_init", race_init_test))
 	   ||(NULL==CU_add_test(pSuite_logic, "load_build", load_build_test))
 	   ||(NULL==CU_add_test(pSuite_logic, "get_art", get_art_test))
-	   ||(NULL==CU_add_test(pSuite_logic, "printmap_unit",  print_unit_test))
+	   ||(NULL==CU_add_test(pSuite_logic, "printmap_unit", print_unit_test))
 	   ||(NULL==CU_add_test(pSuite_logic, "clear_unit", clear_unit_test))
 	   ||(NULL==CU_add_test(pSuite_logic, "move_unit", move_unit_test)))
 	{
@@ -200,12 +205,15 @@ int main()
 
 
 	/* add Interface suite to the registry */
-	/*pSuite_interface = CU_add_suite("Suite: Interface", init_interface,
-	clean_interface);*/
+	pSuite_interface =
+	CU_add_suite("Suite: Interface", init_interf, clean_interface);
 
 	/* add tests to the suite */
-
-
+	if (NULL==CU_add_test(pSuite_interface, "click_option", click_test))
+	{
+		CU_cleanup_registry();
+		return CU_get_error();
+	}
 
 	/* run all tests using CUnit Basic interface */
 	CU_basic_set_mode(CU_BRM_VERBOSE);
