@@ -1,9 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "CUnit/Basic.h"
+#include "cunit_test.h"
 #include "basis.h"
 #include "logic.h"
 #include "interface.h"
-#include  "CUnit/Basic.h"
 
 unit hobbit;
 
@@ -40,7 +41,6 @@ int init_interf(void)
 
 int clean_interface(void)
 {
-	endwin();
 	return 0;
 }
 
@@ -52,7 +52,7 @@ void aloc_map_test(void)
 	aloc_map();
 	CU_ASSERT(map != NULL);
 
-	for (i = 0; i < size_row; i++)
+	for (i = 0; i < MAP_ROW; i++)
 		CU_ASSERT(map[i] != NULL);
 }
 
@@ -61,8 +61,8 @@ void init_map_test(void)
 	int i, j;
 
 	init_map();
-	for (i = 0; i < size_row; i++)
-		for (j = 0; j < SIZE_COLUMN; j++)
+	for (i = 0; i < MAP_ROW; i++)
+		for (j = 0; j < MAP_COL; j++)
 			CU_ASSERT(map[i][j] == ' ');
 }
 
@@ -150,7 +150,7 @@ void move_unit_test(void)
 	aux = hobbit.position[1];
 	move_unit(&hobbit);
 
-	CU_ASSERT(hobbit.position[0] == size_row - hobbit.height);
+	CU_ASSERT(hobbit.position[0] == MAP_ROW - hobbit.height);
 	CU_ASSERT(hobbit.position[1] == aux + 9);
 }
 
@@ -159,65 +159,4 @@ void click_test(void)
 {
 	CU_ASSERT((click_option(1)) == 0);
 	CU_ASSERT((click_option(2)) == 1);
-}
-
-int main()
-{
-	CU_pSuite pSuite_basis = NULL;
-	CU_pSuite pSuite_logic = NULL;
-	CU_pSuite pSuite_interface = NULL;
-
-
-	/* initialize the CUnit test registry */
-	if (CUE_SUCCESS != CU_initialize_registry())
-		return CU_get_error();
-
-	/* add Basis suite to the registry */
-	pSuite_basis = CU_add_suite("Suite: Basis", init_basis, clean_basis);
-
-	/* add tests to the Basis suite */
-	if ((NULL==CU_add_test(pSuite_basis, "aloc_map", aloc_map_test))||
-	   (NULL==CU_add_test(pSuite_basis, "init_map", init_map_test))||
-	   (NULL==CU_add_test(pSuite_basis, "free_map", free_map_test))||
-	   (NULL==CU_add_test(pSuite_basis, "read_fil", read_file_test))||
-	   (NULL==CU_add_test(pSuite_basis, "aloc_options",aloc_options_test)))
-	{
-		CU_cleanup_registry();
-		return CU_get_error();
-	}
-
-
-	/* add Logic suite to the registry */
-	pSuite_logic = CU_add_suite("Suite: Logic", init_logic, clean_logic);
-
-	/* add tests to the Logic suite */
-	if ((NULL==CU_add_test(pSuite_logic, "init_options", init_options_test))
-	   ||(NULL==CU_add_test(pSuite_logic, "race_init", race_init_test))
-	   ||(NULL==CU_add_test(pSuite_logic, "load_build", load_build_test))
-	   ||(NULL==CU_add_test(pSuite_logic, "get_art", get_art_test))
-	   ||(NULL==CU_add_test(pSuite_logic, "printmap_unit", print_unit_test))
-	   ||(NULL==CU_add_test(pSuite_logic, "clear_unit", clear_unit_test))
-	   ||(NULL==CU_add_test(pSuite_logic, "move_unit", move_unit_test)))
-	{
-		CU_cleanup_registry();
-		return CU_get_error();
-	}
-
-
-	/* add Interface suite to the registry */
-	pSuite_interface =
-	CU_add_suite("Suite: Interface", init_interf, clean_interface);
-
-	/* add tests to the suite */
-	if (NULL==CU_add_test(pSuite_interface, "click_option", click_test))
-	{
-		CU_cleanup_registry();
-		return CU_get_error();
-	}
-
-	/* run all tests using CUnit Basic interface */
-	CU_basic_set_mode(CU_BRM_VERBOSE);
-	CU_basic_run_tests();
-	CU_cleanup_registry();
-	return CU_get_error();
 }
