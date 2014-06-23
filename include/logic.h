@@ -12,3 +12,5 @@ void put_builds();
 void printmap_unit(unit chr);
 void clear_unit(unit chr);
 void move_unit(unit *chr);
+void good_generator();
+void print_good();

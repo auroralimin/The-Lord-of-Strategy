@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <ncurses.h>
 #include <pthread.h>
+#include <math.h>
 #include "basis.h"
 #include "logic.h"
 #include "interface.h"
@@ -21,10 +22,10 @@ char *options_files[] = { "ASCII art/new_game.txt",
 struct build_art builds[]={
 {"ASCII art/house_frodo.txt", MAP_ROW - FRODO_ROW, FRODO_COL},
 {"ASCII art/mordor_tower.txt",  MAP_ROW - MORDOR_ROW, MORDOR_COL},
-{"ASCII art/gold_build.txt", 0, FRODO_WIDTH + 5},
-{"ASCII art/food_build.txt", 0, FRODO_WIDTH + 83},
-{"ASCII art/wood_build.txt", 0, FRODO_WIDTH + 170},
-{"ASCII art/metal_build.txt", 0, FRODO_WIDTH + 255}
+{"ASCII art/gold_build.txt", 1,  GOLD_COL1},
+{"ASCII art/food_build.txt", 1, FOOD_COL1},
+{"ASCII art/wood_build.txt", 1, WOOD_COL1},
+{"ASCII art/metal_build.txt", 1, METAL_COL1}
 };
 
 /* matriz contendo o endereço da ascii art do jogo */
@@ -287,5 +288,45 @@ void move_unit(unit *chr)
 	{
 		chr->position[0] = MAP_ROW - chr->height;
 		chr->position[1]+= 9;
+	}
+}
+
+void good_generator()
+{
+	build *aux;
+
+	for (aux = build_top; aux != NULL; aux = aux->next)
+	{
+		if (aux->storage != pow(10, aux->level+2) / 2)
+			aux->storage+=aux->income;
+	}
+}
+
+void print_good()
+{
+	int i = 0, j = 0, n = 2, storage = 0, num = 0;
+	build *aux = NULL;
+
+	for (i = MAP_COL - FRODO_COL; i < MAP_COL - MORDOR_COL; i++)
+		map[0][i] = ' ';
+
+	i = 0;
+	for (aux = build_top; aux != NULL; aux = aux->next)
+	{
+		storage = aux->storage;
+		for (i = 999999; i > 0; i = i/10)
+		{
+			if (storage > i)
+			{
+				num = storage/(i+1);
+				map[0][builds[n].col+j++] = num + 48;
+				storage = storage - ((i + 1) * num);
+			}
+			else if (j > 0)
+				map[0][builds[n].col+j++] = 48;
+		}
+		map[0][builds[n].col+j] = storage + 48;
+		n++;
+		j = 0;
 	}
 }

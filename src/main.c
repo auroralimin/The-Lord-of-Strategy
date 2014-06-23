@@ -18,13 +18,16 @@ int main()
 	init_interface();
 	keypad(stdscr, TRUE);
 
+	create_listbuild();
 	prepare_map();
 	createmap_win();
 	hobbit = race_init(HOBBIT);
 
 	while(1)
 	{
+		good_generator();
 		printmap_unit(hobbit);
+		print_good();
 		wprintw_map();
 		clear_unit(hobbit);
 		move_unit(&hobbit);

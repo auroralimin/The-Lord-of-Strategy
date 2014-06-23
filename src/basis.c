@@ -10,11 +10,11 @@ int game_status = 0;
 MEVENT event;
 int scroll_row = 0, scroll_col = 0, scroll_position = 0;
 char **map = NULL;
+build *build_top = NULL;
 int lim_map = 0;
 int size_row = 0, size_col = 0;
 int term_col = 1;
 char **options[N_OPTIONS];
-
 int options_len[] = { NEW_GAME, LOAD_GAME, EXIT_GAME};
 
 void init_locks()
@@ -105,3 +105,38 @@ void aloc_options()
 	}
 }
 
+void create_listbuild()
+{
+	int i;
+
+	for (i = 4; i > 0; i--)
+		if (!insert_build(i))
+		{
+			endwin();
+			printf("Insufficient memory\n");
+			exit(1);
+		}
+}
+
+int insert_build(int id)
+{
+	build *new = (build*) calloc(1, sizeof(build));
+
+	if (new == NULL)
+		return -1;
+
+	new->id = id;
+	new->level = 1;
+	new->storage = 0;
+	new->income = 50;
+
+	if (build_top == NULL) {
+		build_top = new;
+		return 1;
+	}
+
+	new->next = build_top;
+	build_top = new;
+
+	return 1;
+}

@@ -1,5 +1,7 @@
 #include <ncurses.h>
 
+#define MAP_ROW 40
+#define MAP_COL 1530
 #define REFRESH_TIME 500000
 #define MINIMUM_ROW 50
 #define MINIMUN_COL 110
@@ -31,14 +33,16 @@
 #define EXIT_GAME 41
 
 #define N_BUILDS 6
-#define MAP_ROW 40
-#define MAP_COL 1530
 #define MORDOR_WIDTH 86
 #define MORDOR_ROW 40
 #define MORDOR_COL MAP_COL - MORDOR_WIDTH
 #define FRODO_WIDTH 127
 #define FRODO_ROW 31
 #define FRODO_COL 0
+#define GOLD_COL1 FRODO_WIDTH + 5
+#define FOOD_COL1 FRODO_WIDTH + 83
+#define WOOD_COL1 FRODO_WIDTH + 173
+#define METAL_COL1 FRODO_WIDTH + 255
 
 #define RIGHT 1
 #define LEFT 0
@@ -80,7 +84,9 @@ typedef struct str_build
 {
 	int id;
 	int level;
+	int storage;
 	int income;
+	struct str_build *next;
 } build;
 
 typedef struct str_fortress
@@ -109,6 +115,7 @@ extern int game_status;
 extern MEVENT event;
 extern int scroll_row, scroll_col, scroll_position;
 extern char **map;
+extern build *build_top;
 extern int lim_map;
 extern int size_row, size_col;
 extern int term_col;
@@ -122,3 +129,5 @@ void init_map();
 void free_map();
 FILE* read_file(char *name);
 void aloc_options();
+void create_listbuild();
+int insert_build(int id);
