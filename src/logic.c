@@ -104,11 +104,11 @@ void init_options()
 	}
 }
 
-int report_option(int mouse_row, int mouse_col, int start_y, int start_x)
+int report_option(int mouse_row, int mouse_col)
 {
-	if ((mouse_row > start_y) && (mouse_row < start_y + MENU_ROW - 2) &&
-	   (mouse_col > start_x) && (mouse_col < start_x + MENU_COL - 2))
-		return 1 + (mouse_row / 13);
+	if ((mouse_row > 1) && (mouse_row < MENU_ROW - 2) &&
+	   (mouse_col > 1) && (mouse_col < MENU_COL - 2))
+		return 1 + (mouse_row/ 13);
 	return 0;
 }
 

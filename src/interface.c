@@ -81,11 +81,12 @@ void menu()
 		keypad(menu_win, TRUE);
 		refresh();
 		pthread_mutex_lock(&l_key);
+		wmouse_trafo(menu_win, &event.y, &event.x, false);
 
 		switch (key_status)
 		{
 			case (STATUS_MOUSE_MOVED):
-				opt = report_option(event.y-3, event.x-3, y, x);
+				opt = report_option(event.y-1, event.x-1);
 				break;
 			case (STATUS_DOWN):
 				if (opt != N_OPTIONS)
@@ -100,7 +101,7 @@ void menu()
 					opt = N_OPTIONS;
 				break;
 			case (STATUS_MOUSE_CLICK):
-				opt = report_option(event.y-3, event.x-3, y, x);
+				opt = report_option(event.y-1, event.x-1);
 			case (STATUS_ENTER):
 				n = click_option(opt);
 				break;
