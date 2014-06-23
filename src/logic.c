@@ -7,9 +7,25 @@
 #include "logic.h"
 #include "interface.h"
 
+struct build_art
+{
+	char name[50];
+	int row, col;
+};
+
 char *options_files[] = { "ASCII art/new_game.txt",
 			"ASCII art/load_game.txt",
 			"ASCII art/exit.txt"};
+
+
+struct build_art builds[]={
+{"ASCII art/house_frodo.txt", MAP_ROW - FRODO_ROW, FRODO_COL},
+{"ASCII art/mordor_tower.txt",  MAP_ROW - MORDOR_ROW, MORDOR_COL},
+{"ASCII art/gold_build.txt", 0, FRODO_WIDTH + 5},
+{"ASCII art/food_build.txt", 0, FRODO_WIDTH + 83},
+{"ASCII art/wood_build.txt", 0, FRODO_WIDTH + 170},
+{"ASCII art/metal_build.txt", 0, FRODO_WIDTH + 255}
+};
 
 /* matriz contendo o endereço da ascii art do jogo */
 static char *name_filearts[] = { "ASCII art/hobbit.txt",
@@ -176,7 +192,7 @@ int load_build(char *file_name, int art_row, int art_col)
 
 	fp = read_file(file_name);
 
-	for (i = MAP_ROW - art_row; i < MAP_ROW; i++)
+	for (i = art_row; i < MAP_ROW; i++)
 	{
 		fscanf(fp, "%[^\n]s", map[i] + art_col);
 		fgetc(fp);
@@ -186,6 +202,14 @@ int load_build(char *file_name, int art_row, int art_col)
 	fclose(fp);
 
 	return 1;
+}
+
+void put_builds()
+{
+	int i;
+
+	for (i = 0; i < N_BUILDS; i++)
+		load_build(builds[i].name, builds[i].row, builds[i].col);
 }
 
 /* le a ascii art das racas */
@@ -208,6 +232,16 @@ int get_art()
 	}
 
 	return 1;
+}
+
+void map_spaces()
+{
+	int i, j;
+
+	for (i = 0; i < MAP_ROW; i++)
+		for (j = 0; j < MAP_COL; j++)
+			if (map[i][j] == '\0')
+				map[i][j] = ' ';
 }
 
 /* printa as unidades na tela do terminal */
@@ -239,10 +273,12 @@ void clear_unit(unit chr)
 		col = chr.position[1];
 		row++;
 	}
+
 	if (col < FRODO_WIDTH)
-		load_build("ASCII art/house_frodo.txt", FRODO_ROW, FRODO_COL);
+		load_build(builds[0].name, builds[0].row, builds[0].col);
 	else if (col > MORDOR_COL)
-		load_build("ASCII art/mordor_tower.txt",MORDOR_ROW,MORDOR_COL);
+		load_build(builds[1].name, builds[1].row, builds[1].col);
+	map_spaces();
 }
 
 void move_unit(unit *chr)

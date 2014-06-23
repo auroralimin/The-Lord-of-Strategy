@@ -195,7 +195,7 @@ void wprintw_map()
 {
 	int i, j;
 
-	erase();
+	clear();
 	for (i = 1; i < MAP_ROW + 1; i++)
 		for (j = 1; (j < MAP_COL) && (j < size_col - 1); j++)
 			mvwprintw(map_win, i, j, "%c", map[i-1][j+term_col-1]);

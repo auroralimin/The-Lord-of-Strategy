@@ -37,8 +37,8 @@ void prepare_map()
 	aloc_map();
 	init_map();
 	get_art();
-	load_build("ASCII art/house_frodo.txt", FRODO_ROW, FRODO_COL);
-	load_build("ASCII art/mordor_tower.txt", MORDOR_ROW, MORDOR_COL);
+	put_builds();
+	map_spaces();
 }
 
 /* aloca uma matriz na memoria para guardar o mapa do jogo */

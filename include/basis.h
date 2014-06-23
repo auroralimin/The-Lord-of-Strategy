@@ -30,6 +30,7 @@
 #define LOAD_GAME 105
 #define EXIT_GAME 41
 
+#define N_BUILDS 6
 #define MAP_ROW 40
 #define MAP_COL 1530
 #define MORDOR_WIDTH 86
