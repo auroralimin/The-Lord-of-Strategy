@@ -47,7 +47,12 @@ void* read_key(void *arg)
 				{
 					key_status = STATUS_MOUSE_MOVED;
 					if (event.bstate == BUTTON1_CLICKED)
+					{
 						key_status = STATUS_MOUSE_CLICK;
+						if ((event.y >= scroll_row-1) &&
+						   (event.y <= scroll_row+1))
+							mouse_scroll(event.x);
+					}
 				}
 				break;
 			case (KEY_UP):
@@ -57,21 +62,12 @@ void* read_key(void *arg)
 				key_status = STATUS_DOWN;
 				break;
 			case (KEY_RIGHT):
-				if ((term_col < lim_map) &&
-				   (MAP_COL > size_col))
-				{
-					pthread_mutex_lock(&l_sync);
-					term_col+=9;
-					wprintw_map();
-					pthread_mutex_unlock(&l_sync);
-				}
+				if (game_status != STATUS_MENU)
+					arrow_scroll(SCROLL_RIGHT);
 				break;
 			case (KEY_LEFT):
-				if (term_col > 0)
-				{
-					term_col-=9;
-					wprintw_map();
-				}
+				if (game_status != STATUS_MENU)
+					arrow_scroll(SCROLL_LEFT);
 				break;
 			case (EXIT):
 				free_map();
@@ -110,6 +106,40 @@ int report_option(int mouse_row, int mouse_col)
 	   (mouse_col > 1) && (mouse_col < MENU_COL - 2))
 		return 1 + (mouse_row/ 13);
 	return 0;
+}
+
+void mouse_scroll(int mouse_col)
+{
+	int n;
+
+	n = MAP_COL / scroll_col + 1;
+	if ((mouse_col > 0) && (mouse_col <= scroll_col) &&
+	   (MAP_COL > size_col))
+	{
+		scroll_position = mouse_col - 1;
+		term_col = n * scroll_position;
+		term_coltest();
+		wprintw_map();
+	}
+}
+
+void arrow_scroll(int direction)
+{
+	if ((term_col <= lim_map) && (MAP_COL > size_col) && (term_col >= 0))
+	{
+		term_col+=direction;
+		term_coltest();
+		scroll_position = term_col / (MAP_COL / scroll_col + 1);
+		wprintw_map();
+	}
+}
+
+void term_coltest()
+{
+	if (term_col < 0)
+		term_col = 0;
+	if (term_col > lim_map)
+		term_col = lim_map;
 }
 
 /* inicializa as unidades com os atributos pre-definidos */

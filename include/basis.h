@@ -1,7 +1,7 @@
 #include <ncurses.h>
 
 #define REFRESH_TIME 500000
-#define MINIMUM_ROW 48
+#define MINIMUM_ROW 50
 #define MINIMUN_COL 110
 
 #define STATUS_MOUSE_MOVED 0
@@ -11,10 +11,16 @@
 #define STATUS_ENTER 4
 #define STATUS_RIGHT 5
 #define STATUS_LEFT 6
+
+#define STATUS_MENU 0
+#define STATUS_GAME 1
 #define STATUS_EXIT -1
 
 #define EXIT 'k'
 #define ENTER '\n'
+
+#define SCROLL_RIGHT 9
+#define SCROLL_LEFT -9
 
 #define MENU_ROW 40
 #define MENU_COL 110
@@ -95,10 +101,12 @@ typedef struct str_player
 } player;
 
 
-extern pthread_mutex_t l_key, l_sync;
+extern pthread_mutex_t l_key;
 extern pthread_t key_thread;
 extern int key_status;
+extern int game_status;
 extern MEVENT event;
+extern int scroll_row, scroll_col, scroll_position;
 extern char **map;
 extern int lim_map;
 extern int size_row, size_col;

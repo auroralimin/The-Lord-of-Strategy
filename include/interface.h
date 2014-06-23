@@ -5,5 +5,6 @@ void destroy_win(WINDOW **local_win);
 void menu();
 int click_option(int option);
 void wprintw_menu(int highlight);
+void printw_scroll();
 int createmap_win();
 void wprintw_map();

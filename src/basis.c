@@ -3,14 +3,16 @@
 #include "basis.h"
 #include "logic.h"
 
-pthread_mutex_t l_key, l_sync;
+pthread_mutex_t l_key;
 pthread_t key_thread;
-int key_status;
+int key_status = 0;
+int game_status = 0;
 MEVENT event;
-char **map;
-int lim_map;
-int size_row, size_col;
-int term_col;
+int scroll_row = 0, scroll_col = 0, scroll_position = 0;
+char **map = NULL;
+int lim_map = 0;
+int size_row = 0, size_col = 0;
+int term_col = 1;
 char **options[N_OPTIONS];
 
 int options_len[] = { NEW_GAME, LOAD_GAME, EXIT_GAME};
@@ -18,7 +20,6 @@ int options_len[] = { NEW_GAME, LOAD_GAME, EXIT_GAME};
 void init_locks()
 {
 	pthread_mutex_init(&l_key, NULL);
-	pthread_mutex_init(&l_sync, NULL);
 }
 
 void init_thread()

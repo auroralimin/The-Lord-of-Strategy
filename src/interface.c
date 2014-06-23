@@ -3,28 +3,39 @@
 #include <string.h>
 #include <ncurses.h>
 #include <pthread.h>
+#include <math.h>
 #include "basis.h"
 #include "interface.h"
 #include "logic.h"
 
-WINDOW *menu_win;
-WINDOW *map_win;
+WINDOW *menu_win = NULL;
+WINDOW *map_win = NULL;
 
 void init_interface()
 {
-	stdscr = initscr();
+	initscr();
 	raw();
 	cbreak();
-	start_color();
 	noecho();
 	curs_set(0);
 	keypad(stdscr, TRUE);
-	mousemask(ALL_MOUSE_EVENTS, NULL);
+	get_dimension();
+
+	if ((!has_mouse) || (!mousemask(ALL_MOUSE_EVENTS, NULL)))
+	{
+		endwin();
+		printf("Terminal doesn't support mouse event reporting\n");
+		exit(1);
+	}
+
+	start_color();
 	init_pair(1, COLOR_CYAN, COLOR_BLACK);
 	init_pair(2, COLOR_GREEN, COLOR_BLACK);
-	menu_win = NULL;
-	map_win = NULL;
-	get_dimension();
+
+	lim_map = sqrt(pow(MAP_COL - size_col + 2, 2));
+	scroll_row = ((size_row - MAP_ROW - 2) / 2) + MAP_ROW + 2;
+	scroll_row = scroll_row + ((size_row - scroll_row) / 2);
+	scroll_col = size_col - 2;
 }
 
 /* alerta o usuario se a janela do terminal nao tiver altura suficiente
@@ -48,7 +59,7 @@ WINDOW* create_win(int win_y, int win_x, int starty, int startx)
 
 	refresh();
 	local_win = newwin(win_y, win_x, starty, startx);
-	box(local_win, 0 , 0);
+	box(local_win, 0, 0);
 	wrefresh(local_win);
 	refresh();
 
@@ -115,6 +126,7 @@ int click_option(int option)
 	if (option == 1)
 	{
 		destroy_win(&menu_win);
+		game_status = STATUS_GAME;
 		return 0;
 	}
 	if (option == 3)
@@ -147,6 +159,28 @@ void wprintw_menu(int highlight)
 	wrefresh(menu_win);
 }
 
+void printw_scroll()
+{
+	int i, box, interval;
+
+	interval = size_col / (MAP_COL / scroll_col + 1);
+
+	for (i = 1; i <= scroll_col; i++)
+		mvprintw(scroll_row, i, "-");
+
+	box = scroll_position + 1;
+	if (box > scroll_col - interval)
+		box = scroll_col - interval;
+	for (i = box; i <= interval + box; i++)
+	{
+		mvprintw(scroll_row - 1, i, "-");
+		mvprintw(scroll_row + 1, i, "-");
+	}
+
+	mvprintw(scroll_row, box, "|");
+	mvprintw(scroll_row, box + interval, "|");
+}
+
 int createmap_win()
 {
 	map_win = create_win(MAP_ROW+2, size_col, (size_row-MAP_ROW-2)/2, 0);
@@ -161,9 +195,12 @@ void wprintw_map()
 {
 	int i, j;
 
+	erase();
 	for (i = 1; i < MAP_ROW + 1; i++)
 		for (j = 1; (j < MAP_COL) && (j < size_col - 1); j++)
 			mvwprintw(map_win, i, j, "%c", map[i-1][j+term_col-1]);
+	box(map_win, 0, 0);
+	printw_scroll();
 	refresh();
 	wrefresh(map_win);
 }

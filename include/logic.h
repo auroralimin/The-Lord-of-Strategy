@@ -1,6 +1,9 @@
 void* read_key(void *arg);
 void init_options();
 int report_option(int mouse_row, int mouse_col);
+void mouse_scroll(int mouse_col);
+void arrow_scroll(int direction);
+void term_coltest();
 unit race_init(int race);
 int load_build(char *file_name, int art_row, int art_col);
 int get_art();
