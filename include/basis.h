@@ -28,9 +28,9 @@
 #define MENU_COL 110
 #define N_OPTIONS 3
 #define OPTIONS_WIDTH 8
-#define NEW_GAME 92
-#define LOAD_GAME 105
-#define EXIT_GAME 41
+#define NEW_GAME 103
+#define LOAD_GAME 116
+#define EXIT_GAME 52
 
 #define N_BUILDS 6
 #define MORDOR_WIDTH 86
@@ -129,5 +129,7 @@ void init_map();
 void free_map();
 FILE* read_file(char *name);
 void aloc_options();
+void free_options();
 void create_listbuild();
 int insert_build(int id);
+void free_build();

@@ -125,12 +125,14 @@ int click_option(int option)
 {
 	if (option == 1)
 	{
+		free_options();
 		destroy_win(&menu_win);
 		game_status = STATUS_GAME;
 		return 0;
 	}
 	if (option == 3)
 	{
+		free_options();
 		endwin();
 		exit(1);
 	}

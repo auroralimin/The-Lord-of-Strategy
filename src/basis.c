@@ -86,6 +86,7 @@ FILE* read_file(char *name)
 	{
 		endwin();
 		printf("%s not found\n", name);
+		free_build();
 		free_map();
 		exit(1);
 	}
@@ -101,7 +102,26 @@ void aloc_options()
 	{
 		options[i] = (char**) calloc(OPTIONS_WIDTH, sizeof(char*));
 		for (j = 0; j < OPTIONS_WIDTH; j++)
-			options[i][j] = calloc(options_len[i],sizeof(char));
+			options[i][j] = (char*)
+			calloc(options_len[i], sizeof(char));
+	}
+}
+
+void free_options()
+{
+	int i, j;
+
+	for (i = 0; i < N_OPTIONS; i++){
+		for (j = 0; j < OPTIONS_WIDTH; j++)
+		{
+			if (options[i][j] != NULL)
+				free(options[i][j]);
+		}
+		if (options[i] != NULL)
+		{
+			free(options[i]);
+			options[i] = NULL;
+		}
 	}
 }
 
@@ -140,3 +160,16 @@ int insert_build(int id)
 
 	return 1;
 }
+
+void free_build()
+{
+	build *aux = build_top;
+
+	while (aux != NULL) {
+		aux = aux->next;
+		free(build_top);
+		build_top = aux;
+	}
+	build_top = NULL;
+}
+

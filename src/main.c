@@ -50,6 +50,7 @@ int main()
 	}
 
 	free_map();
+	free_build();
 	endwin();
 	return 0;
 }

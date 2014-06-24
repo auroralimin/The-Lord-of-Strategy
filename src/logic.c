@@ -87,6 +87,7 @@ void* read_key(void *arg)
 					arrow_scroll(SCROLL_LEFT);
 				break;
 			case (EXIT):
+				free_build();
 				free_map();
 				endwin();
 				exit(1);
@@ -111,6 +112,8 @@ void init_options()
 		for (j = 0; j < OPTIONS_WIDTH; j++)
 		{
 			fscanf(fp, "%[^\n]s", options[i][j]);
+			if (feof(fp))
+				break;
 			fgetc(fp);
 		}
 		fclose(fp);
