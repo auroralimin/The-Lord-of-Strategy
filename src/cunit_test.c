@@ -8,7 +8,7 @@
 
 unit hobbit;
 
-/* suites initialization and clean fuctions and fuctions */
+/* suites initialization and clean fuctions */
 int init_basis(void)
 {
 	init_interface();
@@ -23,6 +23,7 @@ int clean_basis(void)
 
 int init_logic(void)
 {
+	aloc_options();
 	aloc_map();
 	init_map();
 	return 0;
@@ -30,12 +31,15 @@ int init_logic(void)
 
 int clean_logic(void)
 {
+	free_options();
 	free_map();
 	return 0;
 }
 
 int init_interf(void)
 {
+	aloc_options();
+	init_options();
 	return 0;
 }
 
@@ -89,13 +93,34 @@ void read_file_test(void)
 	CU_ASSERT((read_file("ASCII art/exit.txt")) != NULL);
 }
 
-void aloc_options_test(void)
+void aloc_opt_test(void)
 {
 	aloc_options();
 	CU_ASSERT(options != NULL);
 	CU_ASSERT(options[0] != NULL);
 	CU_ASSERT(options[1] != NULL);
 	CU_ASSERT(options[2] != NULL);
+}
+
+void free_opt_test(void)
+{
+	free_options();
+	CU_ASSERT(options[0] == NULL);
+	CU_ASSERT(options[1] == NULL);
+	CU_ASSERT(options[2] == NULL);
+}
+
+void insert_b_test(void)
+{
+	int aux = insert_build(0);
+
+	CU_ASSERT(aux == 1);
+}
+
+void free_build_test(void)
+{
+	free_build();
+	CU_ASSERT(build_top == NULL);
 }
 
 /* logic tests functions */
@@ -148,6 +173,7 @@ void move_unit_test(void)
 	int aux;
 
 	aux = hobbit.position[1];
+	hobbit.destination[1] = hobbit.position[1] + 10;
 	move_unit(&hobbit);
 
 	CU_ASSERT(hobbit.position[0] == MAP_ROW - hobbit.height);
