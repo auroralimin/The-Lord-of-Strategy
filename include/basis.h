@@ -36,8 +36,8 @@
 #define MORDOR_WIDTH 86
 #define MORDOR_ROW 40
 #define MORDOR_COL MAP_COL - MORDOR_WIDTH
-#define FRODO_WIDTH 127
-#define FRODO_ROW 31
+#define FRODO_WIDTH 121
+#define FRODO_ROW 27
 #define FRODO_COL 0
 
 #define GOLD_COL1 FRODO_WIDTH + 4
