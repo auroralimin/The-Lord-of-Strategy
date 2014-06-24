@@ -40,14 +40,14 @@ static char *name_filearts[] = { "ASCII art/hobbit.txt",
 };
 
 static unit attr[] = {
-{HOBBIT, 100, 1, 10, 10, {30, 40}, {0, MORDOR_COL}, RIGHT, 100},
-{ELF, 130, 4, 40, 12, {28, 40}, {0, MORDOR_COL}, RIGHT, 200},
-{DWARF, 250, 2, 30, 10, {30, 40}, {0, MORDOR_COL}, RIGHT, 250},
-{ENT, 500, 1, 50, 15, {25, 40}, {0, MORDOR_COL}, RIGHT, 300},
-{GOBLIN, 100, 1, 10, 10, {30, 34+MORDOR_COL}, {0, 0}, LEFT, 100},
-{ORC, 200, 2, 30, 12, {28, 34+MORDOR_COL}, {0, 0}, LEFT, 200},
-{WARG, 120, 5, 25, 8, {31, 34+MORDOR_COL}, {0, 0}, LEFT, 250},
-{TROLL, 500, 1, 50, 15, {25, 34+MORDOR_COL}, {0, 0}, LEFT, 300}
+{HOBBIT, 100, 1, 10, 10, {30, 40}, {30, 40}, 100},
+{ELF, 130, 4, 40, 12, {28, 40}, {26, 40}, 200},
+{DWARF, 250, 2, 30, 10, {30, 40}, {38, 40}, 250},
+{ENT, 500, 1, 50, 15, {25, 40}, {23, 40}, 300},
+{GOBLIN, 100, 1, 10, 10, {30, 34+MORDOR_COL}, {30, 34+MORDOR_COL}, 100},
+{ORC, 200, 2, 30, 12, {28, 34+MORDOR_COL}, {28, 34+MORDOR_COL}, 200},
+{WARG, 120, 5, 25, 8, {31, 34+MORDOR_COL}, {31, 34+MORDOR_COL}, 250},
+{TROLL, 500, 1, 50, 15, {25, 34+MORDOR_COL}, {25, 34+MORDOR_COL}, 300}
 };
 
 char mat_races[N_RACES + 1][RACE_HEIGHT][RACE_WIDTH];
@@ -177,7 +177,6 @@ unit race_init(int race)
 			new_unit.position[1] = attr[i].position[1];
 			new_unit.destination[0] = attr[i].destination[0];
 			new_unit.destination[1] = attr[i].destination[1];
-			new_unit.direction = attr[i].direction;
 			new_unit.spwan_time = attr[i].spwan_time;
 			break;
 		}
@@ -284,10 +283,26 @@ void clear_unit(unit chr)
 
 void move_unit(unit *chr)
 {
-	if (chr->position[1]+28 <= chr->destination[1])
+	int dest = 1, n = 1;
+
+	if (chr->race > 4)
+		dest = -1;
+	if ((chr->position[1]*dest >= chr->destination[1]*dest) &&
+	   (chr->position[0] != chr->destination[0]))
 	{
-		chr->position[0] = MAP_ROW - chr->height;
-		chr->position[1]+= 9;
+		n = 0;
+	}
+
+	if (chr->position[n]*dest > chr->destination[n]*dest)
+		dest = dest * -1;
+	if (chr->position[n]*dest < chr->destination[n]*dest)
+	{
+		if (n == 0)
+			chr->position[0]+= chr->height * dest;
+		else
+			chr->position[1]+= 9 * dest;
+		if (chr->position[n]*dest > chr->destination[n]*dest)
+			chr->position[n] = chr->destination[n];
 	}
 }
 

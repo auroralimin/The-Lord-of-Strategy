@@ -39,13 +39,14 @@
 #define FRODO_WIDTH 127
 #define FRODO_ROW 31
 #define FRODO_COL 0
-#define GOLD_COL1 FRODO_WIDTH + 5
+
+#define GOLD_COL1 FRODO_WIDTH + 4
 #define FOOD_COL1 FRODO_WIDTH + 83
 #define WOOD_COL1 FRODO_WIDTH + 173
 #define METAL_COL1 FRODO_WIDTH + 255
+#define HOBBIT_GOLD GOLD_COL1 + 8
+#define GOOD_ROW 5
 
-#define RIGHT 1
-#define LEFT 0
 #define USER 0
 #define COMP 1
 
@@ -76,7 +77,6 @@ typedef struct str_unit
 	int height;
 	int position[2];
 	int destination[2];
-	int direction;
 	int spwan_time;
 } unit;
 
