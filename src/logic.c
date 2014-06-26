@@ -50,7 +50,13 @@ static unit attr[] = {
 {TROLL, 500, 1, 50, 15, {25, 34+MORDOR_COL}, {25, 34+MORDOR_COL}, 300}
 };
 
+scrll map_scroll;
+int status[2];
+int lim_map = 0;
+int term_col = 1;
 char mat_races[N_RACES + 1][RACE_HEIGHT][RACE_WIDTH];
+MEVENT event;
+build *build_top = NULL;
 
 void* read_key(void *arg)
 {
@@ -62,28 +68,28 @@ void* read_key(void *arg)
 			case (KEY_MOUSE):
 				if(getmouse(&event) == OK)
 				{
-					key_status = STATUS_MOUSE_MOVED;
+					status[0] = STATUS_MOUSE_MOVED;
 					if (event.bstate == BUTTON1_CLICKED)
 					{
-						key_status = STATUS_MOUSE_CLICK;
-						if ((event.y >= scroll_row-1) &&
-						   (event.y <= scroll_row+1))
+						status[0] = STATUS_MOUSE_CLICK;
+						if ((event.y >= map_scroll.row-1) &&
+						   (event.y <= map_scroll.row+1))
 							mouse_scroll(event.x);
 					}
 				}
 				break;
 			case (KEY_UP):
-				key_status = STATUS_UP;
+				status[0] = STATUS_UP;
 				break;
 			case (KEY_DOWN):
-				key_status = STATUS_DOWN;
+				status[0] = STATUS_DOWN;
 				break;
 			case (KEY_RIGHT):
-				if (game_status != STATUS_MENU)
+				if (status[1] != STATUS_MENU)
 					arrow_scroll(SCROLL_RIGHT);
 				break;
 			case (KEY_LEFT):
-				if (game_status != STATUS_MENU)
+				if (status[1] != STATUS_MENU)
 					arrow_scroll(SCROLL_LEFT);
 				break;
 			case (EXIT):
@@ -92,7 +98,7 @@ void* read_key(void *arg)
 				endwin();
 				exit(1);
 			case (ENTER):
-				key_status = STATUS_ENTER;
+				status[0] = STATUS_ENTER;
 		}
 		pthread_mutex_unlock(&l_key);
 		usleep(2);
@@ -101,8 +107,44 @@ void* read_key(void *arg)
 	return arg;
 }
 
+MEVENT get_event()
+{
+	return event;
+}
+
+int get_keystatus()
+{
+	return status[0];
+}
+
+void set_keystatus(int key_status)
+{
+	status[0] = key_status;
+}
+
+int get_gamestatus()
+{
+	return status[1];
+}
+
+void set_gamestatus(int game_status)
+{
+	status[1] = game_status;
+}
+
+int get_termcol()
+{
+	return term_col;
+}
+
+void set_maplim(int lim)
+{
+	lim_map = lim;
+}
+
 void init_options()
 {
+	char ***options = get_options();
 	int i, j;
 	FILE *fp = NULL;
 
@@ -132,12 +174,12 @@ void mouse_scroll(int mouse_col)
 {
 	int n;
 
-	n = MAP_COL / scroll_col + 1;
-	if ((mouse_col > 0) && (mouse_col <= scroll_col) &&
-	   (MAP_COL > size_col))
+	n = MAP_COL / map_scroll.col + 1;
+	if ((mouse_col > 0) && (mouse_col <= map_scroll.col) &&
+	   (MAP_COL > get_sizecol()))
 	{
-		scroll_position = mouse_col - 1;
-		term_col = n * scroll_position;
+		map_scroll.position = mouse_col - 1;
+		term_col = n * map_scroll.position;
 		term_coltest();
 		wprintw_map();
 	}
@@ -145,13 +187,24 @@ void mouse_scroll(int mouse_col)
 
 void arrow_scroll(int direction)
 {
-	if ((term_col <= lim_map) && (MAP_COL > size_col) && (term_col >= 0))
+	if ((term_col <= lim_map) && (MAP_COL > get_sizecol()) &&
+	   (term_col >= 0))
 	{
 		term_col+=direction;
 		term_coltest();
-		scroll_position = term_col / (MAP_COL / scroll_col + 1);
+		map_scroll.position = term_col / (MAP_COL / map_scroll.col + 1);
 		wprintw_map();
 	}
+}
+
+scrll get_mapscroll()
+{
+	return map_scroll;
+}
+
+void set_mapscroll(scrll scroll_map)
+{
+	map_scroll = scroll_map;
 }
 
 void term_coltest()
@@ -318,6 +371,16 @@ void good_generator()
 		if (aux->storage != pow(10, aux->level+2) / 2)
 			aux->storage+=aux->income;
 	}
+}
+
+build* get_buildtop()
+{
+	return build_top;
+}
+
+void set_buildtop(build *top)
+{
+	build_top = top;
 }
 
 void print_good()

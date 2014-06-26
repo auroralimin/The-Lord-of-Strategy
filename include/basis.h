@@ -107,19 +107,8 @@ typedef struct str_player
 	int food;
 } player;
 
-
 extern pthread_mutex_t l_key;
-extern pthread_t key_thread;
-extern int key_status;
-extern int game_status;
-extern MEVENT event;
-extern int scroll_row, scroll_col, scroll_position;
 extern char **map;
-extern build *build_top;
-extern int lim_map;
-extern int size_row, size_col;
-extern int term_col;
-extern char **options[N_OPTIONS];
 
 void init_locks();
 void init_thread();
@@ -129,6 +118,7 @@ void init_map();
 void free_map();
 FILE* read_file(char *name);
 void aloc_options();
+char*** get_options();
 void free_options();
 void create_listbuild();
 int insert_build(int id);

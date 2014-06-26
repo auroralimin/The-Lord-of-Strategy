@@ -4,18 +4,11 @@
 #include "logic.h"
 
 pthread_mutex_t l_key;
-pthread_t key_thread;
-int key_status = 0;
-int game_status = 0;
-MEVENT event;
-int scroll_row = 0, scroll_col = 0, scroll_position = 0;
 char **map = NULL;
-build *build_top = NULL;
-int lim_map = 0;
-int size_row = 0, size_col = 0;
-int term_col = 1;
-char **options[N_OPTIONS];
 int options_len[] = { NEW_GAME, LOAD_GAME, EXIT_GAME};
+
+pthread_t key_thread;
+char **options[N_OPTIONS];
 
 void init_locks()
 {
@@ -107,6 +100,11 @@ void aloc_options()
 	}
 }
 
+char*** get_options()
+{
+	return options;
+}
+
 void free_options()
 {
 	int i, j;
@@ -140,6 +138,7 @@ void create_listbuild()
 
 int insert_build(int id)
 {
+	build *build_top = get_buildtop();
 	build *new = (build*) calloc(1, sizeof(build));
 
 	if (new == NULL)
@@ -151,18 +150,20 @@ int insert_build(int id)
 	new->income = 50;
 
 	if (build_top == NULL) {
-		build_top = new;
+		set_buildtop(new);
 		return 1;
 	}
 
 	new->next = build_top;
 	build_top = new;
+	set_buildtop(build_top);
 
 	return 1;
 }
 
 void free_build()
 {
+	build *build_top = get_buildtop();
 	build *aux = build_top;
 
 	while (aux != NULL) {
@@ -170,6 +171,6 @@ void free_build()
 		free(build_top);
 		build_top = aux;
 	}
-	build_top = NULL;
+	set_buildtop(NULL);
 }
 

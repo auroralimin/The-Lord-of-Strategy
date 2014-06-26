@@ -10,9 +10,13 @@
 
 WINDOW *menu_win = NULL;
 WINDOW *map_win = NULL;
+int size[2];
 
 void init_interface()
 {
+	int lim_map;
+	scrll map_scroll;
+
 	initscr();
 	raw();
 	cbreak();
@@ -32,25 +36,38 @@ void init_interface()
 	init_pair(1, COLOR_CYAN, COLOR_BLACK);
 	init_pair(2, COLOR_GREEN, COLOR_BLACK);
 
-	lim_map = sqrt(pow(MAP_COL - size_col + 2, 2));
-	scroll_row = ((size_row - MAP_ROW - 2) / 2) + MAP_ROW + 2;
-	scroll_row = scroll_row + ((size_row - scroll_row) / 2);
-	scroll_col = size_col - 2;
+	lim_map = sqrt(pow(MAP_COL - size[1] + 2, 2));
+	set_maplim(lim_map);
+	map_scroll.row = ((size[0] - MAP_ROW - 2) / 2) + MAP_ROW + 2;
+	map_scroll.row = map_scroll.row + ((size[0] - map_scroll.row) / 2);
+	map_scroll.col = size[1] - 2;
+	map_scroll.position = 0;
+	set_mapscroll(map_scroll);
 }
 
 /* alerta o usuario se a janela do terminal nao tiver altura suficiente
 para o jogo */
 void get_dimension()
 {
-	getmaxyx(stdscr, size_row, size_col);
+	getmaxyx(stdscr, size[0], size[1]);
 
-	if ((size_row < MINIMUM_ROW) || (size_col < MINIMUN_COL))
+	if ((size[0] < MINIMUM_ROW) || (size[1] < MINIMUN_COL))
 	{
 		endwin();
 		printf("The terminal's dimension isn't big enough.\n");
 		printf("We suggest you use a smaller font.\n");
 		exit (1);
 	}
+}
+
+int get_sizerow()
+{
+	return size[0];
+}
+
+int get_sizecol()
+{
+	return size[1];
 }
 
 WINDOW* create_win(int win_y, int win_x, int starty, int startx)
@@ -76,11 +93,11 @@ void destroy_win(WINDOW **local_win)
 
 void menu()
 {
-	int opt = 1, x, y, n = 1;
-
+	int opt = 1, x, y, n = 1, key_status = 0;
+	MEVENT event;
 	menu_win = NULL;
-	y = (size_row-MENU_ROW)/2;
-	x = (size_col-MENU_COL)/2;
+	y = (size[0]-MENU_ROW)/2;
+	x = (size[1]-MENU_COL)/2;
 	menu_win = create_win(MENU_ROW, MENU_COL, y, x);
 
 	aloc_options();
@@ -92,7 +109,9 @@ void menu()
 		keypad(menu_win, TRUE);
 		refresh();
 		pthread_mutex_lock(&l_key);
+		event = get_event();
 		wmouse_trafo(menu_win, &event.y, &event.x, false);
+		key_status = get_keystatus();
 
 		switch (key_status)
 		{
@@ -127,7 +146,7 @@ int click_option(int option)
 	{
 		free_options();
 		destroy_win(&menu_win);
-		game_status = STATUS_GAME;
+		set_gamestatus(STATUS_GAME);
 		return 0;
 	}
 	if (option == 3)
@@ -142,6 +161,7 @@ int click_option(int option)
 
 void wprintw_menu(int highlight)
 {
+	char ***options = get_options();
 	int i, j, row = 3, col = 3;
 
 	for(i = 0; i < N_OPTIONS; ++i)
@@ -164,28 +184,29 @@ void wprintw_menu(int highlight)
 void printw_scroll()
 {
 	int i, box, interval;
+	scrll map_scroll = get_mapscroll();
 
-	interval = size_col / (MAP_COL / scroll_col + 1);
+	interval = size[1] / (MAP_COL / map_scroll.col + 1);
 
-	for (i = 1; i <= scroll_col; i++)
-		mvprintw(scroll_row, i, "-");
+	for (i = 1; i <= map_scroll.col; i++)
+		mvprintw(map_scroll.row, i, "-");
 
-	box = scroll_position + 1;
-	if (box > scroll_col - interval)
-		box = scroll_col - interval;
+	box = map_scroll.position + 1;
+	if (box > map_scroll.col - interval)
+		box = map_scroll.col - interval;
 	for (i = box; i <= interval + box; i++)
 	{
-		mvprintw(scroll_row - 1, i, "-");
-		mvprintw(scroll_row + 1, i, "-");
+		mvprintw(map_scroll.row - 1, i, "-");
+		mvprintw(map_scroll.row + 1, i, "-");
 	}
 
-	mvprintw(scroll_row, box, "|");
-	mvprintw(scroll_row, box + interval, "|");
+	mvprintw(map_scroll.row, box, "|");
+	mvprintw(map_scroll.row, box + interval, "|");
 }
 
 int createmap_win()
 {
-	map_win = create_win(MAP_ROW+2, size_col, (size_row-MAP_ROW-2)/2, 0);
+	map_win = create_win(MAP_ROW+2, size[1], (size[0]-MAP_ROW-2)/2, 0);
 	if (map_win == NULL)
 		return -1;
 
@@ -196,10 +217,11 @@ int createmap_win()
 void wprintw_map()
 {
 	int i, j;
+	int term_col = get_termcol();
 
 	clear();
 	for (i = 1; i < MAP_ROW + 1; i++)
-		for (j = 1; (j < MAP_COL) && (j < size_col - 1); j++)
+		for (j = 1; (j < MAP_COL) && (j < size[1] - 1); j++)
 			mvwprintw(map_win, i, j, "%c", map[i-1][j+term_col-1]);
 	box(map_win, 0, 0);
 	printw_scroll();
