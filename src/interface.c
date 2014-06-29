@@ -218,8 +218,12 @@ void wprintw_map()
 {
 	int i, j;
 	int term_col = get_termcol();
+	player user = get_user();
 
 	clear();
+	move((size[0]-MAP_ROW-2)/2 - 1, 0);
+	printw("GOLD: %d    FOOD: %d    WOOD:    %d    METAL: %d   ",
+	user.gold, user.food, user.wood, user.metal);
 	for (i = 1; i < MAP_ROW + 1; i++)
 		for (j = 1; (j < MAP_COL) && (j < size[1] - 1); j++)
 			mvwprintw(map_win, i, j, "%c", map[i-1][j+term_col-1]);

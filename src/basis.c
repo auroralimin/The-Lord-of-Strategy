@@ -123,11 +123,46 @@ void free_options()
 	}
 }
 
+int insert_unit(unit **top, int race)
+{
+	unit *new = (unit*) calloc(1, sizeof(unit));
+
+	if (new == NULL)
+		return -1;
+
+	race_init(new, race);
+
+	if (*top == NULL)
+	{
+		*top = new;
+		return 1;
+	}
+
+	new->next = *top;
+	*top = new;
+
+	return 1;
+}
+
+void free_units(unit **top)
+{
+	unit *aux;
+
+	while (aux != NULL)
+	{
+		aux = aux->next;
+		free(*top);
+		*top = aux;
+	}
+
+	*top = NULL;
+}
+
 void create_listbuild()
 {
 	int i;
 
-	for (i = 4; i > 0; i--)
+	for (i = 3; i >= 0; i--)
 		if (!insert_build(i))
 		{
 			endwin();
@@ -149,7 +184,8 @@ int insert_build(int id)
 	new->storage = 0;
 	new->income = 50;
 
-	if (build_top == NULL) {
+	if (build_top == NULL)
+	{
 		set_buildtop(new);
 		return 1;
 	}

@@ -8,7 +8,7 @@
 
 int main()
 {
-	unit hobbit;
+	unit *chr;
 
 	init_locks();
 	init_interface();
@@ -21,30 +21,25 @@ int main()
 	create_listbuild();
 	prepare_map();
 	createmap_win();
-	hobbit = race_init(HOBBIT);
+	chr = get_freeraces();
+	insert_unit(&chr, 1);
+	goto_build(chr, 0);
+	set_freeraces(chr);
+
 	while(1)
 	{
-		if ((hobbit.position[0] == GOOD_ROW) &&
-		   (hobbit.position[1] == HOBBIT_GOLD))
+		for (chr = get_freeraces(); chr != NULL; chr = chr->next)
 		{
-			hobbit.destination[0] = 30;
-			hobbit.destination[1] = 40;
+			printmap_unit(*chr);
 		}
-		else if ((hobbit.position[0] == 30) &&
-			(hobbit.position[1] == 40))
+		wprintw_map();
+		good_generator();
+		print_good();
+		for (chr = get_freeraces(); chr != NULL; chr = chr->next)
 		{
-			hobbit.destination[0] = GOOD_ROW;
-			hobbit.destination[1] = HOBBIT_GOLD;
-		}
-		if ((hobbit.position[0] != hobbit.destination[0]) ||
-		   (hobbit.position[1] != hobbit.destination[1]))
-		{
-			printmap_unit(hobbit);
-			wprintw_map();
-			good_generator();
-			print_good();
-			clear_unit(hobbit);
-			move_unit(&hobbit);
+			clear_unit(*chr);
+			move_unit(chr);
+			check_good(chr);
 		}
 		usleep(REFRESH_TIME);
 	}

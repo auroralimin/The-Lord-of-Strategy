@@ -6,6 +6,7 @@ typedef struct str_scrll
 }scrll;
 
 void* read_key(void *arg);
+player get_user();
 MEVENT get_event();
 int get_keystatus();
 void set_keystatus(int key_status);
@@ -20,7 +21,7 @@ void arrow_scroll(int direction);
 scrll get_mapscroll();
 void set_mapscroll(scrll scroll_map);
 void term_coltest();
-unit race_init(int race);
+void race_init(unit *chr, int race);
 int load_build(char *file_name, int art_row, int art_col);
 int get_art();
 void map_spaces();
@@ -29,6 +30,10 @@ void printmap_unit(unit chr);
 void clear_unit(unit chr);
 void move_unit(unit *chr);
 void good_generator();
+unit* get_freeraces();
+void set_freeraces(unit *top);
 build* get_buildtop();
 void set_buildtop(build *top);
 void print_good();
+void check_good(unit *chr);
+void goto_build(unit *chr, int n_build);

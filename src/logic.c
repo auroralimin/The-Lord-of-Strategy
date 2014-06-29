@@ -14,12 +14,12 @@ struct build_art
 	int row, col;
 };
 
-char *options_files[] = { "ASCII art/new_game.txt",
+static char *options_files[] = { "ASCII art/new_game.txt",
 			"ASCII art/load_game.txt",
 			"ASCII art/exit.txt"};
 
 
-struct build_art builds[]={
+static struct build_art builds[]={
 {"ASCII art/house_frodo.txt", MAP_ROW - FRODO_ROW, FRODO_COL},
 {"ASCII art/mordor_tower.txt",  MAP_ROW - MORDOR_ROW, MORDOR_COL},
 {"ASCII art/gold_build.txt", 1,  GOLD_COL1},
@@ -40,15 +40,21 @@ static char *name_filearts[] = { "ASCII art/hobbit.txt",
 };
 
 static unit attr[] = {
-{HOBBIT, 100, 1, 10, 10, {30, 40}, {30, 40}, 100},
-{ELF, 130, 4, 40, 12, {28, 40}, {26, 40}, 200},
-{DWARF, 250, 2, 30, 10, {30, 40}, {38, 40}, 250},
-{ENT, 500, 1, 50, 15, {25, 40}, {23, 40}, 300},
-{GOBLIN, 100, 1, 10, 10, {30, 34+MORDOR_COL}, {30, 34+MORDOR_COL}, 100},
-{ORC, 200, 2, 30, 12, {28, 34+MORDOR_COL}, {28, 34+MORDOR_COL}, 200},
-{WARG, 120, 5, 25, 8, {31, 34+MORDOR_COL}, {31, 34+MORDOR_COL}, 250},
-{TROLL, 500, 1, 50, 15, {25, 34+MORDOR_COL}, {25, 34+MORDOR_COL}, 300}
+{HOBBIT, 100, 1, 10, 10, {30, 40}, {30, 40}, 100, {0, 0, 0, 0}, NULL},
+{ELF, 130, 4, 40, 12, {28, 40}, {28, 40}, 200, {0, 0, 0, 0}, NULL},
+{DWARF, 250, 2, 30, 10, {30, 40}, {30, 40}, 250, {0, 0, 0, 0}, NULL},
+{ENT, 500, 1, 50, 15, {25, 40}, {25, 40}, 300, {0, 0, 0, 0}, NULL},
+{GOBLIN, 100, 1, 10, 10, {30, 34+MORDOR_COL}, {30, 34+MORDOR_COL}, 100,
+{0, 0, 0, 0}, NULL},
+{ORC, 200, 2, 30, 12, {28, 34+MORDOR_COL}, {28, 34+MORDOR_COL}, 200,
+{0, 0, 0, 0}, NULL},
+{WARG, 120, 5, 25, 8, {31, 34+MORDOR_COL}, {31, 34+MORDOR_COL}, 250,
+{0, 0, 0, 0}, NULL},
+{TROLL, 500, 1, 50, 15, {25, 34+MORDOR_COL}, {25, 34+MORDOR_COL}, 300,
+{0, 0, 0, 0}, NULL}
 };
+
+static int good_col[] = {HOBBIT_GOLD, HOBBIT_FOOD, HOBBIT_WOOD, HOBBIT_METAL};
 
 scrll map_scroll;
 int status[2];
@@ -57,6 +63,8 @@ int term_col = 1;
 char mat_races[N_RACES + 1][RACE_HEIGHT][RACE_WIDTH];
 MEVENT event;
 build *build_top = NULL;
+unit *free_races = NULL;
+player user = {0, 0, 0, 0, 0};
 
 void* read_key(void *arg)
 {
@@ -105,6 +113,11 @@ void* read_key(void *arg)
 	}
 
 	return arg;
+}
+
+player get_user()
+{
+	return user;
 }
 
 MEVENT get_event()
@@ -216,28 +229,25 @@ void term_coltest()
 }
 
 /* inicializa as unidades com os atributos pre-definidos */
-unit race_init(int race)
+void race_init(unit *chr, int race)
 {
 	int i;
-	unit new_unit;
 
 	for (i = 0; i < N_RACES; i++)
 		if (attr[i].race == race)
 		{
-			new_unit.race = attr[i].race;
-			new_unit.hp = attr[i].hp;
-			new_unit.spd = attr[i].spd;
-			new_unit.dmg = attr[i].dmg;
-			new_unit.height = attr[i].height;
-			new_unit.position[0] = attr[i].position[0];
-			new_unit.position[1] = attr[i].position[1];
-			new_unit.destination[0] = attr[i].destination[0];
-			new_unit.destination[1] = attr[i].destination[1];
-			new_unit.spwan_time = attr[i].spwan_time;
+			chr->race = attr[i].race;
+			chr->hp = attr[i].hp;
+			chr->spd = attr[i].spd;
+			chr->dmg = attr[i].dmg;
+			chr->height = attr[i].height;
+			chr->position[0] = attr[i].position[0];
+			chr->position[1] = attr[i].position[1];
+			chr->destination[0] = attr[i].destination[0];
+			chr->destination[1] = attr[i].destination[1];
+			chr->spwan_time = attr[i].spwan_time;
 			break;
 		}
-
-	return new_unit;
 }
 
 /* carrega o mapa com as fortalezas do jogador e do computador */
@@ -373,6 +383,16 @@ void good_generator()
 	}
 }
 
+unit* get_freeraces()
+{
+	return free_races;
+}
+
+void set_freeraces(unit *top)
+{
+	free_races = top;
+}
+
 build* get_buildtop()
 {
 	return build_top;
@@ -395,6 +415,10 @@ void print_good()
 	for (aux = build_top; aux != NULL; aux = aux->next)
 	{
 		storage = aux->storage;
+
+		for (i = 0; i < 6; i++)
+			map[0][builds[n].col+i] = ' '; 
+
 		for (i = 999999; i > 0; i = i/10)
 		{
 			if (storage > i)
@@ -404,10 +428,63 @@ void print_good()
 				storage = storage - ((i + 1) * num);
 			}
 			else if (j > 0)
-				map[0][builds[n].col+j++] = 48;
+					map[0][builds[n].col+j++] = 48;
 		}
 		map[0][builds[n].col+j] = storage + 48;
 		n++;
 		j = 0;
 	}
+}
+
+void check_good(unit *chr)
+{
+	int i, j;
+	build *aux = build_top;
+
+	for (i = 0; i < N_BUILDS - 2; i++)
+	{
+		if ((chr->position[1] == good_col[i]) &&
+				(chr->position[0] == GOOD_ROW))
+		{
+			while ((aux != NULL) && (aux->id != i))
+				aux = aux->next;
+
+			if (aux->id == i)
+			{
+				chr->backpack[i]+=aux->storage;
+				aux->storage = 0;
+				chr->destination[0] = 30;
+				chr->destination[1] = 40;
+			}
+		}
+		else if ((chr->position[1] == 40) &&
+				(chr->position[0] == 30))
+		{
+			if (chr->race == HOBBIT)
+			{
+				user.gold+=chr->backpack[0];
+				user.food+=chr->backpack[1];
+				user.wood+=chr->backpack[2];
+				user.metal+=chr->backpack[3];
+				for (j = 0; j < 4; j++)
+					chr->backpack[j] = 0;
+			}
+		}
+		else
+			break;
+	}
+}
+
+void goto_build(unit *chr, int n_build)
+{
+	int i;
+
+	if (chr->race == HOBBIT)
+		for (i = 0; i < N_BUILDS - 2; i++)
+			if (i == n_build)
+			{
+				chr->destination[0] = GOOD_ROW;
+				chr->destination[1] = good_col[i];
+				break;
+			}
 }

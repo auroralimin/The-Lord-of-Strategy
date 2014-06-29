@@ -40,12 +40,15 @@
 #define FRODO_ROW 27
 #define FRODO_COL 0
 
-#define GOLD_COL1 FRODO_WIDTH + 4
-#define FOOD_COL1 FRODO_WIDTH + 83
-#define WOOD_COL1 FRODO_WIDTH + 173
+#define GOLD_COL1 FRODO_WIDTH + 1
+#define FOOD_COL1 FRODO_WIDTH + 87
+#define WOOD_COL1 FRODO_WIDTH + 176
 #define METAL_COL1 FRODO_WIDTH + 255
 #define HOBBIT_GOLD GOLD_COL1 + 8
-#define GOOD_ROW 5
+#define HOBBIT_FOOD FOOD_COL1 + 2
+#define HOBBIT_WOOD WOOD_COL1 + 4
+#define HOBBIT_METAL METAL_COL1 + 23
+#define GOOD_ROW 6
 
 #define USER 0
 #define COMP 1
@@ -78,6 +81,8 @@ typedef struct str_unit
 	int position[2];
 	int destination[2];
 	int spwan_time;
+	int backpack[N_BUILDS - 2];
+	struct str_unit *next;
 } unit;
 
 typedef struct str_build
@@ -102,9 +107,9 @@ typedef struct str_player
 {
 	int id;
 	int gold;
-	int mithril;
-	int wood;
 	int food;
+	int wood;
+	int metal;
 } player;
 
 extern pthread_mutex_t l_key;
@@ -120,6 +125,8 @@ FILE* read_file(char *name);
 void aloc_options();
 char*** get_options();
 void free_options();
+int insert_unit(unit **top, int race);
+void free_units(unit **top);
 void create_listbuild();
 int insert_build(int id);
 void free_build();
