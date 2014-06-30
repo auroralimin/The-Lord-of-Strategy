@@ -8,3 +8,9 @@ obj/*
 
 #vim temporary files
 *.sw*
+
+#gcov result files
+*.gcno
+*.gcda
+*.gcov
+gmon.out
