@@ -3,7 +3,7 @@
 #include "basis.h"
 #include "logic.h"
 
-pthread_mutex_t l_key;
+pthread_mutex_t l_key, l_scroll;
 char **map = NULL;
 char **options[N_OPTIONS];
 
@@ -13,6 +13,7 @@ int options_len[] = { NEW_GAME, LOAD_GAME, EXIT_GAME};
 void init_locks()
 {
 	pthread_mutex_init(&l_key, NULL);
+	pthread_mutex_init(&l_scroll, NULL);
 }
 
 void init_thread()

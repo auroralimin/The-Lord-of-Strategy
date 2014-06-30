@@ -73,40 +73,46 @@ void* read_key(void *arg)
 		pthread_mutex_lock(&l_key);
 		switch(getch())
 		{
-			case (KEY_MOUSE):
-				if(getmouse(&event) == OK)
+	 		case (KEY_MOUSE):
+			if(getmouse(&event) == OK)
+			{
+				status[0] = STATUS_MOUSE_MOVED;
+				if (event.bstate == BUTTON1_CLICKED)
 				{
-					status[0] = STATUS_MOUSE_MOVED;
-					if (event.bstate == BUTTON1_CLICKED)
-					{
-						status[0] = STATUS_MOUSE_CLICK;
-						if ((event.y >= map_scroll.row-1) &&
-						   (event.y <= map_scroll.row+1))
-							mouse_scroll(event.x);
-					}
+					status[0] = STATUS_MOUSE_CLICK;
+					if ((event.y >= map_scroll.row-1) &&
+					   (event.y <= map_scroll.row+1))
+						mouse_scroll(event.x);
 				}
-				break;
+			}
+			break;
+
 			case (KEY_UP):
-				status[0] = STATUS_UP;
-				break;
+			status[0] = STATUS_UP;
+			break;
+
 			case (KEY_DOWN):
-				status[0] = STATUS_DOWN;
-				break;
+			status[0] = STATUS_DOWN;
+			break;
+
 			case (KEY_RIGHT):
-				if (status[1] != STATUS_MENU)
-					arrow_scroll(SCROLL_RIGHT);
-				break;
+			if (status[1] != STATUS_MENU)
+				arrow_scroll(SCROLL_RIGHT);
+			break;
+
 			case (KEY_LEFT):
-				if (status[1] != STATUS_MENU)
-					arrow_scroll(SCROLL_LEFT);
-				break;
+			if (status[1] != STATUS_MENU)
+				arrow_scroll(SCROLL_LEFT);
+			break;
+
 			case (EXIT):
-				free_build();
-				free_map();
-				endwin();
-				exit(1);
+			free_build();
+			free_map();
+			endwin();
+			exit(1);
+
 			case (ENTER):
-				status[0] = STATUS_ENTER;
+			status[0] = STATUS_ENTER;
 		}
 		pthread_mutex_unlock(&l_key);
 		usleep(2);
@@ -184,27 +190,39 @@ int report_option(int mouse_row, int mouse_col)
 
 void mouse_scroll(int mouse_col)
 {
-	int n;
-
-	n = MAP_COL / (map_scroll.col - 1) + 1;
-	if ((mouse_col > 0) && (mouse_col <= map_scroll.col) &&
-	   (MAP_COL > get_sizecol()))
+	if ((mouse_col > 0) && (mouse_col <= map_scroll.col))
 	{
-		map_scroll.position = mouse_col - 1;
-		term_col = n * map_scroll.position;
+		pthread_mutex_lock(&l_scroll);
+		map_scroll.position = mouse_col;
+		map_scroll.residue = 0;
+		term_col = map_scroll.proportion * (map_scroll.position - 1);
 		term_coltest();
+		pthread_mutex_unlock(&l_scroll);
 		wprintw_map();
 	}
 }
 
 void arrow_scroll(int direction)
 {
+	int residue;
+
 	if ((term_col <= lim_map) && (MAP_COL > get_sizecol()) &&
 	   (term_col >= 0))
 	{
+		pthread_mutex_lock(&l_scroll);
 		term_col+=direction;
+		map_scroll.residue+=sqrt(pow(direction, 2));
+		if (map_scroll.residue > map_scroll.proportion)
+		{
+			residue = map_scroll.residue / map_scroll.proportion;
+			if (direction > 0)
+				map_scroll.position+=residue;
+			else
+				map_scroll.position-=residue;
+			map_scroll.residue-=map_scroll.proportion*residue;
+		}
 		term_coltest();
-		map_scroll.position = term_col / (MAP_COL / map_scroll.col + 1);
+		pthread_mutex_unlock(&l_scroll);
 		wprintw_map();
 	}
 }
@@ -222,9 +240,18 @@ void set_mapscroll(scrll scroll_map)
 void term_coltest()
 {
 	if (term_col < 0)
+	{
 		term_col = 0;
+		map_scroll.position = 1;
+		map_scroll.residue = 0;
+	}
 	if (term_col > lim_map)
+	{
 		term_col = lim_map;
+		map_scroll.position = map_scroll.col;
+		map_scroll.position-=map_scroll.col / map_scroll.proportion;
+		map_scroll.residue = 0;
+	}
 }
 
 /* inicializa as unidades com os atributos pre-definidos */

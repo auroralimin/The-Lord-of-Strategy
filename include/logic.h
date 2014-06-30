@@ -3,6 +3,8 @@ typedef struct str_scrll
 	int col;
 	int row;
 	int position;
+	int proportion;
+	int residue;
 }scrll;
 
 void* read_key(void *arg);

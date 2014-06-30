@@ -14,7 +14,7 @@ int size[2];
 
 void init_interface()
 {
-	int lim_map;
+	int lim_map, n;
 	scrll map_scroll;
 
 	initscr();
@@ -41,7 +41,10 @@ void init_interface()
 	map_scroll.row = ((size[0] - MAP_ROW - 2) / 2) + MAP_ROW + 2;
 	map_scroll.row = map_scroll.row + ((size[0] - map_scroll.row) / 2);
 	map_scroll.col = size[1] - 2;
-	map_scroll.position = 0;
+	map_scroll.position = 1;
+	n = MAP_COL / map_scroll.col;
+	map_scroll.proportion = (MAP_COL / (map_scroll.col + n)) + 1;
+	map_scroll.residue = 0;
 	set_mapscroll(map_scroll);
 }
 
@@ -56,6 +59,13 @@ void get_dimension()
 		endwin();
 		printf("The terminal's dimension isn't big enough.\n");
 		printf("We suggest you use a smaller font.\n");
+		exit (1);
+	}
+	else if (size[1] > 240)
+	{
+		endwin();
+		printf("The terminal width is too big.\n");
+		printf("We suggest you resize your terminal.\n");
 		exit (1);
 	}
 }
@@ -185,12 +195,13 @@ void printw_scroll()
 	int i, box, interval;
 	scrll map_scroll = get_mapscroll();
 
-	interval = pow(map_scroll.col, 2) / MAP_COL;
+	pthread_mutex_lock(&l_scroll);
+	interval = map_scroll.col / map_scroll.proportion;
 
 	for (i = 1; i <= map_scroll.col; i++)
 		mvprintw(map_scroll.row, i, "-");
 
-	box = map_scroll.position + 1;
+	box = map_scroll.position;
 	if (box > map_scroll.col - interval)
 		box = map_scroll.col - interval;
 	for (i = box; i <= interval + box; i++)
@@ -201,6 +212,7 @@ void printw_scroll()
 
 	mvprintw(map_scroll.row, box, "|");
 	mvprintw(map_scroll.row, box + interval, "|");
+	pthread_mutex_unlock(&l_scroll);
 }
 
 int createmap_win()

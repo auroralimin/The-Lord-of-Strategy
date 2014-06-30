@@ -112,7 +112,7 @@ typedef struct str_player
 	int metal;
 } player;
 
-extern pthread_mutex_t l_key;
+extern pthread_mutex_t l_key, l_scroll;
 extern char **map;
 extern char **options[N_OPTIONS];
 
