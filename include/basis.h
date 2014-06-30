@@ -97,9 +97,8 @@ typedef struct str_build
 typedef struct str_fortress
 {
 	int id;
-	int level;
 	int hp;
-	int unlock_race;
+	int level;
 	int work_time;
 } fortress;
 

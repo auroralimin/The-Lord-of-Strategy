@@ -39,3 +39,6 @@ void set_buildtop(build *top);
 void print_good();
 void check_good(unit *chr);
 void goto_build(unit *chr, int n_build);
+void load_houseoption(int n);
+void fortress_buy(int col);
+void option_upgrade(int level);

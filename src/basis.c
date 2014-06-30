@@ -205,4 +205,3 @@ void free_build()
 	}
 	set_buildtop(NULL);
 }
-

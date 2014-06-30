@@ -39,11 +39,18 @@ static char *name_filearts[] = { "ASCII art/hobbit.txt",
 				 "ASCII art/troll.txt"
 };
 
+char *options_frodo[] = { "ASCII art/house_option0.txt",
+		          "ASCII art/house_option1.txt",
+		          "ASCII art/house_option2.txt",
+		          "ASCII art/house_option3.txt",
+		          "ASCII art/house_option4.txt"
+};
+
 static unit attr[] = {
 {HOBBIT, 100, 1, 10, 10, {30, 40}, {30, 40}, 100, {0, 0, 0, 0}, NULL},
-{ELF, 130, 4, 40, 12, {28, 40}, {28, 40}, 200, {0, 0, 0, 0}, NULL},
-{DWARF, 250, 2, 30, 10, {30, 40}, {30, 40}, 250, {0, 0, 0, 0}, NULL},
-{ENT, 500, 1, 50, 15, {25, 40}, {25, 40}, 300, {0, 0, 0, 0}, NULL},
+{ELF, 130, 4, 40, 12, {28, 40}, {28, 40}, 200,  {0, 0, 0, 0}, NULL},
+{DWARF, 250, 2, 30, 10, {30, 40}, {30, 40}, 250,  {0, 0, 0, 0}, NULL},
+{ENT, 500, 1, 50, 15, {25, 40}, {25, 40}, 300,  {0, 0, 0, 0}, NULL},
 {GOBLIN, 100, 1, 10, 10, {30, 34+MORDOR_COL}, {30, 34+MORDOR_COL}, 100,
 {0, 0, 0, 0}, NULL},
 {ORC, 200, 2, 30, 12, {28, 34+MORDOR_COL}, {28, 34+MORDOR_COL}, 200,
@@ -56,6 +63,12 @@ static unit attr[] = {
 
 static int good_col[] = {HOBBIT_GOLD, HOBBIT_FOOD, HOBBIT_WOOD, HOBBIT_METAL};
 
+static int prices[4][4] = {{500, 500, 0, 0},
+	                  {800, 800, 0, 1500},
+		          {1000, 1500, 0, 500},
+		          {1500, 1500, 3000, 0}
+};
+
 scrll map_scroll;
 int status[2];
 int lim_map = 0;
@@ -64,7 +77,8 @@ char mat_races[N_RACES + 1][RACE_HEIGHT][RACE_WIDTH];
 MEVENT event;
 build *build_top = NULL;
 unit *free_races = NULL;
-player user = {0, 0, 0, 0, 0};
+fortress frodo_house = {1, 15000, 1, 0};
+player user = {10000, 10000, 10000, 10000, 10000};
 
 void* read_key(void *arg)
 {
@@ -83,6 +97,8 @@ void* read_key(void *arg)
 					if ((event.y >= map_scroll.row-1) &&
 					   (event.y <= map_scroll.row+1))
 						mouse_scroll(event.x);
+					else
+						click_frodooption();
 				}
 			}
 			break;
@@ -443,7 +459,7 @@ void print_good()
 		storage = aux->storage;
 
 		for (i = 0; i < 6; i++)
-			map[0][builds[n].col+i] = ' '; 
+			map[0][builds[n].col+i] = ' ';
 
 		for (i = 999999; i > 0; i = i/10)
 		{
@@ -513,4 +529,69 @@ void goto_build(unit *chr, int n_build)
 				chr->destination[1] = good_col[i];
 				break;
 			}
+}
+
+void load_houseoption(int n)
+{
+	int i, j;
+	FILE *fp = read_file(options_frodo[n]);
+
+	for (i = 0; i < 6; i++)
+	{
+		for (j = 0; j < 13; j++)
+			fscanf(fp, "%c", &map[builds[0].row-7+i][n*15+j+5]);
+		fgetc(fp);
+	}
+}
+
+void fortress_buy(int col)
+{
+	int i, option = 0;
+
+	for (i = 5; i < 80; i+=15)
+	{
+		if ((col >= i) && (col <= i+13))
+		{
+			if ((option != 0) && (frodo_house.level >= option) &&
+		   	   (user.gold >= prices[option - 1][0]) &&
+		           (user.food >= prices[option - 1][1]) &&
+		           (user.wood >= prices[option - 1][2]) &&
+		           (user.metal >= prices[option - 1][3]))
+	          	{
+		 		insert_unit(&free_races, option);
+				break;
+			}
+			else if ((option == 0) && (frodo_house.level < 4) &&
+				(user.gold >= 1000 * (frodo_house.level+1)) &&
+				(user.food >= 1000 * (frodo_house.level+1)) &&
+				(user.wood >= 1000 * (frodo_house.level+1)))
+			{
+				user.gold-=1000 * (frodo_house.level + 1);
+				user.food-=1000 * (frodo_house.level + 1);
+				user.wood-=1000 * (frodo_house.level + 1);
+				frodo_house.level++;
+				option_upgrade(frodo_house.level);
+			}
+		}
+		option++;
+	}
+}
+
+void option_upgrade(int level)
+{
+	int i, j;
+
+	if ((level > 1) && (level < 4))
+	{
+		load_houseoption(level);
+		for (i = 0; i < 3; i++)
+			map[builds[0].row-5+i][12] = level + 1 + 48;
+	}
+	else if (level == 4)
+	{
+		load_houseoption(level);
+		for (i = 0; i < 6; i++)
+			for (j = 0; j < 13; j++)
+				map[builds[0].row-7+i][5+j] = ' ';
+	}
 }

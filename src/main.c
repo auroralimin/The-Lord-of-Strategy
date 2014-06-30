@@ -25,7 +25,8 @@ int main()
 	insert_unit(&chr, 1);
 	goto_build(chr, 0);
 	set_freeraces(chr);
-
+	load_houseoption(0);
+	load_houseoption(1);
 	while(1)
 	{
 		for (chr = get_freeraces(); chr != NULL; chr = chr->next)

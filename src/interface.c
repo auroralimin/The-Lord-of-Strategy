@@ -11,6 +11,8 @@
 WINDOW *menu_win = NULL;
 WINDOW *map_win = NULL;
 int size[2];
+char *races_options[N_RACES/2] = {"HOBBIT", "ELF", "DWARF", "ENT"};
+char *good_options[N_RACES/2] = {"GOLD", "FOOD", "WOOD", "METAL"};
 
 void init_interface()
 {
@@ -25,7 +27,7 @@ void init_interface()
 	keypad(stdscr, TRUE);
 	get_dimension();
 
-	if ((!has_mouse) || (!mousemask(ALL_MOUSE_EVENTS, NULL)))
+	if (!mousemask(ALL_MOUSE_EVENTS, NULL))
 	{
 		endwin();
 		printf("Terminal doesn't support mouse event reporting\n");
@@ -78,6 +80,11 @@ int get_sizerow()
 int get_sizecol()
 {
 	return size[1];
+}
+
+WINDOW* get_mapwin()
+{
+	return map_win;
 }
 
 WINDOW* create_win(int win_y, int win_x, int starty, int startx)
@@ -233,13 +240,25 @@ void wprintw_map()
 
 	clear();
 	move((size[0]-MAP_ROW-2)/2 - 1, 0);
-	printw("GOLD: %d    FOOD: %d    WOOD:    %d    METAL: %d   ",
+	printw("GOLD: %d    FOOD: %d    WOOD: %d    METAL: %d   ",
 	user.gold, user.food, user.wood, user.metal);
 	for (i = 1; i < MAP_ROW + 1; i++)
 		for (j = 1; (j < MAP_COL) && (j < size[1] - 1); j++)
 			mvwprintw(map_win, i, j, "%c", map[i-1][j+term_col-1]);
 	box(map_win, 0, 0);
+
 	printw_scroll();
 	refresh();
 	wrefresh(map_win);
+}
+
+void click_frodooption()
+{
+	int col = get_termcol();
+	MEVENT event = get_event();
+
+	wmouse_trafo(map_win, &event.y, &event.x, false);
+	if ((event.y >= MAP_ROW - FRODO_ROW - 8) &&
+	   (event.y <= MAP_ROW - FRODO_ROW - 2))
+		fortress_buy(col + event.x - 1);
 }
