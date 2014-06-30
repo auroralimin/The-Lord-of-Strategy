@@ -5,10 +5,10 @@
 
 pthread_mutex_t l_key;
 char **map = NULL;
-int options_len[] = { NEW_GAME, LOAD_GAME, EXIT_GAME};
+char **options[N_OPTIONS];
 
 pthread_t key_thread;
-char **options[N_OPTIONS];
+int options_len[] = { NEW_GAME, LOAD_GAME, EXIT_GAME};
 
 void init_locks()
 {
@@ -98,11 +98,6 @@ void aloc_options()
 			options[i][j] = (char*)
 			calloc(options_len[i], sizeof(char));
 	}
-}
-
-char*** get_options()
-{
-	return options;
 }
 
 void free_options()

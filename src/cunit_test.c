@@ -7,6 +7,7 @@
 #include "interface.h"
 
 unit hobbit;
+build *build_top;
 
 /* suites initialization and clean fuctions */
 int init_basis(void)
@@ -120,6 +121,7 @@ void insert_b_test(void)
 void free_build_test(void)
 {
 	free_build();
+	build_top = get_buildtop();
 	CU_ASSERT(build_top == NULL);
 }
 
@@ -135,7 +137,7 @@ void init_options_test(void)
 
 void race_init_test(void)
 {
-	hobbit = race_init(HOBBIT);
+	race_init(&hobbit, HOBBIT);
 	CU_ASSERT(hobbit.race == HOBBIT);
 	CU_ASSERT(hobbit.hp == 100);
 	CU_ASSERT(hobbit.spd == 1);

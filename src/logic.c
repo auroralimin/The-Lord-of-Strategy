@@ -157,7 +157,6 @@ void set_maplim(int lim)
 
 void init_options()
 {
-	char ***options = get_options();
 	int i, j;
 	FILE *fp = NULL;
 
@@ -187,7 +186,7 @@ void mouse_scroll(int mouse_col)
 {
 	int n;
 
-	n = MAP_COL / map_scroll.col + 1;
+	n = MAP_COL / (map_scroll.col - 1) + 1;
 	if ((mouse_col > 0) && (mouse_col <= map_scroll.col) &&
 	   (MAP_COL > get_sizecol()))
 	{

@@ -114,6 +114,7 @@ typedef struct str_player
 
 extern pthread_mutex_t l_key;
 extern char **map;
+extern char **options[N_OPTIONS];
 
 void init_locks();
 void init_thread();
@@ -123,7 +124,6 @@ void init_map();
 void free_map();
 FILE* read_file(char *name);
 void aloc_options();
-char*** get_options();
 void free_options();
 int insert_unit(unit **top, int race);
 void free_units(unit **top);

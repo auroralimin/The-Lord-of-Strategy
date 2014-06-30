@@ -19,10 +19,10 @@ int main()
 	if ((NULL==CU_add_test(pSuite_basis, "aloc_map", aloc_map_test))||
 	   (NULL==CU_add_test(pSuite_basis, "init_map", init_map_test))||
 	   (NULL==CU_add_test(pSuite_basis, "free_map", free_map_test))||
-	   (NULL==CU_add_test(pSuite_basis, "read_fil", read_file_test))||
+	   (NULL==CU_add_test(pSuite_basis, "read_file", read_file_test))||
 	   (NULL==CU_add_test(pSuite_basis, "aloc_options", aloc_opt_test))||
 	   (NULL==CU_add_test(pSuite_basis, "free_options", free_opt_test))||
-	   (NULL==CU_add_test(pSuite_basis, " insert_build", insert_b_test))||
+	   (NULL==CU_add_test(pSuite_basis, "insert_build", insert_b_test))||
 	   (NULL==CU_add_test(pSuite_basis, "free_build", free_build_test)))
 	{
 		CU_cleanup_registry();

@@ -161,7 +161,6 @@ int click_option(int option)
 
 void wprintw_menu(int highlight)
 {
-	char ***options = get_options();
 	int i, j, row = 3, col = 3;
 
 	for(i = 0; i < N_OPTIONS; ++i)
@@ -186,7 +185,7 @@ void printw_scroll()
 	int i, box, interval;
 	scrll map_scroll = get_mapscroll();
 
-	interval = size[1] / (MAP_COL / map_scroll.col + 1);
+	interval = pow(map_scroll.col, 2) / MAP_COL;
 
 	for (i = 1; i <= map_scroll.col; i++)
 		mvprintw(map_scroll.row, i, "-");

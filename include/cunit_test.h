@@ -24,4 +24,6 @@ void get_art_test(void);
 void print_unit_test(void);
 void clear_unit_test(void);
 void move_unit_test(void);
+
+/* interface test function */
 void click_test(void);
