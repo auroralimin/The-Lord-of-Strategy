@@ -16,11 +16,7 @@ SPLINT = splint
 SPLINTFLAGS = -weak -type +sysdirerrors -compdef -retvalother\
                +line-len 80 -warnposix +infloops -fixedformalarray \
 	      -annotationerror \
-
 SPLINT_SOURCE = src/basis.c src/logic.c src/interface.c src/main.c
-
-main: game
-cunit: test
 
 $(ODIR)/%.o: $(SDIR)/%.c
 	@mkdir -p $(@D)
@@ -32,11 +28,10 @@ game: $(OBJ1)
 test: $(OBJ2)
 	$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
 
-splinttest:
-	$(SPLINT) $(SPLINTFLAGS) -I $(IDIR) $(SPLINT_SOURCE)
+.PHONY: splinttest
+splinttest: $(SPLINT_SOURCE)
+	$(SPLINT) $(SPLINTFLAGS) -I $(IDIR) $<
 
 .PHONY: clean
-
 clean:
-	rm -f $(ODIR)/*.o core test
-	rm -f $(ODIR)/*.o core game
+	rm -f $(ODIR)/*.o core game test
