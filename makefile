@@ -13,9 +13,9 @@ CFLAGS = -I$(IDIR) -Wall -Wextra -g
 LIBS = -lncurses -lm -pthread -lcunit
 
 SPLINT = splint
-SPLINTFLAGS = -weak -type +sysdirerrors -compdef -retvalother\
+SPLINTFLAGS = -weak -type +sysdirerrors -retvalother\
                +line-len 80 -warnposix +infloops -fixedformalarray \
-	      -annotationerror \
+	      -annotationerror
 SPLINT_SOURCE = src/basis.c src/logic.c src/interface.c src/main.c
 
 $(ODIR)/%.o: $(SDIR)/%.c
@@ -29,8 +29,8 @@ test: $(OBJ2)
 	$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
 
 .PHONY: splinttest
-splinttest: $(SPLINT_SOURCE)
-	$(SPLINT) $(SPLINTFLAGS) -I $(IDIR) $<
+splinttest:
+	$(SPLINT) $(SPLINTFLAGS) -I $(IDIR) $(SPLINT_SOURCE)
 
 .PHONY: clean
 clean:
