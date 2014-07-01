@@ -42,3 +42,4 @@ void goto_build(unit *chr, int n_build);
 void load_houseoption(int n);
 void fortress_buy(int col);
 void option_upgrade(int level);
+void all_move();

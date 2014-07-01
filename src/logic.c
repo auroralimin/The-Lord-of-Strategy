@@ -57,17 +57,17 @@ char *options_frodo[] = { "ASCII art/house_option0.txt",
 };
 
 static unit attr[] = {
-{HOBBIT, 100, 1, 10, 10, {30, 40}, {30, 40}, 100, {0, 0, 0, 0}, NULL},
-{ELF, 130, 4, 40, 12, {28, 40}, {28, 40}, 200,  {0, 0, 0, 0}, NULL},
-{DWARF, 250, 2, 30, 10, {30, 40}, {30, 40}, 250,  {0, 0, 0, 0}, NULL},
-{ENT, 500, 1, 50, 15, {25, 40}, {25, 40}, 300,  {0, 0, 0, 0}, NULL},
-{GOBLIN, 100, 1, 10, 10, {30, 34+MORDOR_COL}, {30, 34+MORDOR_COL}, 100,
+{HOBBIT, 100, 1, 0, 10, 10, {30, 40}, {30, 40}, 100, {0, 0, 0, 0}, NULL},
+{ELF, 130, 1, 0, 40, 12, {28, 40}, {28, 40}, 200,  {0, 0, 0, 0}, NULL},
+{DWARF, 250, 2, 1, 30, 10, {30, 40}, {30, 40}, 250,  {0, 0, 0, 0}, NULL},
+{ENT, 500, 3, 2, 50, 15, {25, 40}, {25, 40}, 300,  {0, 0, 0, 0}, NULL},
+{GOBLIN, 100, 2, 3, 10, 10, {30, 34+MORDOR_COL}, {30, 34+MORDOR_COL}, 100,
 {0, 0, 0, 0}, NULL},
-{ORC, 200, 2, 30, 12, {28, 34+MORDOR_COL}, {28, 34+MORDOR_COL}, 200,
+{ORC, 200, 2, 1, 30, 12, {28, 34+MORDOR_COL}, {28, 34+MORDOR_COL}, 200,
 {0, 0, 0, 0}, NULL},
-{WARG, 120, 5, 25, 8, {32, 34+MORDOR_COL}, {32, 34+MORDOR_COL}, 250,
+{WARG, 120, 1, 0, 25, 8, {32, 34+MORDOR_COL}, {32, 34+MORDOR_COL}, 250,
 {0, 0, 0, 0}, NULL},
-{TROLL, 500, 1, 50, 15, {25, 34+MORDOR_COL}, {25, 34+MORDOR_COL}, 300,
+{TROLL, 500, 3, 2, 50, 15, {25, 34+MORDOR_COL}, {25, 34+MORDOR_COL}, 300,
 {0, 0, 0, 0}, NULL}
 };
 
@@ -291,7 +291,8 @@ void race_init(unit *chr, int race)
 		{
 			chr->race = attr[i].race;
 			chr->hp = attr[i].hp;
-			chr->spd = attr[i].spd;
+			chr->spd_delay = attr[i].spd_delay;
+			chr->count_delay = attr[i].count_delay;
 			chr->dmg = attr[i].dmg;
 			chr->height = attr[i].height;
 			chr->position[0] = attr[i].position[0];
@@ -608,5 +609,21 @@ void option_upgrade(int level)
 		for (i = 0; i < 6; i++)
 			for (j = 0; j < 13; j++)
 				map[builds[0].row-7+i][5+j] = ' ';
+	}
+}
+
+void all_move()
+{
+	unit *aux;
+
+	for (aux = free_races; aux!= NULL; aux = aux->next)
+	{
+		aux->count_delay++;
+		if (aux->count_delay == aux->spd_delay)
+		{
+			aux->count_delay = 0;
+			clear_unit(*aux);
+			move_unit(aux);
+		}
 	}
 }

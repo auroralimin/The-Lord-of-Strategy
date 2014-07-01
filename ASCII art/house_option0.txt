@@ -1,5 +1,5 @@
 #############
-#   UPDATE  #
+#  UPGRADE  #
 # GOLD:2000 #
 # FOOD:2000 #
 # WOOD:2000 #

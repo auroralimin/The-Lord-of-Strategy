@@ -75,7 +75,8 @@ typedef struct str_unit
 {
 	int race;
 	int hp;
-	int spd;
+	int spd_delay;
+	int count_delay;
 	int dmg;
 	int height;
 	int position[2];

@@ -223,7 +223,7 @@ void printw_scroll()
 
 	for (aux = free_races; aux != NULL; aux = aux->next)
 	{
-		move(map_scroll.row, aux->position[1] / map_scroll.proportion);
+		move(map_scroll.row, aux->position[1]/(MAP_COL/map_scroll.col));
 		printw("O");
 	}
 

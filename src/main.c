@@ -36,10 +36,9 @@ int main()
 		wprintw_map();
 		good_generator();
 		print_good();
+		all_move();
 		for (chr = get_freeraces(); chr != NULL; chr = chr->next)
 		{
-			clear_unit(*chr);
-			move_unit(chr);
 			check_good(chr);
 		}
 		usleep(REFRESH_TIME);
