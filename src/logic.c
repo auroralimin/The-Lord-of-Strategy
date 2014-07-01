@@ -39,6 +39,16 @@ static char *name_filearts[] = { "ASCII art/hobbit.txt",
 				 "ASCII art/troll.txt"
 };
 
+static char *name_fileshadows[] = { "ASCII art/hobbit_shadow.txt",
+			            "ASCII art/elf_shadow.txt",
+				    "ASCII art/dwarf_shadow.txt",
+				    "ASCII art/ent_shadow.txt",
+				    "ASCII art/goblin_shadow.txt",
+				    "ASCII art/orc_shadow.txt",
+				    "ASCII art/warg_shadow.txt",
+				    "ASCII art/troll_shadow.txt"
+};
+
 char *options_frodo[] = { "ASCII art/house_option0.txt",
 		          "ASCII art/house_option1.txt",
 		          "ASCII art/house_option2.txt",
@@ -55,7 +65,7 @@ static unit attr[] = {
 {0, 0, 0, 0}, NULL},
 {ORC, 200, 2, 30, 12, {28, 34+MORDOR_COL}, {28, 34+MORDOR_COL}, 200,
 {0, 0, 0, 0}, NULL},
-{WARG, 120, 5, 25, 8, {31, 34+MORDOR_COL}, {31, 34+MORDOR_COL}, 250,
+{WARG, 120, 5, 25, 8, {32, 34+MORDOR_COL}, {32, 34+MORDOR_COL}, 250,
 {0, 0, 0, 0}, NULL},
 {TROLL, 500, 1, 50, 15, {25, 34+MORDOR_COL}, {25, 34+MORDOR_COL}, 300,
 {0, 0, 0, 0}, NULL}
@@ -74,6 +84,7 @@ int status[2];
 int lim_map = 0;
 int term_col = 1;
 char mat_races[N_RACES + 1][RACE_HEIGHT][RACE_WIDTH];
+char mat_shadows[N_RACES + 1][RACE_HEIGHT][RACE_WIDTH];
 MEVENT event;
 build *build_top = NULL;
 unit *free_races = NULL;
@@ -324,19 +335,23 @@ void put_builds()
 int get_art()
 {
 	int i, j;
-	FILE *fp = NULL;
+	FILE *fp1 = NULL, *fp2 = NULL;
 
 	for (i = 0; i < N_RACES; i++)
 	{
-		fp = read_file(name_filearts[i]);
+		fp1 = read_file(name_filearts[i]);
+		fp2 = read_file(name_fileshadows[i]);
 		for (j = 0; j < 15; j++)
 		{
-			fscanf(fp, "%[^\n]s", mat_races[i][j]);
-			fgetc(fp);
-			if (feof(fp))
+			fscanf(fp1, "%[^\n]s", mat_races[i][j]);
+			fscanf(fp2, "%[^\n]s", mat_shadows[i][j]);
+			fgetc(fp1);
+			fgetc(fp2);
+			if ((feof(fp1)) || (feof(fp2)))
 				break;
 		}
-		fclose(fp);
+		fclose(fp1);
+		fclose(fp2);
 	}
 
 	return 1;
@@ -361,7 +376,7 @@ void printmap_unit(unit chr)
 	{
 		for (j = 0; j < RACE_WIDTH; j++)
 		{
-			if (mat_races[chr.race-1][i][j] != ' ')
+			if (mat_shadows[chr.race-1][i][j] == 'r')
 				map[row][col] = mat_races[chr.race-1][i][j];
 			col++;
 		}
@@ -382,9 +397,9 @@ void clear_unit(unit chr)
 		row++;
 	}
 
-	if (col < FRODO_WIDTH)
+	if (col <= FRODO_WIDTH)
 		load_build(builds[0].name, builds[0].row, builds[0].col);
-	else if (col > MORDOR_COL)
+	else if (col >= builds[1].col - RACE_WIDTH)
 		load_build(builds[1].name, builds[1].row, builds[1].col);
 	map_spaces();
 }
