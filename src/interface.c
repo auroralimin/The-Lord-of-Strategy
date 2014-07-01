@@ -201,6 +201,7 @@ void printw_scroll()
 {
 	int i, box, interval;
 	scrll map_scroll = get_mapscroll();
+	unit *free_races = get_freeraces(), *aux;
 
 	pthread_mutex_lock(&l_scroll);
 	interval = map_scroll.col / map_scroll.proportion;
@@ -219,6 +220,13 @@ void printw_scroll()
 
 	mvprintw(map_scroll.row, box, "|");
 	mvprintw(map_scroll.row, box + interval, "|");
+
+	for (aux = free_races; aux != NULL; aux = aux->next)
+	{
+		move(map_scroll.row, aux->position[1] / map_scroll.proportion);
+		printw("O");
+	}
+
 	pthread_mutex_unlock(&l_scroll);
 }
 
