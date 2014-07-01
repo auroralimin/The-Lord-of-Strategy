@@ -7,6 +7,7 @@
 #include "interface.h"
 
 unit hobbit;
+unit *free_races;
 build *build_top;
 
 /* suites initialization and clean fuctions */
@@ -126,7 +127,18 @@ void free_build_test(void)
 }
 
 /* logic tests functions */
-void init_options_test(void)
+void map_spaces_test(void)
+{
+	int i, j;
+
+	map_spaces();
+
+	for(i = 0; i < MAP_ROW; i++)
+		for(j = 0; j < MAP_COL; j++)
+			CU_ASSERT(map[i][j] == ' ');
+}
+
+void init_opt_test(void)
 {
 	init_options();
 	CU_ASSERT(options != NULL);
@@ -180,6 +192,22 @@ void move_unit_test(void)
 
 	CU_ASSERT(hobbit.position[0] == MAP_ROW - hobbit.height);
 	CU_ASSERT(hobbit.position[1] == aux + 9);
+}
+
+void get_freer_test(void)
+{
+	CU_ASSERT(get_freeraces() == NULL);
+}
+
+void set_freer_test(void)
+{
+	unit elf;
+
+	race_init(&elf, ELF);
+
+	set_freeraces(&elf);
+
+	CU_ASSERT(free_races->race == 2);
 }
 
 /* interface tests functions */

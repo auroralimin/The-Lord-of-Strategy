@@ -34,7 +34,8 @@ int main()
 	pSuite_logic = CU_add_suite("Suite: Logic", init_logic, clean_logic);
 
 	/* add tests to the Logic suite */
-	if ((NULL==CU_add_test(pSuite_logic, "init_options", init_options_test))
+	if ((NULL==CU_add_test(pSuite_logic, "map_spaces", map_spaces_test))
+	   ||(NULL==CU_add_test(pSuite_logic, "init_options", init_opt_test))
 	   ||(NULL==CU_add_test(pSuite_logic, "race_init", race_init_test))
 	   ||(NULL==CU_add_test(pSuite_logic, "load_build", load_build_test))
 	   ||(NULL==CU_add_test(pSuite_logic, "get_art", get_art_test))
