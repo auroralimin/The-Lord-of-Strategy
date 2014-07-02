@@ -10,5 +10,7 @@ int click_option(int option);
 void wprintw_menu(int highlight);
 void printw_scroll();
 int createmap_win();
+int createhobbit_win();
 void wprintw_map();
 void click_frodooption();
+void frodo_colect(unit *chr);

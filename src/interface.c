@@ -2,17 +2,20 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ncurses.h>
+#include <panel.h>
 #include <pthread.h>
 #include <math.h>
+#include <unistd.h>
 #include "basis.h"
 #include "interface.h"
 #include "logic.h"
 
 WINDOW *menu_win = NULL;
 WINDOW *map_win = NULL;
+PANEL *map_panel = NULL;
+WINDOW *hobbit_win = NULL;
+PANEL *hobbit_panel = NULL;
 int size[2];
-char *races_options[N_RACES/2] = {"HOBBIT", "ELF", "DWARF", "ENT"};
-char *good_options[N_RACES/2] = {"GOLD", "FOOD", "WOOD", "METAL"};
 
 void init_interface()
 {
@@ -223,7 +226,7 @@ void printw_scroll()
 
 	for (aux = free_races; aux != NULL; aux = aux->next)
 	{
-		move(map_scroll.row, aux->position[1]/(MAP_COL/map_scroll.col));
+		move(map_scroll.row, aux->position[1]/map_scroll.proportion+1);
 		printw("O");
 	}
 
@@ -236,8 +239,31 @@ int createmap_win()
 	if (map_win == NULL)
 		return -1;
 
+	map_panel = new_panel(map_win);
+	if (map_panel == NULL)
+		return -1;
+
+	show_panel(map_panel);
+	top_panel(map_panel);
+
 	return 1;
 }
+
+int createhobbit_win()
+{
+	hobbit_win = create_win(12, 29, size[0]/2 - 6, size[1]/2 - 15);
+	if (hobbit_win == NULL)
+		return -1;
+
+	hobbit_panel = new_panel(hobbit_win);
+	if (hobbit_panel == NULL)
+		return -1;
+
+	hide_panel(hobbit_panel);
+
+	return 1;
+}
+
 
 /* printa o mapa na janela do terminal */
 void wprintw_map()
@@ -255,9 +281,18 @@ void wprintw_map()
 			mvwprintw(map_win, i, j, "%c", map[i-1][j+term_col-1]);
 	box(map_win, 0, 0);
 
+	mvwprintw(hobbit_win, 1, 2, "PLEASE, CHOOSE WHICH GOOD");
+	mvwprintw(hobbit_win, 2, 2, "YOUR HOBBIT SHOULD COLECT");
+	mvwprintw(hobbit_win, 4, 12, "GOLD");
+	mvwprintw(hobbit_win, 6, 12, "FOOD");
+	mvwprintw(hobbit_win, 8, 12, "WOOD");
+	mvwprintw(hobbit_win, 10, 12, "METAL");
+	box(hobbit_win, 0, 0);
+
 	printw_scroll();
 	refresh();
-	wrefresh(map_win);
+	update_panels();
+	doupdate();
 }
 
 void click_frodooption()
@@ -268,5 +303,35 @@ void click_frodooption()
 	wmouse_trafo(map_win, &event.y, &event.x, false);
 	if ((event.y >= MAP_ROW - FRODO_ROW - 8) &&
 	   (event.y <= MAP_ROW - FRODO_ROW - 2))
+	{
 		fortress_buy(col + event.x - 1);
+	}
+}
+
+void frodo_colect(unit *chr)
+{
+	MEVENT event;
+
+	top_panel(hobbit_panel);
+	show_panel(hobbit_panel);
+
+	while(1)
+	{
+		if ((getch() == KEY_MOUSE) &&
+		   (getmouse(&event) == OK) &&
+		   (event.bstate == BUTTON1_CLICKED))
+		{
+			wmouse_trafo(hobbit_win, &event.y, &event.x, false);
+
+		  	if ((event.y > 3) && (event.y < 11) && (event.y%2 == 0))
+			{
+				goto_build(chr, (event.y - 4) / 2);
+				chr->good_type = (event.y - 4) / 2;
+				break;
+			}
+		}
+	}
+
+	hide_panel(hobbit_panel);
+	top_panel(map_panel);
 }

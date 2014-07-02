@@ -21,9 +21,9 @@ int main()
 	create_listbuild();
 	prepare_map();
 	createmap_win();
+	createhobbit_win();
 	chr = get_freeraces();
-	insert_unit(&chr, 1);
-	goto_build(chr, 0);
+	insert_unit(&chr, WARG);
 	set_freeraces(chr);
 	load_houseoption(0);
 	load_houseoption(1);

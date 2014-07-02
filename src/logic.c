@@ -15,8 +15,8 @@ struct build_art
 };
 
 static char *options_files[] = { "ASCII art/new_game.txt",
-			"ASCII art/load_game.txt",
-			"ASCII art/exit.txt"};
+                 		"ASCII art/load_game.txt",
+				"ASCII art/exit.txt"};
 
 
 static struct build_art builds[]={
@@ -30,9 +30,9 @@ static struct build_art builds[]={
 
 /* matriz contendo o endereço da ascii art do jogo */
 static char *name_filearts[] = { "ASCII art/hobbit.txt",
-			         "ASCII art/elf.txt",
-				 "ASCII art/dwarf.txt",
-				 "ASCII art/ent.txt",
+		                 "ASCII art/elf.txt",
+			         "ASCII art/dwarf.txt",
+		  	         "ASCII art/ent.txt",
 				 "ASCII art/goblin.txt",
 				 "ASCII art/orc.txt",
 				 "ASCII art/warg.txt",
@@ -46,32 +46,26 @@ static char *name_fileshadows[] = { "ASCII art/hobbit_shadow.txt",
 				    "ASCII art/goblin_shadow.txt",
 				    "ASCII art/orc_shadow.txt",
 				    "ASCII art/warg_shadow.txt",
-				    "ASCII art/troll_shadow.txt"
+			            "ASCII art/troll_shadow.txt"
 };
 
-char *options_frodo[] = { "ASCII art/house_option0.txt",
-		          "ASCII art/house_option1.txt",
-		          "ASCII art/house_option2.txt",
-		          "ASCII art/house_option3.txt",
-		          "ASCII art/house_option4.txt"
+static char *options_frodo[] = { "ASCII art/house_option0.txt",
+				 "ASCII art/house_option1.txt",
+				 "ASCII art/house_option2.txt",
+				 "ASCII art/house_option3.txt",
+				 "ASCII art/house_option4.txt"
 };
 
-static unit attr[] = {
-{HOBBIT, 100, 1, 0, 10, 10, {30, 40}, {30, 40}, 100, {0, 0, 0, 0}, NULL},
-{ELF, 130, 1, 0, 40, 12, {28, 40}, {28, 40}, 200,  {0, 0, 0, 0}, NULL},
-{DWARF, 250, 2, 1, 30, 10, {30, 40}, {30, 40}, 250,  {0, 0, 0, 0}, NULL},
-{ENT, 500, 3, 2, 50, 15, {25, 40}, {25, 40}, 300,  {0, 0, 0, 0}, NULL},
-{GOBLIN, 100, 2, 3, 10, 10, {30, 34+MORDOR_COL}, {30, 34+MORDOR_COL}, 100,
-{0, 0, 0, 0}, NULL},
-{ORC, 200, 2, 1, 30, 12, {28, 34+MORDOR_COL}, {28, 34+MORDOR_COL}, 200,
-{0, 0, 0, 0}, NULL},
-{WARG, 120, 1, 0, 25, 8, {32, 34+MORDOR_COL}, {32, 34+MORDOR_COL}, 250,
-{0, 0, 0, 0}, NULL},
-{TROLL, 500, 3, 2, 50, 15, {25, 34+MORDOR_COL}, {25, 34+MORDOR_COL}, 300,
-{0, 0, 0, 0}, NULL}
+static const unit attr[] = {
+{HOBBIT, 100, 1, 0, 10, 10, {30, 40}, {30, 40}, -1, 0, NULL},
+{ELF, 130, 1, 0, 40, 12, {28, 40}, {28, MORDOR_COL-19}, 0, 0, NULL},
+{DWARF, 250, 2, 1, 30, 10, {30, 40}, {30, MORDOR_COL-19}, 0, 0, NULL},
+{ENT, 500, 3, 2, 50, 15, {25, 40}, {25, MORDOR_COL-19}, 0, 0, NULL},
+{GOBLIN, 100, 2, 3, 10, 10, {30, 34+MORDOR_COL}, {0, 0}, -1, 0, NULL},
+{ORC, 200, 2, 1, 30, 12, {28, 34+MORDOR_COL}, {28, FRODO_WIDTH}, 0, 0, NULL},
+{WARG, 120, 1, 0, 25, 8, {32, 34+MORDOR_COL}, {32, FRODO_WIDTH}, 0, 0, NULL},
+{TROLL, 500, 3, 2, 50, 15, {25, 34+MORDOR_COL}, {25, FRODO_WIDTH}, 0, 0, NULL}
 };
-
-static int good_col[] = {HOBBIT_GOLD, HOBBIT_FOOD, HOBBIT_WOOD, HOBBIT_METAL};
 
 static int prices[4][4] = {{500, 500, 0, 0},
 	                  {800, 800, 0, 1500},
@@ -99,7 +93,7 @@ void* read_key(void *arg)
 		switch(getch())
 		{
 	 		case (KEY_MOUSE):
-			if(getmouse(&event) == OK)
+			if (getmouse(&event) == OK)
 			{
 				status[0] = STATUS_MOUSE_MOVED;
 				if (event.bstate == BUTTON1_CLICKED)
@@ -299,7 +293,9 @@ void race_init(unit *chr, int race)
 			chr->position[1] = attr[i].position[1];
 			chr->destination[0] = attr[i].destination[0];
 			chr->destination[1] = attr[i].destination[1];
-			chr->spwan_time = attr[i].spwan_time;
+			chr->good_type = attr[i].good_type;
+			chr->backpack = attr[i].backpack;
+
 			break;
 		}
 }
@@ -496,40 +492,43 @@ void print_good()
 
 void check_good(unit *chr)
 {
-	int i, j;
-	build *aux = build_top;
+	build *aux;
 
-	for (i = 0; i < N_BUILDS - 2; i++)
+	for (aux = build_top; aux != NULL; aux = aux->next)
 	{
-		if ((chr->position[1] == good_col[i]) &&
-				(chr->position[0] == GOOD_ROW))
+		if ((chr->position[0] == aux->position[0]) &&
+		    (chr->position[1] == aux->position[1]))
 		{
-			while ((aux != NULL) && (aux->id != i))
-				aux = aux->next;
-
-			if (aux->id == i)
-			{
-				chr->backpack[i]+=aux->storage;
-				aux->storage = 0;
-				chr->destination[0] = 30;
-				chr->destination[1] = 40;
-			}
+			chr->backpack+=aux->storage;
+			aux->storage = 0;
+			chr->destination[0] = 30;
+			chr->destination[1] = 40;
 		}
-		else if ((chr->position[1] == 40) &&
-				(chr->position[0] == 30))
+		else if ((chr->position[1] == 40) && (chr->position[0] == 30) &&
+			(chr->good_type != -1))
 		{
 			if (chr->race == HOBBIT)
 			{
-				user.gold+=chr->backpack[0];
-				user.food+=chr->backpack[1];
-				user.wood+=chr->backpack[2];
-				user.metal+=chr->backpack[3];
-				for (j = 0; j < 4; j++)
-					chr->backpack[j] = 0;
+				switch (chr->good_type)
+				{
+					case 0:
+						user.gold+=chr->backpack;
+						break;
+					case 1:
+						user.food+=chr->backpack;
+						break;
+					case 2:
+						user.wood+=chr->backpack;
+						break;
+					case 3:
+						user.metal+=chr->backpack;
+				}
+				chr->backpack = 0;
+				chr->destination[0] = GOOD_ROW;
+				chr->destination[1] =
+				get_goodcol(chr->good_type);
 			}
 		}
-		else
-			break;
 	}
 }
 
@@ -542,7 +541,7 @@ void goto_build(unit *chr, int n_build)
 			if (i == n_build)
 			{
 				chr->destination[0] = GOOD_ROW;
-				chr->destination[1] = good_col[i];
+				chr->destination[1] = get_goodcol(i);
 				break;
 			}
 }
@@ -569,12 +568,14 @@ void fortress_buy(int col)
 		if ((col >= i) && (col <= i+13))
 		{
 			if ((option != 0) && (frodo_house.level >= option) &&
-		   	   (user.gold >= prices[option - 1][0]) &&
-		           (user.food >= prices[option - 1][1]) &&
-		           (user.wood >= prices[option - 1][2]) &&
-		           (user.metal >= prices[option - 1][3]))
-	          	{
-		 		insert_unit(&free_races, option);
+			   (user.gold >= prices[option - 1][0]) &&
+			   (user.food >= prices[option - 1][1]) &&
+			   (user.wood >= prices[option - 1][2]) &&
+			   (user.metal >= prices[option - 1][3]))
+			{
+				insert_unit(&free_races, option);
+				if (option == 1)
+					frodo_colect(free_races);
 				break;
 			}
 			else if ((option == 0) && (frodo_house.level < 4) &&
@@ -618,12 +619,16 @@ void all_move()
 
 	for (aux = free_races; aux!= NULL; aux = aux->next)
 	{
-		aux->count_delay++;
-		if (aux->count_delay == aux->spd_delay)
+		if ((aux->position[0] != aux->destination[0]) ||
+				(aux->position[1] != aux->destination[1]))
 		{
-			aux->count_delay = 0;
-			clear_unit(*aux);
-			move_unit(aux);
+			aux->count_delay++;
+			if (aux->count_delay == aux->spd_delay)
+			{
+				aux->count_delay = 0;
+				clear_unit(*aux);
+				move_unit(aux);
+			}
 		}
 	}
 }

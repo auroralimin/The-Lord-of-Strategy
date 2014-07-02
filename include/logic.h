@@ -9,6 +9,7 @@ typedef struct str_scrll
 
 void* read_key(void *arg);
 player get_user();
+int get_goodcol(int i);
 MEVENT get_event();
 int get_keystatus();
 void set_keystatus(int key_status);

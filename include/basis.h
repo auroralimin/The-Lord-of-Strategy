@@ -1,7 +1,7 @@
 #include <ncurses.h>
 
 #define MAP_ROW 40
-#define MAP_COL 1530
+#define MAP_COL 1000
 #define REFRESH_TIME 500000
 #define MINIMUM_ROW 50
 #define MINIMUN_COL 110
@@ -81,8 +81,8 @@ typedef struct str_unit
 	int height;
 	int position[2];
 	int destination[2];
-	int spwan_time;
-	int backpack[N_BUILDS - 2];
+	int good_type;
+	int backpack;
 	struct str_unit *next;
 } unit;
 
@@ -92,6 +92,7 @@ typedef struct str_build
 	int level;
 	int storage;
 	int income;
+	int position[2];
 	struct str_build *next;
 } build;
 
@@ -130,3 +131,4 @@ void free_units(unit **top);
 void create_listbuild();
 int insert_build(int id);
 void free_build();
+int get_goodcol(int i);

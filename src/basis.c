@@ -8,7 +8,9 @@ char **map = NULL;
 char **options[N_OPTIONS];
 
 pthread_t key_thread;
-int options_len[] = { NEW_GAME, LOAD_GAME, EXIT_GAME};
+static const int options_len[] = { NEW_GAME, LOAD_GAME, EXIT_GAME};
+static const int good_col[] =
+{HOBBIT_GOLD, HOBBIT_FOOD, HOBBIT_WOOD, HOBBIT_METAL};
 
 void init_locks()
 {
@@ -179,6 +181,8 @@ int insert_build(int id)
 	new->level = 1;
 	new->storage = 0;
 	new->income = 50;
+	new->position[0] = GOOD_ROW;
+	new->position[1] = good_col[id];
 
 	if (build_top == NULL)
 	{
@@ -204,4 +208,8 @@ void free_build()
 		build_top = aux;
 	}
 	set_buildtop(NULL);
+}
+int get_goodcol(int i)
+{
+	return good_col[i];
 }
