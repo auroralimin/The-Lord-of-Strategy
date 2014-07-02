@@ -3,7 +3,7 @@
 #include "basis.h"
 #include "logic.h"
 
-pthread_mutex_t l_key, l_scroll;
+pthread_mutex_t l_key, l_scroll, l_printmap;
 char **map = NULL;
 char **options[N_OPTIONS];
 
@@ -16,6 +16,7 @@ void init_locks()
 {
 	pthread_mutex_init(&l_key, NULL);
 	pthread_mutex_init(&l_scroll, NULL);
+	pthread_mutex_init(&l_printmap, NULL);
 }
 
 void init_thread()
@@ -123,7 +124,7 @@ void free_options()
 
 int insert_unit(unit **top, int race)
 {
-	unit *new = (unit*) calloc(1, sizeof(unit));
+	unit *aux, *new = (unit*) calloc(1, sizeof(unit));
 
 	if (new == NULL)
 		return -1;
@@ -136,8 +137,24 @@ int insert_unit(unit **top, int race)
 		return 1;
 	}
 
-	new->next = *top;
-	*top = new;
+	if (new->height >= (*top)->height)
+	{
+		new->next = *top;
+		*top = new;
+	}
+	else
+	{
+		for (aux = *top; aux != NULL; aux = aux->next)
+		{
+			if ((aux->next == NULL) ||
+			   (aux->next->height <= new->height))
+			{
+				new->next = aux->next;
+				aux->next = new;
+				break;
+			}
+		}
+	}
 
 	return 1;
 }
@@ -209,6 +226,7 @@ void free_build()
 	}
 	set_buildtop(NULL);
 }
+
 int get_goodcol(int i)
 {
 	return good_col[i];

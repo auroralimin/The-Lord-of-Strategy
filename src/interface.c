@@ -227,7 +227,10 @@ void printw_scroll()
 	for (aux = free_races; aux != NULL; aux = aux->next)
 	{
 		move(map_scroll.row, aux->position[1]/map_scroll.proportion+1);
-		printw("O");
+		if (aux->race < 5)
+			printw("@");
+		else
+			printw("$");
 	}
 
 	pthread_mutex_unlock(&l_scroll);
@@ -266,33 +269,41 @@ int createhobbit_win()
 
 
 /* printa o mapa na janela do terminal */
-void wprintw_map()
+void refresh_allgame()
 {
 	int i, j;
 	int term_col = get_termcol();
 	player user = get_user();
 
-	clear();
-	move((size[0]-MAP_ROW-2)/2 - 1, 0);
-	printw("GOLD: %d    FOOD: %d    WOOD: %d    METAL: %d   ",
-	user.gold, user.food, user.wood, user.metal);
-	for (i = 1; i < MAP_ROW + 1; i++)
-		for (j = 1; (j < MAP_COL) && (j < size[1] - 1); j++)
-			mvwprintw(map_win, i, j, "%c", map[i-1][j+term_col-1]);
-	box(map_win, 0, 0);
+	if (pthread_mutex_trylock(&l_printmap) == 0)
+	{
+		clear();
+		move((size[0]-MAP_ROW-2)/2 - 1, 0);
+		printw("GOLD: %d    FOOD: %d    WOOD: %d    METAL: %d   ",
+		user.gold, user.food, user.wood, user.metal);
+		for (i = 1; i < MAP_ROW + 1; i++)
+			for (j = 1; (j < MAP_COL) && (j < size[1] - 1); j++)
+			{
+				wmove(map_win, i, j);
+				wprintw(map_win, "%c", map[i-1][j+term_col-1]);
+			}
+		box(map_win, 0, 0);
 
-	mvwprintw(hobbit_win, 1, 2, "PLEASE, CHOOSE WHICH GOOD");
-	mvwprintw(hobbit_win, 2, 2, "YOUR HOBBIT SHOULD COLECT");
-	mvwprintw(hobbit_win, 4, 12, "GOLD");
-	mvwprintw(hobbit_win, 6, 12, "FOOD");
-	mvwprintw(hobbit_win, 8, 12, "WOOD");
-	mvwprintw(hobbit_win, 10, 12, "METAL");
-	box(hobbit_win, 0, 0);
+		mvwprintw(hobbit_win, 1, 2, "PLEASE, CHOOSE WHICH GOOD");
+		mvwprintw(hobbit_win, 2, 2, "YOUR HOBBIT SHOULD COLECT");
+		mvwprintw(hobbit_win, 4, 12, "GOLD");
+		mvwprintw(hobbit_win, 6, 12, "FOOD");
+		mvwprintw(hobbit_win, 8, 12, "WOOD");
+		mvwprintw(hobbit_win, 10, 12, "METAL");
+		box(hobbit_win, 0, 0);
 
-	printw_scroll();
-	refresh();
-	update_panels();
-	doupdate();
+		printw_scroll();
+		refresh();
+		update_panels();
+		doupdate();
+
+		pthread_mutex_unlock(&l_printmap);
+	}
 }
 
 void click_frodooption()

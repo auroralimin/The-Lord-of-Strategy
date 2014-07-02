@@ -58,19 +58,19 @@ static char *options_frodo[] = { "ASCII art/house_option0.txt",
 
 static const unit attr[] = {
 {HOBBIT, 100, 3, 2, 10, 10, {30, 40}, {30, 40}, -1, 0, NULL},
-{ELF, 130, 1, 0, 40, 12, {28, 40}, {28, MORDOR_COL-19}, 0, 0, NULL},
-{DWARF, 250, 2, 1, 30, 10, {30, 40}, {30, MORDOR_COL-19}, 0, 0, NULL},
-{ENT, 500, 3, 2, 50, 15, {25, 40}, {25, MORDOR_COL-19}, 0, 0, NULL},
-{GOBLIN, 100, 2, 3, 10, 10, {30, 34+MORDOR_COL}, {0, 0}, -1, 0, NULL},
-{ORC, 200, 2, 1, 30, 12, {28, 34+MORDOR_COL}, {28, FRODO_WIDTH}, 0, 0, NULL},
-{WARG, 120, 1, 0, 25, 8, {32, 34+MORDOR_COL}, {32, FRODO_WIDTH}, 0, 0, NULL},
-{TROLL, 500, 3, 2, 50, 15, {25, 34+MORDOR_COL}, {25, FRODO_WIDTH}, 0, 0, NULL}
+{ELF,    130, 2, 1, 40, 12, {28, 40}, {28, MORDOR_COL-19}, 0, 0, NULL},
+{DWARF,  250, 3, 2, 30, 11, {29, 40}, {29, MORDOR_COL-19}, 0, 0, NULL},
+{ENT,    500, 4, 3, 50, 15, {25, 40}, {25, MORDOR_COL-19}, 0, 0, NULL},
+{GOBLIN, 100, 4, 3, 10, 10, {30, 34+MORDOR_COL}, {0, 0}, -1, 0, NULL},
+{ORC,    200, 3, 2, 30, 12, {28, 34+MORDOR_COL}, {28, FRODO_WIDTH}, 0, 0, NULL},
+{WARG,   120, 2, 1, 25,  8, {32, 34+MORDOR_COL}, {32, FRODO_WIDTH}, 0, 0, NULL},
+{TROLL,  500, 3, 2, 50, 15, {25, 34+MORDOR_COL}, {25, FRODO_WIDTH}, 0, 0, NULL}
 };
 
-static int prices[4][4] = {{500, 500, 0, 0},
-	                  {800, 800, 0, 1500},
-		          {1000, 1500, 0, 500},
-		          {1500, 1500, 3000, 0}
+static int prices[4][4] = {{500,  500,    0,    0},
+	                  { 800,  800,    0, 1500},
+		          {1000, 1500,    0,  500},
+		          {1500, 1500, 3000,    0}
 };
 
 scrll map_scroll;
@@ -211,7 +211,8 @@ int report_option(int mouse_row, int mouse_col)
 
 void mouse_scroll(int mouse_col)
 {
-	if ((mouse_col > 0) && (mouse_col <= map_scroll.col))
+	if ((mouse_col > 0) && (mouse_col <= map_scroll.col) &&
+	   (term_col != 0) && (term_col != lim_map))
 	{
 		pthread_mutex_lock(&l_scroll);
 		map_scroll.position = mouse_col;
@@ -219,7 +220,7 @@ void mouse_scroll(int mouse_col)
 		term_col = map_scroll.proportion * (map_scroll.position - 1);
 		term_coltest();
 		pthread_mutex_unlock(&l_scroll);
-		wprintw_map();
+		refresh_allgame();
 	}
 }
 
@@ -244,7 +245,7 @@ void arrow_scroll(int direction)
 		}
 		term_coltest();
 		pthread_mutex_unlock(&l_scroll);
-		wprintw_map();
+		refresh_allgame();
 	}
 }
 
@@ -459,34 +460,12 @@ void set_buildtop(build *top)
 
 void print_good()
 {
-	int i = 0, j = 0, n = 2, storage = 0, num = 0;
+	int n = 2;
 	build *aux = NULL;
 
-	for (i = MAP_COL - FRODO_COL; i < MAP_COL - MORDOR_COL; i++)
-		map[0][i] = ' ';
-
-	i = 0;
 	for (aux = build_top; aux != NULL; aux = aux->next)
 	{
-		storage = aux->storage;
-
-		for (i = 0; i < 6; i++)
-			map[0][builds[n].col+i] = ' ';
-
-		for (i = 999999; i > 0; i = i/10)
-		{
-			if (storage > i)
-			{
-				num = storage/(i+1);
-				map[0][builds[n].col+j++] = num + 48;
-				storage = storage - ((i + 1) * num);
-			}
-			else if (j > 0)
-					map[0][builds[n].col+j++] = 48;
-		}
-		map[0][builds[n].col+j] = storage + 48;
-		n++;
-		j = 0;
+		sprintf(map[0] + builds[n++].col, "%5d", aux->storage);
 	}
 }
 
