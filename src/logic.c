@@ -57,7 +57,7 @@ static char *options_frodo[] = { "ASCII art/house_option0.txt",
 };
 
 static const unit attr[] = {
-{HOBBIT, 100, 1, 0, 10, 10, {30, 40}, {30, 40}, -1, 0, NULL},
+{HOBBIT, 100, 3, 2, 10, 10, {30, 40}, {30, 40}, -1, 0, NULL},
 {ELF, 130, 1, 0, 40, 12, {28, 40}, {28, MORDOR_COL-19}, 0, 0, NULL},
 {DWARF, 250, 2, 1, 30, 10, {30, 40}, {30, MORDOR_COL-19}, 0, 0, NULL},
 {ENT, 500, 3, 2, 50, 15, {25, 40}, {25, MORDOR_COL-19}, 0, 0, NULL},

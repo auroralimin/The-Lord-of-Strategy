@@ -152,7 +152,7 @@ void race_init_test(void)
 	race_init(&hobbit, HOBBIT);
 	CU_ASSERT(hobbit.race == HOBBIT);
 	CU_ASSERT(hobbit.hp == 100);
-	CU_ASSERT(hobbit.spd == 1);
+	CU_ASSERT(hobbit.spd_delay == 3);
 	CU_ASSERT(hobbit.dmg == 10);
 }
 
