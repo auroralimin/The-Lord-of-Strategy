@@ -10,7 +10,7 @@ OBJ1 = $(patsubst %,$(ODIR)/%,$(_OBJ1))
 OBJ2 = $(patsubst %,$(ODIR)/%,$(_OBJ2))
 
 CFLAGS = -I$(IDIR) -Wall -Wextra -g
-LIBS = -lncurses -lm -pthread -lcunit
+LIBS = -lncurses -lm -pthread -lpanel -lcunit
 
 SPLINT = splint
 SPLINTFLAGS = -weak -type +sysdirerrors -retvalother\
