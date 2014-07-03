@@ -107,10 +107,7 @@ typedef struct str_fortress
 typedef struct str_player
 {
 	int id;
-	int gold;
-	int food;
-	int wood;
-	int metal;
+	int good[4];
 } player;
 
 extern int click_sync;

@@ -83,7 +83,7 @@ MEVENT event;
 build *build_top = NULL;
 unit *free_races = NULL;
 fortress frodo_house = {1, 15000, 1, 0};
-player user = {10000, 10000, 10000, 10000, 10000};
+player user = {1, {10000, 10000, 10000, 10000}};
 
 void* read_key(void *arg)
 {
@@ -488,20 +488,7 @@ void check_good(unit *chr)
 		{
 			if (chr->race == HOBBIT)
 			{
-				switch (chr->good_type)
-				{
-					case 0:
-						user.gold+=chr->backpack;
-						break;
-					case 1:
-						user.food+=chr->backpack;
-						break;
-					case 2:
-						user.wood+=chr->backpack;
-						break;
-					case 3:
-						user.metal+=chr->backpack;
-				}
+				user.good[chr->good_type]+=chr->backpack;
 				chr->backpack = 0;
 				chr->destination[0] = GOOD_ROW;
 				chr->destination[1] =
@@ -540,31 +527,37 @@ void load_houseoption(int n)
 
 void fortress_buy(int col)
 {
-	int i, option = 0;
+	int i, j, option = 0, level = frodo_house.level;;
 
 	for (i = 5; i < 80; i+=15)
 	{
 		if ((col >= i) && (col <= i+13))
 		{
-			if ((option != 0) && (frodo_house.level >= option) &&
-			   (user.gold >= prices[option - 1][0]) &&
-			   (user.food >= prices[option - 1][1]) &&
-			   (user.wood >= prices[option - 1][2]) &&
-			   (user.metal >= prices[option - 1][3]))
+			if ((option != 0) && (level >= option))
 			{
+				if ((user.good[0] < prices[option - 1][0]) ||
+			   	   (user.good[1] < prices[option - 1][1]) ||
+			   	   (user.good[2] < prices[option - 1][2]) ||
+			   	   (user.good[3] < prices[option - 1][3]))
+					break;
+
+				for (j = 0; j < 3; j++)
+					user.good[j]-=prices[option-1][j];
 				insert_unit(&free_races, option);
 				if (option == 1)
 					frodo_colect(free_races);
 				break;
 			}
-			else if ((option == 0) && (frodo_house.level < 4) &&
-				(user.gold >= 1000 * (frodo_house.level+1)) &&
-				(user.food >= 1000 * (frodo_house.level+1)) &&
-				(user.wood >= 1000 * (frodo_house.level+1)))
+			else if ((option == 0) && (frodo_house.level < 4))
 			{
-				user.gold-=1000 * (frodo_house.level + 1);
-				user.food-=1000 * (frodo_house.level + 1);
-				user.wood-=1000 * (frodo_house.level + 1);
+				if ((user.good[0] < 1000 * (level+1)) ||
+				   (user.good[1] < 1000 * (level+1))  ||
+				   (user.good[2] < 1000 * (level+1)))
+					break;
+
+				for (j = 0; j < 3; j++)
+					user.good[j]-=
+					1000 * (frodo_house.level + 1);
 				frodo_house.level++;
 				option_upgrade(frodo_house.level);
 			}

@@ -280,7 +280,7 @@ void refresh_allgame()
 		clear();
 		move((size[0]-MAP_ROW-2)/2 - 1, 0);
 		printw("GOLD: %d    FOOD: %d    WOOD: %d    METAL: %d   ",
-		user.gold, user.food, user.wood, user.metal);
+		user.good[0], user.good[1], user.good[2], user.good[3]);
 		for (i = 1; i < MAP_ROW + 1; i++)
 			for (j = 1; (j < MAP_COL) && (j < size[1] - 1); j++)
 			{
