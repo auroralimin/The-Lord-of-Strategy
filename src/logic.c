@@ -102,8 +102,8 @@ void* read_key(void *arg)
 					if ((event.y >= map_scroll.row-1) &&
 					   (event.y <= map_scroll.row+1))
 						mouse_scroll(event.x);
-					else
-						click_frodooption();
+					else if (!click_frodooption())
+						change_hobbit(event.y, event.x);
 				}
 			}
 			break;
@@ -523,7 +523,7 @@ void goto_build(unit *chr, int n_build)
 				chr->destination[1] = get_goodcol(i);
 				break;
 			}
-}
+	}
 
 void load_houseoption(int n)
 {
@@ -599,7 +599,7 @@ void all_move()
 	for (aux = free_races; aux!= NULL; aux = aux->next)
 	{
 		if ((aux->position[0] != aux->destination[0]) ||
-				(aux->position[1] != aux->destination[1]))
+     		   (aux->position[1] != aux->destination[1]))
 		{
 			aux->count_delay++;
 			if (aux->count_delay == aux->spd_delay)

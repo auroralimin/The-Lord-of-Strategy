@@ -9,7 +9,6 @@ typedef struct str_scrll
 
 void* read_key(void *arg);
 player get_user();
-int get_goodcol(int i);
 MEVENT get_event();
 int get_keystatus();
 void set_keystatus(int key_status);
@@ -44,3 +43,4 @@ void load_houseoption(int n);
 void fortress_buy(int col);
 void option_upgrade(int level);
 void all_move();
+void change_hobbit();

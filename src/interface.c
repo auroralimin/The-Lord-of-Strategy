@@ -306,7 +306,7 @@ void refresh_allgame()
 	}
 }
 
-void click_frodooption()
+int click_frodooption()
 {
 	int col = get_termcol();
 	MEVENT event = get_event();
@@ -316,7 +316,10 @@ void click_frodooption()
 	   (event.y <= MAP_ROW - FRODO_ROW - 2))
 	{
 		fortress_buy(col + event.x - 1);
+		return 1;
 	}
+
+	return 0;
 }
 
 void frodo_colect(unit *chr)
@@ -336,8 +339,12 @@ void frodo_colect(unit *chr)
 
 		  	if ((event.y > 3) && (event.y < 11) && (event.y%2 == 0))
 			{
-				goto_build(chr, (event.y - 4) / 2);
-				chr->good_type = (event.y - 4) / 2;
+				if (chr->good_type != (event.y - 4) / 2)
+				{
+					chr->destination[0] = 30;
+					chr->destination[1] = 40;
+					chr->good_type = (event.y - 4) / 2;
+				}
 				break;
 			}
 		}
@@ -345,4 +352,35 @@ void frodo_colect(unit *chr)
 
 	hide_panel(hobbit_panel);
 	top_panel(map_panel);
+}
+
+
+void change_hobbit(int row, int col)
+{
+	int term_col = get_termcol(), old_destination[0];
+	unit *aux;
+
+	wmouse_trafo(map_win, &row, &col, false);
+
+	for (aux = get_freeraces(); aux != NULL; aux = aux->next)
+		if ((aux->race == HOBBIT) &&
+		   (row >= aux->position[0]) && (row <= aux->position[0]+10) &&
+		   (col + term_col >= aux->position[1]) &&
+		   (col + term_col <= aux->position[1] + 19))
+		{
+			old_destination[0] = aux->destination[0];
+			old_destination[1] = aux->destination[1];
+			aux->destination[0] = aux->position[0];
+			aux->destination[1] = aux->position[1];
+
+			frodo_colect(aux);
+
+			if ((aux->position[0] == aux->destination[0]) &&
+			   (aux->position[1] == aux->destination[1]))
+			{
+				aux->destination[0] = old_destination[0];
+				aux->destination[1] = old_destination[1];
+			}
+			break;
+		}
 }

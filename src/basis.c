@@ -3,6 +3,7 @@
 #include "basis.h"
 #include "logic.h"
 
+int click_sync = 0;
 pthread_mutex_t l_key, l_scroll, l_printmap;
 char **map = NULL;
 char **options[N_OPTIONS];

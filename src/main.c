@@ -22,21 +22,16 @@ int main()
 	prepare_map();
 	createmap_win();
 	createhobbit_win();
-	chr = get_freeraces();
-	insert_unit(&chr, HOBBIT);
-	goto_build(chr, 3);
-	insert_unit(&chr, ELF);
-	insert_unit(&chr, DWARF);
-	insert_unit(&chr, ENT);
-	set_freeraces(chr);
 	load_houseoption(0);
 	load_houseoption(1);
+
 	while(1)
 	{
 		for (chr = get_freeraces(); chr != NULL; chr = chr->next)
 		{
 			printmap_unit(*chr);
 		}
+
 		refresh_allgame();
 		good_generator();
 		print_good();

@@ -47,7 +47,7 @@
 #define HOBBIT_GOLD GOLD_COL1 + 8
 #define HOBBIT_FOOD FOOD_COL1 + 2
 #define HOBBIT_WOOD WOOD_COL1 + 4
-#define HOBBIT_METAL METAL_COL1 + 25
+#define HOBBIT_METAL METAL_COL1 + 23
 #define GOOD_ROW 6
 
 #define USER 0
@@ -113,6 +113,7 @@ typedef struct str_player
 	int metal;
 } player;
 
+extern int click_sync;
 extern pthread_mutex_t l_key, l_scroll, l_printmap;
 extern char **map;
 extern char **options[N_OPTIONS];

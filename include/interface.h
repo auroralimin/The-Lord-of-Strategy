@@ -12,5 +12,6 @@ void printw_scroll();
 int createmap_win();
 int createhobbit_win();
 void refresh_allgame();
-void click_frodooption();
+int click_frodooption();
 void frodo_colect(unit *chr);
+void change_hobbit(int row, int col);
