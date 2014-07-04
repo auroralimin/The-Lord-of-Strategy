@@ -17,6 +17,18 @@ WINDOW *msg_win = NULL;
 PANEL *msg_panel = NULL;
 int size[2];
 
+void get_dimension();
+WINDOW* create_win(int win_y, int win_x, int starty, int startx);
+void destroy_win(WINDOW **local_win);
+int click_option(int option);
+void wprintw_menu(int highlight);
+void printw_scroll();
+void print_map();
+void print_gamebar();
+void print_msghobbit();
+void print_msgpaused();
+void print_msgquit();
+
 void init_interface()
 {
 	int lim_map, n;

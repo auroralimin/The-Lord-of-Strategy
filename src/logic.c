@@ -15,8 +15,8 @@ struct build_art
 };
 
 static char *options_files[] = { "ASCII art/new_game.txt",
-                 		"ASCII art/load_game.txt",
-				"ASCII art/exit.txt"};
+                 		 "ASCII art/load_game.txt",
+				 "ASCII art/exit.txt"};
 
 
 static struct build_art builds[]={
@@ -85,6 +85,15 @@ unit *free_races = NULL;
 fortress frodo_house = {1, 15000, 1, 0};
 player user = {1, {10000, 10000, 10000, 10000}};
 char *hobbit_good[] = {"GOLD ", "FOOD ", "WOOD ", "METAL"};
+
+void mouse_clicked();
+void game_paused();
+void mouse_scroll(int mouse_col);
+void arrow_scroll(int direction);
+void term_coltest();
+int load_build(char *file_name, int art_row, int art_col);
+void clear_unit(unit chr);
+void move_unit(unit *chr);
 
 void* read_key(void *arg)
 {
