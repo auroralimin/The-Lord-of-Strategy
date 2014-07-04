@@ -1,0 +1,613 @@
+\hypertarget{logic_8h}{\section{\-Referência do \-Arquivo include/logic.h}
+\label{logic_8h}\index{include/logic.\-h@{include/logic.\-h}}
+}
+
+
+\-Header contendo todas funçoes logicas do programa.  
+
+
+\subsection*{\-Componentes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structstr__scrll}{str\-\_\-scrll}
+\begin{DoxyCompactList}\small\item\em \-Estrutura contendo as informacoes nescessarias para realizar o side-\/scrolling do mapa. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{\-Definições de \-Tipos}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{logic_8h_a65a0a87d92a037850f005fdce6aaaca1}{typedef struct \hyperlink{structstr__scrll}{str\-\_\-scrll} {\bfseries scrll}}\label{logic_8h_a65a0a87d92a037850f005fdce6aaaca1}
+
+\end{DoxyCompactItemize}
+\subsection*{\-Funções}
+\begin{DoxyCompactItemize}
+\item 
+void $\ast$ \hyperlink{logic_8h_aa2d5b8735ac58d613ea59a731b6683a1}{read\-\_\-key} (void $\ast$arg)
+\item 
+void \hyperlink{logic_8h_a3fa2d4fb9de055038d3172659ae7774d}{quit\-\_\-select} (int option)
+\item 
+\hyperlink{structstr__player}{player} \hyperlink{logic_8h_a9e77c7ca6f7e4ce8f1aba4514ea640e2}{get\-\_\-user} ()
+\item 
+\-M\-E\-V\-E\-N\-T \hyperlink{logic_8h_a0a05af4b98f30239c55ea279d3c380b1}{get\-\_\-event} ()
+\item 
+int \hyperlink{logic_8h_a7bfec509901a3039d5a3fe91f2e308a8}{get\-\_\-keystatus} ()
+\item 
+void \hyperlink{logic_8h_ab9b0c2eb5d40d4d89bcdd0585b6e8d90}{set\-\_\-keystatus} (int key\-\_\-status)
+\item 
+int \hyperlink{logic_8h_aa2913038ef32b4d232ef952c8d5153ac}{get\-\_\-gamestatus} ()
+\item 
+void \hyperlink{logic_8h_a4a99702724e5854866f4f56552db32cc}{set\-\_\-gamestatus} (int key\-\_\-status)
+\item 
+int \hyperlink{logic_8h_a78e6a331a82808a298ab83e978350fb4}{get\-\_\-termcol} ()
+\item 
+void \hyperlink{logic_8h_a0579a2afaaeb45412336fba241a5dc60}{set\-\_\-maplim} (int lim)
+\item 
+void \hyperlink{logic_8h_ab5b635f50076e9fddb34e28835e49de9}{init\-\_\-options} ()
+\item 
+int \hyperlink{logic_8h_a99b61072c5ff13ebf7c0dcb004629540}{report\-\_\-option} (int mouse\-\_\-row, int mouse\-\_\-col)
+\item 
+\hyperlink{structstr__scrll}{scrll} \hyperlink{logic_8h_a82e480173e51caacb14bc5d0a75e7245}{get\-\_\-mapscroll} ()
+\item 
+void \hyperlink{logic_8h_a659cf0f56e934caeccee1296f2e1c283}{set\-\_\-mapscroll} (\hyperlink{structstr__scrll}{scrll} scroll\-\_\-map)
+\item 
+void \hyperlink{logic_8h_aba19ac929fa46524af247ed73b9bec9c}{race\-\_\-init} (\hyperlink{structstr__unit}{unit} $\ast$chr, int race)
+\item 
+int \hyperlink{logic_8h_aa13d9f63410420022bdd7990c7dd8b4a}{get\-\_\-art} ()
+\item 
+void \hyperlink{logic_8h_a2302be425a8543a69a568a751f7a1f0c}{put\-\_\-builds} ()
+\item 
+void \hyperlink{logic_8h_a52bee9723462aef50459342c4676e766}{map\-\_\-spaces} ()
+\item 
+void \hyperlink{logic_8h_a59d765b8443d72f3284dfa386fb7dc50}{printmap\-\_\-unit} (\hyperlink{structstr__unit}{unit} chr)
+\item 
+void \hyperlink{logic_8h_a7966c988f44d94586c9e7ef3c32801b0}{good\-\_\-generator} ()
+\item 
+\hyperlink{structstr__unit}{unit} $\ast$ \hyperlink{logic_8h_a02b4a4936b07125795de774979a350d9}{get\-\_\-freeraces} ()
+\item 
+void \hyperlink{logic_8h_aab33c8eb4d23d0e3dd3a9269f020e4b3}{set\-\_\-freeraces} (\hyperlink{structstr__unit}{unit} $\ast$top)
+\item 
+\hyperlink{structstr__build}{build} $\ast$ \hyperlink{logic_8h_a152c51d1783cc45bfe89c9001d3700a0}{get\-\_\-buildtop} ()
+\item 
+void \hyperlink{logic_8h_a918605ccbe43c82c22facb9a505e344d}{set\-\_\-buildtop} (\hyperlink{structstr__build}{build} $\ast$top)
+\item 
+void \hyperlink{logic_8h_ad6a2f0f9aca2b5587fd2488516f95008}{print\-\_\-good} ()
+\item 
+void \hyperlink{logic_8h_a78a93b5948ff8557fb030ff8c3c20635}{check\-\_\-good} (\hyperlink{structstr__unit}{unit} $\ast$chr)
+\item 
+void \hyperlink{logic_8h_a6479c64ed049228204d2190b831317b2}{goto\-\_\-build} (\hyperlink{structstr__unit}{unit} $\ast$chr, int n\-\_\-build)
+\item 
+void \hyperlink{logic_8h_a951f34ce76a4cd4651ce5f3d8aa4842f}{load\-\_\-houseoption} (int n)
+\item 
+void \hyperlink{logic_8h_a5c474d45c5bb5f78ec6b1eec933bb0a2}{fortress\-\_\-buy} (int col)
+\item 
+void \hyperlink{logic_8h_a5dba92e6a39126f3fab303bcf4ee9a26}{option\-\_\-upgrade} (int level)
+\item 
+void \hyperlink{logic_8h_a4526e3103a63b241fb2f3b2b6ecf8533}{all\-\_\-move} ()
+\item 
+void \hyperlink{logic_8h_ac76a9a18e8a40dff802783d63a839a23}{change\-\_\-hobbit} ()
+\end{DoxyCompactItemize}
+
+
+\subsection{\-Descrição \-Detalhada}
+\-Header contendo todas funçoes logicas do programa. 
+
+\subsection{\-Funções}
+\hypertarget{logic_8h_a4526e3103a63b241fb2f3b2b6ecf8533}{\index{logic.\-h@{logic.\-h}!all\-\_\-move@{all\-\_\-move}}
+\index{all\-\_\-move@{all\-\_\-move}!logic.h@{logic.\-h}}
+\subsubsection[{all\-\_\-move}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf all\-\_\-move} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{logic_8h_a4526e3103a63b241fb2f3b2b6ecf8533}
+\-Funcao\-: \-Mover todas as unidades.
+
+\-Descricao\-: \-Move todas as unidades de acordo com sua posicao atual (caso ja estejam em seu destino, as unidades nao se movem mais) e do tempo nescessario para se mover (o qual varia de raca para raca).
+
+\begin{DoxyReturn}{\-Retorna}
+void
+\end{DoxyReturn}
+\-Requisitos\-: map != \-N\-U\-L\-L \hypertarget{logic_8h_ac76a9a18e8a40dff802783d63a839a23}{\index{logic.\-h@{logic.\-h}!change\-\_\-hobbit@{change\-\_\-hobbit}}
+\index{change\-\_\-hobbit@{change\-\_\-hobbit}!logic.h@{logic.\-h}}
+\subsubsection[{change\-\_\-hobbit}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf change\-\_\-hobbit} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{logic_8h_ac76a9a18e8a40dff802783d63a839a23}
+\-Funcao\-: \-Mudar o o trabalho de um hobbit. (?)
+
+\-Descricao\-: \-Permite o usuario mudar o tipo de recurso que o hobbit esta recolhendo.(?) \begin{DoxyReturn}{\-Retorna}
+void
+\end{DoxyReturn}
+\-Requisitos\-: \-N/\-A. \hypertarget{logic_8h_a78a93b5948ff8557fb030ff8c3c20635}{\index{logic.\-h@{logic.\-h}!check\-\_\-good@{check\-\_\-good}}
+\index{check\-\_\-good@{check\-\_\-good}!logic.h@{logic.\-h}}
+\subsubsection[{check\-\_\-good}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf check\-\_\-good} (
+\begin{DoxyParamCaption}
+\item[{{\bf unit} $\ast$}]{chr}
+\end{DoxyParamCaption}
+)}}\label{logic_8h_a78a93b5948ff8557fb030ff8c3c20635}
+\-Funcao\-: \-Coletar os recuros.
+
+\-Descricao\-: \-Faz com que os hobbits coltem os recursos caso eles estejam perto da construcao a qual estao trabalhando. \-Caso eles estejam perto da fortaleza, eles depositam os recursos.
+
+
+\begin{DoxyParams}{\-Parâmetros}
+{\em chr} & \-Unidade que esta coletando os recursos.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Retorna}
+void
+\end{DoxyReturn}
+\-Requisitos\-: map != \-N\-U\-L\-L e chr != \-N\-U\-L\-L \hypertarget{logic_8h_a5c474d45c5bb5f78ec6b1eec933bb0a2}{\index{logic.\-h@{logic.\-h}!fortress\-\_\-buy@{fortress\-\_\-buy}}
+\index{fortress\-\_\-buy@{fortress\-\_\-buy}!logic.h@{logic.\-h}}
+\subsubsection[{fortress\-\_\-buy}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf fortress\-\_\-buy} (
+\begin{DoxyParamCaption}
+\item[{int}]{col}
+\end{DoxyParamCaption}
+)}}\label{logic_8h_a5c474d45c5bb5f78ec6b1eec933bb0a2}
+\-Funcao\-: \-Desbloquear a proxima raca aliada.
+
+\-Descricao\-: \-Permite o usuario desbloquear a proxima raca aliada e comecar a produzir unidades dessa raca.
+
+
+\begin{DoxyParams}{\-Parâmetros}
+{\em col} & ??\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Retorna}
+void
+\end{DoxyReturn}
+\-Reqquisitos\-: \-N/\-A. \hypertarget{logic_8h_aa13d9f63410420022bdd7990c7dd8b4a}{\index{logic.\-h@{logic.\-h}!get\-\_\-art@{get\-\_\-art}}
+\index{get\-\_\-art@{get\-\_\-art}!logic.h@{logic.\-h}}
+\subsubsection[{get\-\_\-art}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf get\-\_\-art} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{logic_8h_aa13d9f63410420022bdd7990c7dd8b4a}
+\-Funcao\-: \-Ler as ascii art das racas.
+
+\-Descricao\-: \-Le os arquivos .txt contendo as ascii art de cada raca e suas sombras, e as colocas em suas respecitivas matrizes.
+
+\begin{DoxyReturn}{\-Retorna}
+1, caso tudo tenha dado certo.
+\end{DoxyReturn}
+\-Requisitos\-: \-Os .txt contendo as ascii art de cada raca. \hypertarget{logic_8h_a152c51d1783cc45bfe89c9001d3700a0}{\index{logic.\-h@{logic.\-h}!get\-\_\-buildtop@{get\-\_\-buildtop}}
+\index{get\-\_\-buildtop@{get\-\_\-buildtop}!logic.h@{logic.\-h}}
+\subsubsection[{get\-\_\-buildtop}]{\setlength{\rightskip}{0pt plus 5cm}{\bf build}$\ast$ {\bf get\-\_\-buildtop} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{logic_8h_a152c51d1783cc45bfe89c9001d3700a0}
+\-Funcao\-: \-Recuperar o inicio da lista de construcoes.
+
+\-Descricao\-: \-Encapsula o ponteiro de inicio da lista de construcoes do usauario. \-Assim, apenas as funcoes que preicam da da lista tem acesso 'as construcoes.
+
+\begin{DoxyReturn}{\-Retorna}
+build\-\_\-top, inicio da lista de construcoes do usuario.
+\end{DoxyReturn}
+\-Requisitos\-: \-N/\-A. \hypertarget{logic_8h_a0a05af4b98f30239c55ea279d3c380b1}{\index{logic.\-h@{logic.\-h}!get\-\_\-event@{get\-\_\-event}}
+\index{get\-\_\-event@{get\-\_\-event}!logic.h@{logic.\-h}}
+\subsubsection[{get\-\_\-event}]{\setlength{\rightskip}{0pt plus 5cm}\-M\-E\-V\-E\-N\-T {\bf get\-\_\-event} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{logic_8h_a0a05af4b98f30239c55ea279d3c380b1}
+\-Funcao\-: \-Recupercao das informacoes de eventos.
+
+\-Descricao\-: ??
+
+\begin{DoxyReturn}{\-Retorna}
+event
+\end{DoxyReturn}
+\-Requisitos\-: \-N/\-A. \hypertarget{logic_8h_a02b4a4936b07125795de774979a350d9}{\index{logic.\-h@{logic.\-h}!get\-\_\-freeraces@{get\-\_\-freeraces}}
+\index{get\-\_\-freeraces@{get\-\_\-freeraces}!logic.h@{logic.\-h}}
+\subsubsection[{get\-\_\-freeraces}]{\setlength{\rightskip}{0pt plus 5cm}{\bf unit}$\ast$ {\bf get\-\_\-freeraces} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{logic_8h_a02b4a4936b07125795de774979a350d9}
+\-Funcao\-: \-Recuperar a variavel free\-\_\-races.
+
+\-Descricao\-: \-Encapsula o ponteiro de inicio da lista das unidades do usuario. \-Assim, apenas as funcoes que precisam desta variavel podem ter acesso 'a lista das unidades.
+
+\begin{DoxyReturn}{\-Retorna}
+free\-\_\-races
+\end{DoxyReturn}
+\-Requisitos\-: \-N/\-A. \hypertarget{logic_8h_aa2913038ef32b4d232ef952c8d5153ac}{\index{logic.\-h@{logic.\-h}!get\-\_\-gamestatus@{get\-\_\-gamestatus}}
+\index{get\-\_\-gamestatus@{get\-\_\-gamestatus}!logic.h@{logic.\-h}}
+\subsubsection[{get\-\_\-gamestatus}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf get\-\_\-gamestatus} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{logic_8h_aa2913038ef32b4d232ef952c8d5153ac}
+\-Funcao\-: \-Recuperacao do status do jogo.
+
+\-Descricao\-: \-Encapsula a variavel de status do jogo. \-Assim, apenas funcoes que precisam dessa variavel conseguem recuperar seu valor.
+
+\begin{DoxyReturn}{\-Retorna}
+status, estado atual do jogo.
+\end{DoxyReturn}
+\-Requisitos\-: \-N/\-A. \hypertarget{logic_8h_a7bfec509901a3039d5a3fe91f2e308a8}{\index{logic.\-h@{logic.\-h}!get\-\_\-keystatus@{get\-\_\-keystatus}}
+\index{get\-\_\-keystatus@{get\-\_\-keystatus}!logic.h@{logic.\-h}}
+\subsubsection[{get\-\_\-keystatus}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf get\-\_\-keystatus} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{logic_8h_a7bfec509901a3039d5a3fe91f2e308a8}
+\-Funcao\-: \-Recuperacao do status das chaves (?)
+
+\-Descricao\-: ??
+
+\begin{DoxyReturn}{\-Retorna}
+status, estado atual do jogo.
+\end{DoxyReturn}
+\-Requisitos\-: \-N/\-A \hypertarget{logic_8h_a82e480173e51caacb14bc5d0a75e7245}{\index{logic.\-h@{logic.\-h}!get\-\_\-mapscroll@{get\-\_\-mapscroll}}
+\index{get\-\_\-mapscroll@{get\-\_\-mapscroll}!logic.h@{logic.\-h}}
+\subsubsection[{get\-\_\-mapscroll}]{\setlength{\rightskip}{0pt plus 5cm}{\bf scrll} {\bf get\-\_\-mapscroll} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{logic_8h_a82e480173e51caacb14bc5d0a75e7245}
+\-Funcao\-: \-Recuperar as informacoes de scroll do mapa.
+
+\-Descricao\-: \-Encapsula a variavel contendo as informacoes do scroll do mapa. \-Assim, apenas as funcoes que precisam saber desse valor tem acesso.
+
+\begin{DoxyReturn}{\-Retorna}
+srcll
+\end{DoxyReturn}
+\-Requisitos\-: \-N/\-A. \hypertarget{logic_8h_a78e6a331a82808a298ab83e978350fb4}{\index{logic.\-h@{logic.\-h}!get\-\_\-termcol@{get\-\_\-termcol}}
+\index{get\-\_\-termcol@{get\-\_\-termcol}!logic.h@{logic.\-h}}
+\subsubsection[{get\-\_\-termcol}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf get\-\_\-termcol} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{logic_8h_a78e6a331a82808a298ab83e978350fb4}
+\-Funcao\-: \-Recuperacao da quantidade de colunas do terminal.
+
+\-Descricao\-: \-Encapsula a variavel que contem a quantidade de colunas do terminal. \-Assim, apenas as funcoes que precisam saber do valor da variavel possuem acesso.
+
+\begin{DoxyReturn}{\-Retorna}
+term\-\_\-col
+\end{DoxyReturn}
+\-Requisitos\-: \-N/\-A. \hypertarget{logic_8h_a9e77c7ca6f7e4ce8f1aba4514ea640e2}{\index{logic.\-h@{logic.\-h}!get\-\_\-user@{get\-\_\-user}}
+\index{get\-\_\-user@{get\-\_\-user}!logic.h@{logic.\-h}}
+\subsubsection[{get\-\_\-user}]{\setlength{\rightskip}{0pt plus 5cm}{\bf player} {\bf get\-\_\-user} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{logic_8h_a9e77c7ca6f7e4ce8f1aba4514ea640e2}
+\-Funcao\-: \-Recuperacao das informacoes do usuario.
+
+\-Descricao\-: \-Encpasula as informacoes do usuario para nao serem alteradas por qualquer funcao.
+
+\begin{DoxyReturn}{\-Retorna}
+user, estrutura contendo as informacoes do usaurio.
+\end{DoxyReturn}
+\-Requisitos\-: \-N/\-A. \hypertarget{logic_8h_a7966c988f44d94586c9e7ef3c32801b0}{\index{logic.\-h@{logic.\-h}!good\-\_\-generator@{good\-\_\-generator}}
+\index{good\-\_\-generator@{good\-\_\-generator}!logic.h@{logic.\-h}}
+\subsubsection[{good\-\_\-generator}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf good\-\_\-generator} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{logic_8h_a7966c988f44d94586c9e7ef3c32801b0}
+\-Funcao\-: \-Atualizar o armazem das construcoes.
+
+\-Descricao\-: \-Atualiza o armazem de acordo com a renda de cada construcao, se o armazem ja nao estiver em sua capacidade maxima.
+
+\begin{DoxyReturn}{\-Retorna}
+void
+\end{DoxyReturn}
+\-Requisitos\-: build\-\_\-top != \-N\-U\-L\-L \hypertarget{logic_8h_a6479c64ed049228204d2190b831317b2}{\index{logic.\-h@{logic.\-h}!goto\-\_\-build@{goto\-\_\-build}}
+\index{goto\-\_\-build@{goto\-\_\-build}!logic.h@{logic.\-h}}
+\subsubsection[{goto\-\_\-build}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf goto\-\_\-build} (
+\begin{DoxyParamCaption}
+\item[{{\bf unit} $\ast$}]{chr, }
+\item[{int}]{n\-\_\-build}
+\end{DoxyParamCaption}
+)}}\label{logic_8h_a6479c64ed049228204d2190b831317b2}
+\-Funcao\-: \-Mover os hobbits para a construcao.
+
+\-Descricao\-: \-Move os hobbits para a construcao a qual eles estao trabalhando.
+
+
+\begin{DoxyParams}{\-Parâmetros}
+{\em chr} & \-Unidade que sera movida.\\
+\hline
+{\em n\-\_\-build} & \-Indica que construcao o a unidade deve ir.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Retorna}
+void
+\end{DoxyReturn}
+\-Requisitos\-: map != \-N\-U\-L\-L, chr != \-N\-U\-L\-L, n\-\_\-build entre 1 e 6. \hypertarget{logic_8h_ab5b635f50076e9fddb34e28835e49de9}{\index{logic.\-h@{logic.\-h}!init\-\_\-options@{init\-\_\-options}}
+\index{init\-\_\-options@{init\-\_\-options}!logic.h@{logic.\-h}}
+\subsubsection[{init\-\_\-options}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf init\-\_\-options} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{logic_8h_ab5b635f50076e9fddb34e28835e49de9}
+\-Funcao\-: \-Inicializa a matriz de opcoes.
+
+\-Descricao\-: \-Le dos arquivos .txt as ascii art das opcoes, e as colocas na matriz de opcoes.
+
+\begin{DoxyReturn}{\-Retorna}
+void
+\end{DoxyReturn}
+\-Requisitos\-: \-Os arquivos .txt contendo as ascii art das opcoes. \hypertarget{logic_8h_a951f34ce76a4cd4651ce5f3d8aa4842f}{\index{logic.\-h@{logic.\-h}!load\-\_\-houseoption@{load\-\_\-houseoption}}
+\index{load\-\_\-houseoption@{load\-\_\-houseoption}!logic.h@{logic.\-h}}
+\subsubsection[{load\-\_\-houseoption}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf load\-\_\-houseoption} (
+\begin{DoxyParamCaption}
+\item[{int}]{n}
+\end{DoxyParamCaption}
+)}}\label{logic_8h_a951f34ce76a4cd4651ce5f3d8aa4842f}
+\-Funcao\-: ??
+
+\-Descricao\-: ??
+
+
+\begin{DoxyParams}{\-Parâmetros}
+{\em n} & ??\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Retorna}
+void
+\end{DoxyReturn}
+\-Requisitos\-: map != \-N\-U\-L\-L, .txt das ascii art das opcoes do usuario (?) \hypertarget{logic_8h_a52bee9723462aef50459342c4676e766}{\index{logic.\-h@{logic.\-h}!map\-\_\-spaces@{map\-\_\-spaces}}
+\index{map\-\_\-spaces@{map\-\_\-spaces}!logic.h@{logic.\-h}}
+\subsubsection[{map\-\_\-spaces}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf map\-\_\-spaces} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{logic_8h_a52bee9723462aef50459342c4676e766}
+\-Funcao\-: \-Prencher o mapa com espacos.
+
+\-Descricao\-: \-Prenche a matriz do mapa com espacos ' ' onde tem '$\backslash$0'.
+
+\begin{DoxyReturn}{\-Retorna}
+void
+\end{DoxyReturn}
+\-Requisitos\-: map != \-N\-U\-L\-L \hypertarget{logic_8h_a5dba92e6a39126f3fab303bcf4ee9a26}{\index{logic.\-h@{logic.\-h}!option\-\_\-upgrade@{option\-\_\-upgrade}}
+\index{option\-\_\-upgrade@{option\-\_\-upgrade}!logic.h@{logic.\-h}}
+\subsubsection[{option\-\_\-upgrade}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf option\-\_\-upgrade} (
+\begin{DoxyParamCaption}
+\item[{int}]{level}
+\end{DoxyParamCaption}
+)}}\label{logic_8h_a5dba92e6a39126f3fab303bcf4ee9a26}
+\-Funcao\-: \-Aumentar o nivel da fortaleza.
+
+\-Descricao\-: \-Permite o usuario a aumentar o nivel de suas construcoes, liberando novas racas aliadas para produzir unidades. \-Caso a construcao ja esteja no nivel maximo, a opcao de comprar niveis e' apagada do mapa.
+
+
+\begin{DoxyParams}{\-Parâmetros}
+{\em level} & \-Indica nivel atual da construcao.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Retorna}
+void
+\end{DoxyReturn}
+\-Requisitos\-: map != \-N\-U\-L\-L, level entre 1 e 4 \hypertarget{logic_8h_ad6a2f0f9aca2b5587fd2488516f95008}{\index{logic.\-h@{logic.\-h}!print\-\_\-good@{print\-\_\-good}}
+\index{print\-\_\-good@{print\-\_\-good}!logic.h@{logic.\-h}}
+\subsubsection[{print\-\_\-good}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf print\-\_\-good} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{logic_8h_ad6a2f0f9aca2b5587fd2488516f95008}
+\-Funcao\-: \-Imprimir a quantidade de recursos.
+
+\-Descricao\-: \-Imprime a quantidade de recusros armazendas em cada construcao.
+
+\begin{DoxyReturn}{\-Retorna}
+void
+\end{DoxyReturn}
+\-Requisitos\-: map != \-N\-U\-L\-L \hypertarget{logic_8h_a59d765b8443d72f3284dfa386fb7dc50}{\index{logic.\-h@{logic.\-h}!printmap\-\_\-unit@{printmap\-\_\-unit}}
+\index{printmap\-\_\-unit@{printmap\-\_\-unit}!logic.h@{logic.\-h}}
+\subsubsection[{printmap\-\_\-unit}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf printmap\-\_\-unit} (
+\begin{DoxyParamCaption}
+\item[{{\bf unit}}]{chr}
+\end{DoxyParamCaption}
+)}}\label{logic_8h_a59d765b8443d72f3284dfa386fb7dc50}
+\-Funcao\-: \-Imprimir uma unidade no mapa.
+
+\-Descricao\-: \-Imprime uma unidade na matriz do mapa em sua devida posicao.
+
+
+\begin{DoxyParams}{\-Parâmetros}
+{\em chr} & \-Indica qual unidade sera impressa no mapa.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Retorna}
+void
+\end{DoxyReturn}
+\-Requisitos\-: chr != \-N\-U\-L\-L \hypertarget{logic_8h_a2302be425a8543a69a568a751f7a1f0c}{\index{logic.\-h@{logic.\-h}!put\-\_\-builds@{put\-\_\-builds}}
+\index{put\-\_\-builds@{put\-\_\-builds}!logic.h@{logic.\-h}}
+\subsubsection[{put\-\_\-builds}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf put\-\_\-builds} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{logic_8h_a2302be425a8543a69a568a751f7a1f0c}
+\-Funcao\-: ??
+
+\-Descricao\-: ??
+
+\begin{DoxyReturn}{\-Retorna}
+void
+\end{DoxyReturn}
+\-Requisitos\-: \-N/\-A. \hypertarget{logic_8h_a3fa2d4fb9de055038d3172659ae7774d}{\index{logic.\-h@{logic.\-h}!quit\-\_\-select@{quit\-\_\-select}}
+\index{quit\-\_\-select@{quit\-\_\-select}!logic.h@{logic.\-h}}
+\subsubsection[{quit\-\_\-select}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf quit\-\_\-select} (
+\begin{DoxyParamCaption}
+\item[{int}]{option}
+\end{DoxyParamCaption}
+)}}\label{logic_8h_a3fa2d4fb9de055038d3172659ae7774d}
+\-Funcao\-: \-Conferir qual opcao o usuario clicou e seguir de acordo.
+
+\-Descricao\-: ??
+
+
+\begin{DoxyParams}{\-Parâmetros}
+{\em option} & \-Indica qual opcao o usuario clicou.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Retorna}
+void, nao possui retorno.
+\end{DoxyReturn}
+\-Requisitos\-: \-A variavel option deve estar entre 1 e 3. \hypertarget{logic_8h_aba19ac929fa46524af247ed73b9bec9c}{\index{logic.\-h@{logic.\-h}!race\-\_\-init@{race\-\_\-init}}
+\index{race\-\_\-init@{race\-\_\-init}!logic.h@{logic.\-h}}
+\subsubsection[{race\-\_\-init}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf race\-\_\-init} (
+\begin{DoxyParamCaption}
+\item[{{\bf unit} $\ast$}]{chr, }
+\item[{int}]{race}
+\end{DoxyParamCaption}
+)}}\label{logic_8h_aba19ac929fa46524af247ed73b9bec9c}
+\-Funcao\-: \-Incializar uma nova unidade.
+
+\-Descricao\-: \-Inicializa uma nova unidade de acordo com os atributos de cada raca.
+
+
+\begin{DoxyParams}{\-Parâmetros}
+{\em chr} & \-Ponteiro da unidade a ser incializada.\\
+\hline
+{\em race} & \-Indica a qual raca a nova unidade pertence.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Retorna}
+void
+\end{DoxyReturn}
+\-Requisitos\-: chr != \-N\-U\-L\-L e race deve estar entre 1 e 8. \hypertarget{logic_8h_aa2d5b8735ac58d613ea59a731b6683a1}{\index{logic.\-h@{logic.\-h}!read\-\_\-key@{read\-\_\-key}}
+\index{read\-\_\-key@{read\-\_\-key}!logic.h@{logic.\-h}}
+\subsubsection[{read\-\_\-key}]{\setlength{\rightskip}{0pt plus 5cm}void$\ast$ {\bf read\-\_\-key} (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{arg}
+\end{DoxyParamCaption}
+)}}\label{logic_8h_aa2d5b8735ac58d613ea59a731b6683a1}
+\-Funcao\-: \-Ler qual opcao esta sendo clicada.
+
+\-Descricao\-: ??
+
+
+\begin{DoxyParams}{\-Parâmetros}
+{\em arg} & ??\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Retorna}
+void, nao possui retorno.
+\end{DoxyReturn}
+\-Requisitos\-: ?? \hypertarget{logic_8h_a99b61072c5ff13ebf7c0dcb004629540}{\index{logic.\-h@{logic.\-h}!report\-\_\-option@{report\-\_\-option}}
+\index{report\-\_\-option@{report\-\_\-option}!logic.h@{logic.\-h}}
+\subsubsection[{report\-\_\-option}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf report\-\_\-option} (
+\begin{DoxyParamCaption}
+\item[{int}]{mouse\-\_\-row, }
+\item[{int}]{mouse\-\_\-col}
+\end{DoxyParamCaption}
+)}}\label{logic_8h_a99b61072c5ff13ebf7c0dcb004629540}
+\-Funcao\-: ??
+
+\-Descricao\-: ??
+
+\begin{DoxyReturn}{\-Retorna}
+1, se... 
+
+0, se...
+\end{DoxyReturn}
+\-Requisitos\-:?? \hypertarget{logic_8h_a918605ccbe43c82c22facb9a505e344d}{\index{logic.\-h@{logic.\-h}!set\-\_\-buildtop@{set\-\_\-buildtop}}
+\index{set\-\_\-buildtop@{set\-\_\-buildtop}!logic.h@{logic.\-h}}
+\subsubsection[{set\-\_\-buildtop}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf set\-\_\-buildtop} (
+\begin{DoxyParamCaption}
+\item[{{\bf build} $\ast$}]{top}
+\end{DoxyParamCaption}
+)}}\label{logic_8h_a918605ccbe43c82c22facb9a505e344d}
+\-Funcao\-: \-Atribuir um novo inicio para lista de construcoes.
+
+\-Descricao\-: \-Encapsula o ponteiro de inicio da lista de construcoes do usuario. \-Assim, apenas as funcoes que criam construcoes podem mudar o inicio da lista.
+
+
+\begin{DoxyParams}{\-Parâmetros}
+{\em top} & \-Inicio da lista construcoes do usuario.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Retorna}
+void
+\end{DoxyReturn}
+\-Requisitos\-: \-N/\-A. \hypertarget{logic_8h_aab33c8eb4d23d0e3dd3a9269f020e4b3}{\index{logic.\-h@{logic.\-h}!set\-\_\-freeraces@{set\-\_\-freeraces}}
+\index{set\-\_\-freeraces@{set\-\_\-freeraces}!logic.h@{logic.\-h}}
+\subsubsection[{set\-\_\-freeraces}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf set\-\_\-freeraces} (
+\begin{DoxyParamCaption}
+\item[{{\bf unit} $\ast$}]{top}
+\end{DoxyParamCaption}
+)}}\label{logic_8h_aab33c8eb4d23d0e3dd3a9269f020e4b3}
+\-Funcao\-: \-Atribuir um novo inicio para a lista de unidades.
+
+\-Descricao\-: \-Encapsula o ponteiro de inicio da lista de uniades do usuario. \-Assim, apenas as funcoes que criam ou removem novas unidades podem mudar o inicio da lista.
+
+
+\begin{DoxyParams}{\-Parâmetros}
+{\em top} & \-Inicio da lista de unidades do usuario.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Retorna}
+void
+\end{DoxyReturn}
+\-Requisitos\-: \-N/\-A. \hypertarget{logic_8h_a4a99702724e5854866f4f56552db32cc}{\index{logic.\-h@{logic.\-h}!set\-\_\-gamestatus@{set\-\_\-gamestatus}}
+\index{set\-\_\-gamestatus@{set\-\_\-gamestatus}!logic.h@{logic.\-h}}
+\subsubsection[{set\-\_\-gamestatus}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf set\-\_\-gamestatus} (
+\begin{DoxyParamCaption}
+\item[{int}]{key\-\_\-status}
+\end{DoxyParamCaption}
+)}}\label{logic_8h_a4a99702724e5854866f4f56552db32cc}
+\-Funcao\-: \-Atribuir um novo valor ao status do jogo.
+
+\-Descricao\-: \-Encapsula a variavel de status do jogo. \-Deste modo, apenas as as funcoes que precisam mudar o valor do status do jogo conseguem ter acesso.
+
+
+\begin{DoxyParams}{\-Parâmetros}
+{\em key\-\_\-status} & \-Novo valor a ser atribuido ao status do jogo.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Retorna}
+void, nao possui retorno.
+\end{DoxyReturn}
+\-Requisitos\-: \-N/\-A. \hypertarget{logic_8h_ab9b0c2eb5d40d4d89bcdd0585b6e8d90}{\index{logic.\-h@{logic.\-h}!set\-\_\-keystatus@{set\-\_\-keystatus}}
+\index{set\-\_\-keystatus@{set\-\_\-keystatus}!logic.h@{logic.\-h}}
+\subsubsection[{set\-\_\-keystatus}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf set\-\_\-keystatus} (
+\begin{DoxyParamCaption}
+\item[{int}]{key\-\_\-status}
+\end{DoxyParamCaption}
+)}}\label{logic_8h_ab9b0c2eb5d40d4d89bcdd0585b6e8d90}
+\-Funcao\-: \-Atribuir um novo valor para o status das chaves (?)
+
+\-Descricao\-: \-Encapusla a variavel de status das chaves. \-Assim, apenas funcoes que precisam mudar o status tem acesso 'a variavel. (?)
+
+
+\begin{DoxyParams}{\-Parâmetros}
+{\em key\-\_\-status} & \-Variavel que contem o status das chaves (?)\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Retorna}
+void, nao possui retorno.
+\end{DoxyReturn}
+\-Requisitos\-: \-N/\-A. \hypertarget{logic_8h_a0579a2afaaeb45412336fba241a5dc60}{\index{logic.\-h@{logic.\-h}!set\-\_\-maplim@{set\-\_\-maplim}}
+\index{set\-\_\-maplim@{set\-\_\-maplim}!logic.h@{logic.\-h}}
+\subsubsection[{set\-\_\-maplim}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf set\-\_\-maplim} (
+\begin{DoxyParamCaption}
+\item[{int}]{lim}
+\end{DoxyParamCaption}
+)}}\label{logic_8h_a0579a2afaaeb45412336fba241a5dc60}
+\-Funcao\-: \-Atribuir um valor para o limite do mapa.
+
+\-Descricao\-: \-Encapsula a variavel que contem o limite do mapa. \-Assim, apenas as funcoes que precisam alterar esse valor possuem acesso 'a variavel.
+
+\begin{DoxyReturn}{\-Retorna}
+void
+\end{DoxyReturn}
+\-Requisitos\-: \-N/\-A. \hypertarget{logic_8h_a659cf0f56e934caeccee1296f2e1c283}{\index{logic.\-h@{logic.\-h}!set\-\_\-mapscroll@{set\-\_\-mapscroll}}
+\index{set\-\_\-mapscroll@{set\-\_\-mapscroll}!logic.h@{logic.\-h}}
+\subsubsection[{set\-\_\-mapscroll}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf set\-\_\-mapscroll} (
+\begin{DoxyParamCaption}
+\item[{{\bf scrll}}]{scroll\-\_\-map}
+\end{DoxyParamCaption}
+)}}\label{logic_8h_a659cf0f56e934caeccee1296f2e1c283}
+\-Funcao\-: \-Atribuir um novo valor para o scroll do mapa.
+
+\-Descricao\-: \-Encapsula a variavel contendo as informacoes do scroll do mapa. \-Assim, apenas as funcoes que precisam mudar esse valor podem ter ter acesso 'a variavel.
+
+\begin{DoxyReturn}{\-Retorna}
+void.
+\end{DoxyReturn}
+\-Requisitos\-: \-N/\-A. 
