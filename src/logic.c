@@ -57,14 +57,14 @@ static char *options_frodo[] = { "ASCII art/house_option0.txt",
 };
 
 static const unit attr[] = {
-{HOBBIT, 100, 3, 2, 10, 10, {30, 40}, {30, 40}, -1, 0, NULL},
-{ELF,    130, 2, 1, 40, 12, {28, 40}, {28, MORDOR_COL-19}, 0, 0, NULL},
-{DWARF,  250, 3, 2, 30, 11, {29, 40}, {29, MORDOR_COL-19}, 0, 0, NULL},
-{ENT,    500, 4, 3, 50, 15, {25, 40}, {25, MORDOR_COL-19}, 0, 0, NULL},
+{HOBBIT, 100, 3, 2, 10, 10, {30, 40}, {30, 40},-1, 0, NULL},
+{ELF,    130, 2, 1, 40, 12, {28, 40}, {28, MORDOR_COL-19},-1, 0, NULL},
+{DWARF,  250, 3, 2, 30, 11, {29, 40}, {29, MORDOR_COL-19},-1, 0, NULL},
+{ENT,    500, 4, 3, 50, 15, {25, 40}, {25, MORDOR_COL-19},-1, 0, NULL},
 {GOBLIN, 100, 4, 3, 10, 10, {30, 34+MORDOR_COL}, {0, 0}, -1, 0, NULL},
-{ORC,    200, 3, 2, 30, 12, {28, 34+MORDOR_COL}, {28, FRODO_WIDTH}, 0, 0, NULL},
-{WARG,   120, 2, 1, 25,  8, {32, 34+MORDOR_COL}, {32, FRODO_WIDTH}, 0, 0, NULL},
-{TROLL,  500, 3, 2, 50, 15, {25, 34+MORDOR_COL}, {25, FRODO_WIDTH}, 0, 0, NULL}
+{ORC,    200, 3, 2, 30, 12, {28, 34+MORDOR_COL}, {28, FRODO_WIDTH},-1, 0, NULL},
+{WARG,   120, 2, 1, 25,  8, {32, 34+MORDOR_COL}, {32, FRODO_WIDTH},-1, 0, NULL},
+{TROLL,  500, 3, 2, 50, 15, {25, 34+MORDOR_COL}, {25, FRODO_WIDTH},-1, 0, NULL}
 };
 
 static int prices[4][4] = {{500,  500,    0,    0},
@@ -84,6 +84,7 @@ build *build_top = NULL;
 unit *free_races = NULL;
 fortress frodo_house = {1, 15000, 1, 0};
 player user = {1, {10000, 10000, 10000, 10000}};
+char *hobbit_good[] = {"GOLD ", "FOOD ", "WOOD ", "METAL"};
 
 void* read_key(void *arg)
 {
@@ -369,6 +370,10 @@ void map_spaces()
 void printmap_unit(unit chr)
 {
 	int i, j, row = chr.position[0], col = chr.position[1];
+
+	if (chr.good_type >= 0)
+		sprintf(map[row+1]+col+13, "%s", hobbit_good[chr.good_type]);
+	sprintf(map[row]+col+13, "HP:%3d", chr.hp);
 
 	for (i = RACE_HEIGHT - chr.height; i < RACE_HEIGHT; i++)
 	{
