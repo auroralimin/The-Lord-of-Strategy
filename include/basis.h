@@ -115,7 +115,7 @@ typedef struct str_player
 } player;
 
 extern int click_sync;
-extern pthread_mutex_t l_key, l_scroll, l_printmap, l_pause;
+extern pthread_mutex_t l_key, l_scroll, l_printmap, l_pause, l_unit;
 extern char **map;
 extern char **options[N_OPTIONS];
 

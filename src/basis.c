@@ -4,7 +4,7 @@
 #include "logic.h"
 
 int click_sync = 0;
-pthread_mutex_t l_key, l_scroll, l_printmap, l_pause;
+pthread_mutex_t l_key, l_scroll, l_printmap, l_pause, l_unit;
 char **map = NULL;
 char **options[N_OPTIONS];
 
@@ -19,6 +19,7 @@ void init_locks()
 	pthread_mutex_init(&l_scroll, NULL);
 	pthread_mutex_init(&l_printmap, NULL);
 	pthread_mutex_init(&l_pause, NULL);
+	pthread_mutex_init(&l_unit, NULL);
 }
 
 void init_thread()
@@ -128,13 +129,18 @@ int insert_unit(unit **top, int race)
 {
 	unit *aux, *new = (unit*) calloc(1, sizeof(unit));
 
+	pthread_mutex_lock(&l_unit);
 	if (new == NULL)
+	{
+		pthread_mutex_unlock(&l_unit);
 		return -1;
+	}
 
 	race_init(new, race);
 
 	if (*top == NULL)
 	{
+		pthread_mutex_unlock(&l_unit);
 		*top = new;
 		return 1;
 	}
@@ -157,13 +163,14 @@ int insert_unit(unit **top, int race)
 			}
 		}
 	}
+	pthread_mutex_unlock(&l_unit);
 
 	return 1;
 }
 
 void free_units(unit **top)
 {
-	unit *aux;
+	unit *aux = *top;
 
 	while (aux != NULL)
 	{

@@ -415,7 +415,7 @@ void frodo_colect(unit *chr)
 
 void change_hobbit(int row, int col)
 {
-	int term_col = get_termcol(), old_destination[0];
+	int term_col = get_termcol(), old_destination[2];
 	unit *aux;
 
 	wmouse_trafo(map_win, &row, &col, false);

@@ -459,6 +459,7 @@ void printmap_unit(unit chr)
 {
 	int i, j, row = chr.position[0], col = chr.position[1];
 
+	pthread_mutex_lock(&l_unit);
 	if (chr.good_type >= 0)
 		sprintf(map[row+1]+col+13, "%s", hobbit_good[chr.good_type]);
 	sprintf(map[row]+col+13, "HP:%3d", chr.hp);
@@ -467,13 +468,15 @@ void printmap_unit(unit chr)
 	{
 		for (j = 0; j < RACE_WIDTH; j++)
 		{
-			if (mat_shadows[chr.race-1][i][j] == 'r')
+			if ((mat_shadows[chr.race-1][i][j] == 'r') &&
+			   (row < MAP_ROW) && (col < get_sizecol()))
 				map[row][col] = mat_races[chr.race-1][i][j];
 			col++;
 		}
 		col = chr.position[1];
 		row++;
 	}
+	pthread_mutex_unlock(&l_unit);
 }
 
 void clear_unit(unit chr)
@@ -483,7 +486,8 @@ void clear_unit(unit chr)
 	for (i = RACE_HEIGHT - chr.height; i < RACE_HEIGHT; i++)
 	{
 		for (j = 0; j < RACE_WIDTH; j++)
-			map[row][col++] = ' ';
+			if ((row < MAP_ROW) && (col < get_sizecol()))
+				map[row][col++] = ' ';
 		col = chr.position[1];
 		row++;
 	}
