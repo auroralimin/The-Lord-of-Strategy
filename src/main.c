@@ -21,12 +21,14 @@ int main()
 	create_listbuild();
 	prepare_map();
 	createmap_win();
-	createhobbit_win();
+	createmsg_win();
 	load_houseoption(0);
 	load_houseoption(1);
 
 	while(1)
 	{
+		pthread_mutex_lock(&l_pause);
+
 		for (chr = get_freeraces(); chr != NULL; chr = chr->next)
 		{
 			printmap_unit(*chr);
@@ -40,6 +42,8 @@ int main()
 		{
 			check_good(chr);
 		}
+
+		pthread_mutex_unlock(&l_pause);
 		usleep(REFRESH_TIME);
 	}
 

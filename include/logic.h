@@ -8,6 +8,9 @@ typedef struct str_scrll
 }scrll;
 
 void* read_key(void *arg);
+void mouse_clicked();
+void quit_select(int option);
+void game_paused();
 player get_user();
 MEVENT get_event();
 int get_keystatus();

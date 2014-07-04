@@ -13,8 +13,8 @@
 WINDOW *menu_win = NULL;
 WINDOW *map_win = NULL;
 PANEL *map_panel = NULL;
-WINDOW *hobbit_win = NULL;
-PANEL *hobbit_panel = NULL;
+WINDOW *msg_win = NULL;
+PANEL *msg_panel = NULL;
 int size[2];
 
 void init_interface()
@@ -252,17 +252,17 @@ int createmap_win()
 	return 1;
 }
 
-int createhobbit_win()
+int createmsg_win()
 {
-	hobbit_win = create_win(12, 29, size[0]/2 - 6, size[1]/2 - 15);
-	if (hobbit_win == NULL)
+	msg_win = create_win(12, 29, size[0]/2 - 6, size[1]/2 - 15);
+	if (msg_win == NULL)
 		return -1;
 
-	hobbit_panel = new_panel(hobbit_win);
-	if (hobbit_panel == NULL)
+	msg_panel = new_panel(msg_win);
+	if (msg_panel == NULL)
 		return -1;
 
-	hide_panel(hobbit_panel);
+	hide_panel(msg_panel);
 
 	return 1;
 }
@@ -271,39 +271,87 @@ int createhobbit_win()
 /* printa o mapa na janela do terminal */
 void refresh_allgame()
 {
-	int i, j;
-	int term_col = get_termcol();
-	player user = get_user();
-
 	if (pthread_mutex_trylock(&l_printmap) == 0)
 	{
 		clear();
-		move((size[0]-MAP_ROW-2)/2 - 1, 0);
-		printw("GOLD: %d    FOOD: %d    WOOD: %d    METAL: %d   ",
-		user.good[0], user.good[1], user.good[2], user.good[3]);
-		for (i = 1; i < MAP_ROW + 1; i++)
-			for (j = 1; (j < MAP_COL) && (j < size[1] - 1); j++)
-			{
-				wmove(map_win, i, j);
-				wprintw(map_win, "%c", map[i-1][j+term_col-1]);
-			}
-		box(map_win, 0, 0);
 
-		mvwprintw(hobbit_win, 1, 2, "PLEASE, CHOOSE WHICH GOOD");
-		mvwprintw(hobbit_win, 2, 2, "YOUR HOBBIT SHOULD COLECT");
-		mvwprintw(hobbit_win, 4, 12, "GOLD");
-		mvwprintw(hobbit_win, 6, 12, "FOOD");
-		mvwprintw(hobbit_win, 8, 12, "WOOD");
-		mvwprintw(hobbit_win, 10, 12, "METAL");
-		box(hobbit_win, 0, 0);
+		print_gamebar();
+		print_map();
+
+		switch (get_gamestatus())
+		{
+			case (STATUS_EXIT):
+				werase(msg_win);
+				print_msgquit();
+				break;
+			case (STATUS_GAME):
+				werase(msg_win);
+				print_msghobbit();
+				break;
+			case (STATUS_PAUSED):
+				werase(msg_win);
+				print_msgpaused();
+				break;
+		}
+		box(msg_win, 0, 0);
 
 		printw_scroll();
-		refresh();
 		update_panels();
 		doupdate();
 
 		pthread_mutex_unlock(&l_printmap);
 	}
+}
+
+void print_map()
+{
+	int i, j;
+	int term_col = get_termcol();
+
+	for (i = 1; i < MAP_ROW + 1; i++)
+		for (j = 1; (j < MAP_COL) && (j < size[1] - 1); j++)
+		{
+			wmove(map_win, i, j);
+			wprintw(map_win, "%c", map[i-1][j+term_col-1]);
+		}
+	box(map_win, 0, 0);
+
+}
+
+void print_gamebar()
+{
+	player user = get_user();
+
+	move((size[0]-MAP_ROW-2)/2 - 1, 0);
+	printw("GOLD: %d    FOOD: %d    WOOD: %d    METAL: %d   ",
+	user.good[0], user.good[1], user.good[2], user.good[3]);
+	move((size[0]-MAP_ROW-2)/2 - 1, size[1] - 27);
+	printw("PAUSE   LOAD   SAVE   QUIT");
+}
+
+void print_msghobbit()
+{
+	mvwprintw(msg_win, 1, 2, "PLEASE, CHOOSE WHICH GOOD");
+	mvwprintw(msg_win, 2, 2, "YOUR HOBBIT SHOULD COLECT");
+	mvwprintw(msg_win, 4, 12, "GOLD");
+	mvwprintw(msg_win, 6, 12, "FOOD");
+	mvwprintw(msg_win, 8, 12, "WOOD");
+	mvwprintw(msg_win, 10, 12, "METAL");
+}
+
+void print_msgpaused()
+{
+	mvwprintw(msg_win, 3, 2, " _            __  ___  _");
+	mvwprintw(msg_win, 4, 2, "| \\  /\\  |  | |   |   | \\");
+	mvwprintw(msg_win, 5, 2, "|_/ /__\\ |  |  \\  |-- |  |");
+	mvwprintw(msg_win, 6, 2, "|   |  | |__| __| |__ |_/");
+}
+
+void print_msgquit()
+{
+	mvwprintw(msg_win, 2, 12, "ARE YOU");
+	mvwprintw(msg_win, 3, 4, "SURE YOU WANT TO QUIT?");
+	mvwprintw(msg_win, 7, 9, "[YES]   [NO]");
 }
 
 int click_frodooption()
@@ -326,8 +374,7 @@ void frodo_colect(unit *chr)
 {
 	MEVENT event;
 
-	top_panel(hobbit_panel);
-	show_panel(hobbit_panel);
+	move_msg(1);
 
 	while(1)
 	{
@@ -335,7 +382,7 @@ void frodo_colect(unit *chr)
 		   (getmouse(&event) == OK) &&
 		   (event.bstate == BUTTON1_CLICKED))
 		{
-			wmouse_trafo(hobbit_win, &event.y, &event.x, false);
+			wmouse_trafo(msg_win, &event.y, &event.x, false);
 
 		  	if ((event.y > 3) && (event.y < 11) && (event.y%2 == 0))
 			{
@@ -350,8 +397,7 @@ void frodo_colect(unit *chr)
 		}
 	}
 
-	hide_panel(hobbit_panel);
-	top_panel(map_panel);
+	move_msg(0);
 }
 
 
@@ -383,4 +429,33 @@ void change_hobbit(int row, int col)
 			}
 			break;
 		}
+}
+
+void move_msg(int n)
+{
+	if (n == 1)
+	{
+		top_panel(msg_panel);
+		show_panel(msg_panel);
+	}
+	else if (n == 0)
+	{
+		hide_panel(msg_panel);
+		top_panel(map_panel);
+	}
+}
+
+void quit_answer()
+{
+	MEVENT event = get_event();
+
+	wmouse_trafo(msg_win, &event.y, &event.x, false);
+
+	if ((event.y == 7) && (get_gamestatus() == STATUS_EXIT))
+	{
+		if (event.x < 16)
+			quit_select(2);
+		else
+			quit_select(3);
+	}
 }

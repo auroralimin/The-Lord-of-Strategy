@@ -94,47 +94,55 @@ void* read_key(void *arg)
 		switch(getch())
 		{
 	 		case (KEY_MOUSE):
-			if (getmouse(&event) == OK)
-			{
-				status[0] = STATUS_MOUSE_MOVED;
-				if (event.bstate == BUTTON1_CLICKED)
+				if (getmouse(&event) == OK)
 				{
-					status[0] = STATUS_MOUSE_CLICK;
-					if ((event.y >= map_scroll.row-1) &&
-					   (event.y <= map_scroll.row+1))
-						mouse_scroll(event.x);
-					else if (!click_frodooption())
-						change_hobbit(event.y, event.x);
+					status[0] = STATUS_MOUSE_MOVED;
+					if (event.bstate == BUTTON1_CLICKED)
+						mouse_clicked();
 				}
-			}
-			break;
+				break;
 
+			case (PAUSE):
+				if ((status[1] != STATUS_EXIT) &&
+				   (status[1] != STATUS_MENU))
+					game_paused();
+				break;
 			case (KEY_UP):
-			status[0] = STATUS_UP;
-			break;
+				if (status[1] == STATUS_MENU)
+					status[0] = STATUS_UP;
+				break;
 
 			case (KEY_DOWN):
-			status[0] = STATUS_DOWN;
-			break;
+				if (status[1] == STATUS_MENU)
+					status[0] = STATUS_DOWN;
+				break;
 
 			case (KEY_RIGHT):
-			if (status[1] != STATUS_MENU)
-				arrow_scroll(SCROLL_RIGHT);
-			break;
+				if (status[1] == STATUS_GAME)
+					arrow_scroll(SCROLL_RIGHT);
+				break;
 
 			case (KEY_LEFT):
-			if (status[1] != STATUS_MENU)
-				arrow_scroll(SCROLL_LEFT);
-			break;
+				if (status[1] == STATUS_GAME)
+					arrow_scroll(SCROLL_LEFT);
+				break;
+
+			case (YES):
+				quit_select(2);
+				break;
+
+			case (NO):
+				quit_select(3);
+				break;
 
 			case (EXIT):
-			free_build();
-			free_map();
-			endwin();
-			exit(1);
+				if (status[1] != STATUS_MENU)
+					quit_select(1);
+				break;
 
 			case (ENTER):
-			status[0] = STATUS_ENTER;
+				if (status[1] == STATUS_MENU)
+					status[0] = STATUS_ENTER;
 		}
 		pthread_mutex_unlock(&l_key);
 		usleep(2);
@@ -142,6 +150,77 @@ void* read_key(void *arg)
 
 	return arg;
 }
+
+void mouse_clicked()
+{
+	int term_row = get_sizerow(), term_col = get_sizecol();
+
+	status[0] = STATUS_MOUSE_CLICK;
+
+	if (status[1] == STATUS_EXIT)
+		quit_answer();
+
+	else if ((event.y > (term_row-MAP_ROW-2)/2 - 3) &&
+	        (event.y < (term_row-MAP_ROW-2)/2 + 1))
+	{
+		if ((event.x > term_col - 25) && (event.x < term_col - 19))
+			game_paused();
+
+		else if (event.x > term_col - 7)
+			quit_select(1);
+	}
+	else if ((status[1] != STATUS_PAUSED) &&
+		(event.y >= map_scroll.row-1) && (event.y <= map_scroll.row+1))
+		mouse_scroll(event.x);
+
+	else if ((status[1] != STATUS_PAUSED) && (!click_frodooption()))
+		change_hobbit(event.y, event.x);
+}
+
+void quit_select(int option)
+{
+	switch (option)
+	{
+		case 1:
+			if (status[1] != STATUS_PAUSED)
+			{
+				game_paused();
+				status[1] = STATUS_EXIT;
+			}
+			else
+				status[1] = STATUS_EXIT;
+			refresh_allgame();
+			break;
+		case 2:
+			if (status[1] == STATUS_EXIT)
+				exit_game();
+			break;
+		case 3:
+			if (status[1] == STATUS_EXIT)
+				{
+					status[1] = STATUS_PAUSED;
+					game_paused();
+				}
+	}
+}
+
+void game_paused()
+{
+	if (status[1] == STATUS_PAUSED)
+	{
+		status[1] = STATUS_GAME;
+		pthread_mutex_unlock(&l_pause);
+		move_msg(0);
+	}
+	else
+	{
+		status[1] = STATUS_PAUSED;
+		pthread_mutex_lock(&l_pause);
+		move_msg(1);
+		refresh_allgame();
+	}
+}
+
 
 player get_user()
 {

@@ -16,10 +16,14 @@
 
 #define STATUS_MENU 0
 #define STATUS_GAME 1
+#define STATUS_PAUSED 2
 #define STATUS_EXIT -1
 
-#define EXIT 'k'
+#define EXIT 'q'
 #define ENTER '\n'
+#define PAUSE 'p'
+#define YES 'y'
+#define NO 'n'
 
 #define SCROLL_RIGHT 9
 #define SCROLL_LEFT -9
@@ -111,7 +115,7 @@ typedef struct str_player
 } player;
 
 extern int click_sync;
-extern pthread_mutex_t l_key, l_scroll, l_printmap;
+extern pthread_mutex_t l_key, l_scroll, l_printmap, l_pause;
 extern char **map;
 extern char **options[N_OPTIONS];
 
@@ -130,3 +134,4 @@ void create_listbuild();
 int insert_build(int id);
 void free_build();
 int get_goodcol(int i);
+int exit_game();

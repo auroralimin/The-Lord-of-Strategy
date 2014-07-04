@@ -4,7 +4,7 @@
 #include "logic.h"
 
 int click_sync = 0;
-pthread_mutex_t l_key, l_scroll, l_printmap;
+pthread_mutex_t l_key, l_scroll, l_printmap, l_pause;
 char **map = NULL;
 char **options[N_OPTIONS];
 
@@ -18,6 +18,7 @@ void init_locks()
 	pthread_mutex_init(&l_key, NULL);
 	pthread_mutex_init(&l_scroll, NULL);
 	pthread_mutex_init(&l_printmap, NULL);
+	pthread_mutex_init(&l_pause, NULL);
 }
 
 void init_thread()
@@ -231,4 +232,12 @@ void free_build()
 int get_goodcol(int i)
 {
 	return good_col[i];
+}
+
+int exit_game()
+{
+	free_build();
+	free_map();
+	endwin();
+	exit(1);
 }
