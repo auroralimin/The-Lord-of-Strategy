@@ -31,6 +31,7 @@ void print_msghobbit();
 void print_msgpaused();
 void print_msgquit();
 void print_msgsaved();
+void print_msgload();
 
 void init_interface()
 {
@@ -38,7 +39,6 @@ void init_interface()
 	scrll map_scroll;
 
 	initscr();
-	raw();
 	cbreak();
 	noecho();
 	curs_set(0);
@@ -331,6 +331,15 @@ void refresh_allgame()
 			case (STATUS_SAVING):
 				werase(msg_win);
 				print_msgsaved();
+				break;
+			case (STATUS_LOAD):
+				werase(msg_win);
+				print_msgload();
+				break;
+			case (STATUS_LOADFAIL):
+				werase(msg_win);
+				mvwprintw(msg_win, 5, 7, "NOTHING IS SAVED!");
+
 		}
 		box(msg_win, 0, 0);
 
@@ -401,6 +410,14 @@ void print_msgsaved()
 	mvwprintw(msg_win, 4, 3, "|    /\\  |   | |   | \\");
 	mvwprintw(msg_win, 5, 3,  " \\  /__\\  \\ /  |-- |  |");
 	mvwprintw(msg_win, 6, 3, "__| |  |   |   |__ |_/");
+}
+
+void print_msgload()
+{
+	mvwprintw(msg_win, 2, 12, "ARE YOU");
+	mvwprintw(msg_win, 3, 4, "SURE YOU WANT TO LOAD?");
+	mvwprintw(msg_win, 4, 3, "YOU WILL LOSE EVERYTHING");
+	mvwprintw(msg_win, 7, 9, "[YES]    [NO]");
 }
 
 int click_frodooption()
@@ -510,5 +527,20 @@ void quit_answer()
 			quit_select(3);
 		else if (event.y == 9)
 			quit_select(4);
+	}
+}
+
+void load_answer()
+{
+	MEVENT event = get_event();
+
+	wmouse_trafo(msg_win, &event.y, &event.x, false);
+
+	if ((event.y == 7) && (get_gamestatus() == STATUS_LOAD))
+	{
+		if (event.x < 16)
+			load_select(2);
+		else
+			load_select(3);
 	}
 }

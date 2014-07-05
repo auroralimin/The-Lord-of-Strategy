@@ -11,3 +11,4 @@ void frodo_colect(unit *chr);
 void change_hobbit(int row, int col);
 void move_msg(int n);
 void quit_answer();
+void load_answer();

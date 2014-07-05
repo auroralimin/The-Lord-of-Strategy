@@ -567,3 +567,4 @@ void all_move();
 
 void save(char *save_name);
 void load(char *load_dir);
+void load_select(int option);

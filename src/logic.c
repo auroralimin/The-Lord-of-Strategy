@@ -99,6 +99,8 @@ int load_build(char *file_name, int art_row, int art_col);
 void clear_unit(unit chr);
 void move_unit(unit *chr);
 void save_select();
+void load_select();
+void load_select(int option);
 
 void* read_key(void *arg)
 {
@@ -117,8 +119,8 @@ void* read_key(void *arg)
 				break;
 
 			case (PAUSE):
-				if ((status[1] != STATUS_EXIT) &&
-				   (status[1] != STATUS_MENU))
+				if ((status[1] == STATUS_GAME) ||
+				   (status[1] == STATUS_PAUSED))
 					game_paused();
 				break;
 			case (KEY_UP):
@@ -145,9 +147,23 @@ void* read_key(void *arg)
 				if (status[1] == STATUS_GAME)
 					save_select();
 				break;
+
+			case (LOAD):
+				if (status[1] == STATUS_GAME)
+					load_select(1);
+				break;
+
+			case (YES):
+				load_select(2);
+				break;
+
+			case (NO):
+				load_select(3);
+				break;
+
 			case (EXIT):
-				if ((status[1] != STATUS_MENU) &&
-				   (status[1] != STATUS_EXIT))
+				if ((status[1] == STATUS_GAME) ||
+				   (status[1] == STATUS_EXIT))
 					quit_select(1);
 				break;
 
@@ -171,6 +187,9 @@ void mouse_clicked()
 	if (status[1] == STATUS_EXIT)
 		quit_answer();
 
+	else if (status[1] == STATUS_LOAD)
+		load_answer();
+
 	else if ((event.y > (term_row-MAP_ROW-2)/2 - 3) &&
 	        (event.y < (term_row-MAP_ROW-2)/2 + 1))
 	{
@@ -180,8 +199,11 @@ void mouse_clicked()
 		else if (event.x > term_col - 7)
 			quit_select(1);
 
-		else if ((event.x > term_col -12) && (event.x < term_col - 8))
+		else if ((event.x > term_col - 12) && (event.x < term_col - 8))
 			save_select();
+
+		else if ((event.x > term_col - 28) && (event.x < term_col - 13))
+			load_select(1);
 	}
 
 	else if ((status[1] != STATUS_PAUSED) &&
@@ -203,18 +225,63 @@ void save_select()
 	game_paused();
 }
 
+void load_select(int option)
+{
+	unit *aux;
+	struct stat st;
+
+	switch (option)
+	{
+		case 1:
+			if (stat("saves/save1", &st) == -1)
+			{
+				game_paused();
+				status[1] = STATUS_LOADFAIL;
+				refresh_allgame();
+				usleep(500000);
+				status[1] = STATUS_PAUSED;
+				game_paused();
+				break;
+			}
+			if (status[1] != STATUS_PAUSED)
+				game_paused();
+
+			status[1] = STATUS_LOAD;
+			refresh_allgame();
+			break;
+		case 2:
+			if (status[1] == STATUS_LOAD)
+			{
+				aux = free_races;
+				while (aux != NULL)
+				{
+					clear_unit(*aux);
+					aux = aux->next;
+				}
+				free_units(&free_races);
+				load("saves/save1");
+				status[1] = STATUS_PAUSED;
+				game_paused();
+			}
+			break;
+		case 3:
+			if (status[1] == STATUS_LOAD)
+			{
+				status[1] = STATUS_PAUSED;
+				game_paused();
+			}
+	}
+}
+
 void quit_select(int option)
 {
 	switch (option)
 	{
 		case 1:
 			if (status[1] != STATUS_PAUSED)
-			{
 				game_paused();
-				status[1] = STATUS_EXIT;
-			}
-			else
-				status[1] = STATUS_EXIT;
+
+			status[1] = STATUS_EXIT;
 			refresh_allgame();
 			break;
 		case 2:

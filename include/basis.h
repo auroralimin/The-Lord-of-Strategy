@@ -23,12 +23,17 @@
 #define STATUS_GAME 1
 #define STATUS_PAUSED 2
 #define STATUS_SAVING 3
+#define STATUS_LOAD 4
+#define STATUS_LOADFAIL 5
 #define STATUS_EXIT -1
 
 #define EXIT 'q'
 #define ENTER '\n'
 #define PAUSE 'p'
 #define SAVE 's'
+#define LOAD 'l'
+#define YES 'y'
+#define NO 'n'
 
 #define SCROLL_RIGHT 9
 #define SCROLL_LEFT -9
