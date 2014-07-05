@@ -177,6 +177,8 @@ void menu()
 
 int click_option(int option)
 {
+	int i;
+	fortress frodo_house;
 	struct stat st;
 
 	if ((option == 1) || (option == 2))
@@ -201,6 +203,10 @@ int click_option(int option)
 		load_houseoption(1);
 		if (option == 2)
 			load("saves/save1");
+
+		frodo_house = get_frodohouse();
+		for (i = 1; i <= frodo_house.level; i++)
+			load_houseoption(i);
 
 		return 0;
 	}
@@ -474,7 +480,6 @@ void change_hobbit(int row, int col)
 
 	wmouse_trafo(map_win, &row, &col, false);
 
-	pthread_mutex_lock(&l_unit);
 	for (aux = get_freeraces(); aux != NULL; aux = aux->next)
 		if ((aux->race == HOBBIT) &&
 		   (row >= aux->position[0]) && (row <= aux->position[0]+10) &&
@@ -496,7 +501,6 @@ void change_hobbit(int row, int col)
 			}
 			break;
 		}
-	pthread_mutex_unlock(&l_unit);
 }
 
 void move_msg(int n)

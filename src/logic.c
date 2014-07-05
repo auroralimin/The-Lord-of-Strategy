@@ -227,6 +227,7 @@ void save_select()
 
 void load_select(int option)
 {
+	int i, j, options_row;
 	unit *aux;
 	struct stat st;
 
@@ -259,7 +260,14 @@ void load_select(int option)
 					aux = aux->next;
 				}
 				free_units(&free_races);
+
+				options_row = builds[0].row - 7;
+				for (i = 0; i < 6; i++)
+					for (j = 5; j < 65; j++)
+						map[options_row+i][j] = ' ';
 				load("saves/save1");
+				for (i = 0; i <= frodo_house.level; i++)
+					load_houseoption(i);
 				status[1] = STATUS_PAUSED;
 				game_paused();
 			}
@@ -317,6 +325,10 @@ void game_paused()
 	}
 }
 
+fortress get_frodohouse()
+{
+	return frodo_house;
+}
 
 player get_user()
 {
@@ -805,7 +817,7 @@ void all_move()
 
 void save(char *save_dir)
 {
-	char *unit_file, *build_file, *player_file;
+	char *unit_file, *build_file, *player_file, *fortress_file;
 	struct stat st;
 	unit *aux_u;
 	build *aux_b;
@@ -836,11 +848,18 @@ void save(char *save_dir)
 	fp = open_file(player_file, "wb");
 	fwrite(&user, sizeof(player), 1, fp);
 	fclose(fp);
+
+	fortress_file = (char*) calloc(strlen(save_dir)+13,sizeof(char));
+	strcpy(fortress_file, save_dir);
+	strcat(fortress_file, "/fortress.bin");
+	fp = open_file(fortress_file, "wb");
+	fwrite(&frodo_house, sizeof(player), 1, fp);
+	fclose(fp);
 }
 
 void load(char *load_dir)
 {
-	char *unit_file, *build_file, *player_file;
+	char *unit_file, *build_file, *player_file, *fortress_file;
 	unit *aux_u = (unit*) calloc(1, sizeof(unit));
 	build *aux_b1 = (build*) calloc(1, sizeof(build));
 	build *aux_b2 = build_top;
@@ -875,6 +894,13 @@ void load(char *load_dir)
 	strcat(player_file, "/players.bin");
 	fp = open_file(player_file, "rb");
 	fread(&user, sizeof(player), 1, fp);
+	fclose(fp);
+
+	fortress_file = (char*) calloc(strlen(load_dir)+13,sizeof(char));
+	strcpy(fortress_file, load_dir);
+	strcat(fortress_file, "/fortress.bin");
+	fp = open_file(fortress_file, "rb");
+	fread(&frodo_house, sizeof(fortress), 1, fp);
 	fclose(fp);
 
 	free(aux_u);

@@ -84,6 +84,21 @@ void* read_key(void *arg);
   */
 void quit_select(int option);
 
+/** Funcao: Recuperar as informacoes da fortaleza do Frodo
+  *
+  * Descricao/Hipotese: Encpasula as informacoes da casa do Frodo para nao serem
+  *                     alteradas por qualquer funcao.
+  *
+  * Interface explicita: N/A.
+  *
+  * Interface implicita: -frodo_house: contem as informacoes da casa do Frodo.
+  *
+  * Contrato/Requisitos: N/A.
+  *
+  * @return frodo_house, estrutura contendo as informacoes da casa do frodo
+  */
+fortress get_frodohouse();
+
 /** Funcao: Recuperar as informacoes do usuario.
   *
   * Descricao/Hipotese: Encpasula as informacoes do usuario para nao serem
