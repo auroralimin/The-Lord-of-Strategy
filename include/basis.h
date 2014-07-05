@@ -86,17 +86,17 @@
   *
   * @param race Indica a raca da unidade.
   *
-  * @param hp Indica o quanto de pontos de vida a unidade possui. Varia de
-  * acordo com a raca.
+  * @param hp Indica o quanto de pontos de vida a unidade possui. Valor inicial
+  *           varia de acordo com a raca.
   *
-  * @param spd_delay Indica o tempo que a unidade precisa para se movimentar
-  * antes de poder se movimentar de novo. Varia de acordo com a raca.
+  * @param spd_delay Indica o tempo que a unidade precisa ficou parada
+  *                  esperando para se movimentar.
   *
   * @param count_delay Conta o tempo nescessario para a unidade se mover de
   * novo. Varia de acordo com a raca.
   *
-  * @param dmg Indica o quanto de pontos de vida essa unidade causa a unidades
-  * inimigas. varia de acordo com a raca.
+  * @param dmg Indica o quanto de dano a unidade causa a unidades inimigas
+  *            Varia de acordo com a raca.
   *
   * @param height Indica a altura da unidade.
   *
@@ -104,9 +104,12 @@
   *
   * @param destination Indica a posicao do mapa a qual a unidade tentara chegar.
   *
-  * @param good_type ...
+  * @param good_type Indica que tipo de recurso a unidade trabalhadora esta
+  *                  recolhendo. Caso a unidade nao for do tipo trabalhadora,
+  *                  essa variavel deve ser sinalizada com -1.
   *
-  * @param backpack ...
+  * @param backpack Guarda a quantidade de recurso que a unidade trabalhadora
+  *                 esta carregando.
   *
   * @param next Indica qual e' a proxima unidade na lista encadadeada.
   */
@@ -129,15 +132,15 @@ typedef struct str_unit
   *
   * @brief Estrutura contendo as informacoes de cada construcao.
   *
-  * @param id Indica o tipo de construcao.
+  * @param id Indentificador unico que diferencias as construcoes.
   *
   * @param level Indica o nivel de aprimoramento da construcao.
   *
   * @param storage Indica a quantidade de recurso que construcao possui
-  * armazenado.
+  *                armazenado.
   *
-  * @param income Indica a quantidade de recurso que a construcao recebe por
-  * looping. Varia de acordo com o nivel da construcao.
+  * @param income Indica a quantidade de recurso que a construcao produz a cada
+  *               ciclo. Varia de acordo com o nivel da construcao.
   *
   * @param position Indica a posicao da construcao no mapa.
   *
@@ -158,13 +161,15 @@ typedef struct str_build
   *
   * @brief Estrutura que contem as informacoes da fortaleza.
   *
-  * @param id Indica o tipo da fortaleza: usuario ou computador.
+  * @param id Indentificador unico dafortaleza: usuario ou computador.
   *
   * @param hp Indica quantos pontos de vida a fortaleza possui.
   *
   * @param level Indica o nivel atual da fortaleza.
   *
-  * @param work_time ...
+  * @param work_time Contador de tepo que a fortaleza esta gastando para
+  *                  desempenhar alguma acao, como criar uma nova unidade ou
+  *                  melhorar sua estrutura.
   */
 typedef struct str_fortress
 {
@@ -178,9 +183,11 @@ typedef struct str_fortress
   *
   * @brief Estrutura contendo as informacoes do jogador.
   *
-  * @param id Indica o tipo de jogador: usuario ou computador.
+  * @param id Indentificador unico do jogador: usuario ou computador.
   *
-  * @param good ...
+  * @param good Vetor que guarda a quantidade de recursos que um jogador tem.
+  *             Sendo a primeira posicao: ouro, a segunda: comida, a terceira:
+  *             madeira, a quarta: metal.
   */
 typedef struct str_player
 {
@@ -188,6 +195,35 @@ typedef struct str_player
 	int good[4];
 } player;
 
+
+/** @var pthread_mutex_t l_key
+  * @brief Promove um mecanismo de sincronizacao que impede que o status do
+  *        teclado seja acessao/modificado ao mesmo tempo por mais de uma
+  *        thread.
+  *
+  * @var pthread_mutex_t l_scroll
+  * @brief Promove um mecanismo de sincronizacao que impede que o scroll do
+  *        mapa entre em conflito com outras atualizacoes do mapa.
+  *
+  * @var pthread_mutex_t l_printmap
+  * @brief Promove um mecanismo de sincronizacao que visa impedir que a
+  *        interface seja atualizada ao mesmo tempo por mais de uma thread.
+  *
+  * @var pthread_mutex_t l_pause
+  * @brief Possibilita que uma thread mande outra dormir para que o jogo fique
+  *        pausado.
+  *
+  * @var pthread_mutex_t l_unit
+  * @brief Promove um Mecanismo de sincronizacao que visa impedir que a lista
+  *        encadeada que guarda as unidades seja modificada por mais de uma
+  *        thread ao mesmo tempo.
+  *
+  * @var char **map
+  * @brief Matriz que guarda o mapa do jogo paa ser impresso.
+  *
+  * @var char **options[N_OPTIONS]
+  * @brief Matriz que guarda as ascii art das opcoes do menu.
+  */
 extern pthread_mutex_t l_key, l_scroll, l_printmap, l_pause, l_unit;
 extern char **map;
 extern char **options[N_OPTIONS];
@@ -201,11 +237,11 @@ static const int good_col[] =
   *
   * Interface explicita: N/A
   *
-  * Interface implicita: pthread_mutex_t l_key
-  *                      pthread_mutex_t l_scroll
-  *                      pthread_mutex_t l_printmap
-  *                      pthread_mutex_t l_pause
-  *                      pthread_mutex_t l_unit
+  * Interface implicita: l_key,
+  *                      l_scroll,
+  *                      l_printmap,
+  *                      l_pause,
+  *                      l_unit.
   *
   * Contrato/Requistos: N/A.
   *
@@ -222,8 +258,8 @@ void init_locks();
   *
   * Interface explicita: N/A
   *
-  * Interface implicita: pthread_t key_thread: thread que sera criada.
-  *                      void read_key: funcao/metodo que a nova thread ira
+  * Interface implicita: - key_thread: thread que sera criada.
+  *                      - read_key: funcao/metodo que a nova thread ira
   *                                     executar como sendo a principal.
   *
   * Contrato/Requistos: N/A.
@@ -242,8 +278,8 @@ void init_thread();
   *
   * Interface explicita: N/A
   *
-  * Interface implicita: char **map: ponteiro de ponteiro no qual sera alocada
-  *                                  a matriz do mapa.
+  * Interface implicita: - map: ponteiro de ponteiro no qual sera alocada
+  *                           a matriz do mapa.
   *
   * Contrato/Requistos: A variavel map deve estar inicializada como NULL.
   *
@@ -259,8 +295,8 @@ void prepare_map();
   *
   * Interface explicita: N/A
   *
-  * Interface implicita: char **map: ponteiro de ponteiro no qual a matriz dp
-  *                                  mapa deve estar alocada.
+  * Interface implicita: - map: ponteiro de ponteiro no qual a matriz dp
+  *                           mapa deve estar alocada.
   *
   * Contrato/Requisitos: N/A.
   *
@@ -275,7 +311,7 @@ void free_map();
   *                     possiveis alocacoes e da exit passando o parametro 1.
   *                     Caso seja, a funcao retorna o ponteiro do arquivo.
   *
-  * Interface explicita: @param char *name: nome do arquivo que a funcao
+  * Interface explicita: @param name Nome do arquivo que a funcao
   *                      tentara abrir.
   *
   * Interface implicita: N/A.
@@ -295,7 +331,7 @@ FILE* open_file(char *name);
   *
   * Interface explicita: N/A.
   *
-  * Interface implicita: @param char **options[]: onde sera alocado o espaco
+  * Interface implicita: - options: matriz onde sera alocado o espaco
   *                      para guardar as ASCII art das opcoes do mapa
   *
   * Contrato/Requisitos: N/A.
@@ -312,8 +348,8 @@ void aloc_options();
   *
   * Interface explicita: N/A.
   *
-  * Inteface implicita: char **options[]: onde deve ter sido alocado o espaco
-  *                     para guardar as ASCII art das opcoes do mapa.
+  * Inteface implicita: - options: matriz onde deve ter sido alocado o
+  *                     espaco para guardar as ASCII art das opcoes do mapa.
   *
   * Contrato/Requisitos: N/A.
   *
@@ -329,10 +365,12 @@ void free_options();
   *                     de unidades, de ordem ordenada decrescentemente de
   *                     acordo com o tamanho de cada unidade.
   *
-  * Interface explicita: @param unit **top: ponteiro de ponteiro do topo da
+  * Interface explicita: @param top Ponteiro de ponteiro do topo da
   *                      lista de unidades (Passagem por referencia do topo
   *                      da lista.
-  *                      @param int race: indica a raca da nova unidade.
+  *                      @param race Indica a raca da nova unidade.
+  *
+  * Interface implicta: N/A.
   *
   * Contrato/Requisitos: Caso a lista de unidades esteja vazia, a variavel
   *                      top deve estar inicializada com NULL. Alem disso, a
@@ -349,8 +387,10 @@ int insert_unit(unit **top, int race);
   *                     unidades. Se a lista for liberada corretamente, a
   *                     variavel top e' igualada 'a NULL.
   *
-  * Interface explicita: @param unit **top: ponteiro de ponteiro contendo o
+  * Interface explicita: @param top Ponteiro de ponteiro contendo o
   *                      topo da lista de unidades.
+  *
+  * Interface implicita: N/A.
   *
   * Contrato/Requisito: A variavel top deve ser diferente de NULL, caso
   *                     contrario nao a nada a ser liberado.
@@ -368,7 +408,7 @@ void free_units(unit **top);
   *
   * Interface explicita: N/A.
   *
-  * Interface implicita: build *build_top: Ponteiro para o inicio da lista que
+  * Interface implicita: -build_top: ponteiro para o inicio da lista que
   *                      ira guardar as contrucoes.
   *
   * Contrato/Requisito: A variavel build_top, que faz parte de outro modulo,
@@ -386,7 +426,7 @@ void create_listbuild();
   *
   * Interface explicita: N/A.
   *
-  * Interface implicita: build *build_top: Ponteiro para o inicio da lista que
+  * Interface implicita: -build_top: Ponteiro para o inicio da lista que
   *                      guarda as construcoes.
   *
   * Contrato/Requisito: A variavel build_top, que faz parte de outro modulo,
@@ -407,8 +447,8 @@ void free_build();
   * Interface explicita: @param i Indica qual das construcoes do usuario
   *                      deseja-se saber a posicao.
   *
-  * Interface implicita: static const int good_col[]: variavel que guarda as
-  *                      colunas onde se deve recolher os recursos dos predios.
+  * Interface implicita: -good_col: variavel que guarda as colunas onde se deve
+  *                      recolher os recursos dos predios.
   *
   * Contrato/Requisito: O parametro i deve estar entre 0 e 3.
   *

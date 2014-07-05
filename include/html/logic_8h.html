@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
-<title>The Lord os Strategy: Referência do Arquivo include/logic.h</title>
+<title>The Lord of Strategy: Referência do Arquivo logic.h</title>
 
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
@@ -27,7 +27,7 @@
   
   
   <td style="padding-left: 0.5em;">
-   <div id="projectname">The Lord os Strategy
+   <div id="projectname">The Lord of Strategy
    
    </div>
    
@@ -80,7 +80,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Busca');
 <a href="#typedef-members">Definições de Tipos</a> &#124;
 <a href="#func-members">Funções</a>  </div>
   <div class="headertitle">
-<div class="title">Referência do Arquivo include/logic.h</div>  </div>
+<div class="title">Referência do Arquivo logic.h</div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -130,7 +130,6 @@ Funções</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="logic_8h.html#a5c474d45c5bb5f78ec6b1eec933bb0a2">fortress_buy</a> (int col)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="logic_8h.html#a5dba92e6a39126f3fab303bcf4ee9a26">option_upgrade</a> (int level)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="logic_8h.html#a4526e3103a63b241fb2f3b2b6ecf8533">all_move</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="logic_8h.html#ac76a9a18e8a40dff802783d63a839a23">change_hobbit</a> ()</td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Descrição Detalhada</h2>
 <div class="textblock"><p>Header contendo todas funçoes logicas do programa. </p>
@@ -149,29 +148,11 @@ Funções</h2></td></tr>
 </div>
 <div class="memdoc">
 <p>Funcao: Mover todas as unidades.</p>
-<p>Descricao: Move todas as unidades de acordo com sua posicao atual (caso ja estejam em seu destino, as unidades nao se movem mais) e do tempo nescessario para se mover (o qual varia de raca para raca).</p>
-<dl class="return"><dt><b>Retorna:</b></dt><dd>void</dd></dl>
-<p>Requisitos: map != NULL </p>
-
-</div>
-</div>
-<a class="anchor" id="ac76a9a18e8a40dff802783d63a839a23"></a><!-- doxytag: member="logic.h::change_hobbit" ref="ac76a9a18e8a40dff802783d63a839a23" args="()" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void <a class="el" href="logic_8h.html#ac76a9a18e8a40dff802783d63a839a23">change_hobbit</a> </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-<p>Funcao: Mudar o o trabalho de um hobbit. (?)</p>
-<p>Descricao: Permite o usuario mudar o tipo de recurso que o hobbit esta recolhendo.(?) </p>
-<dl class="return"><dt><b>Retorna:</b></dt><dd>void</dd></dl>
-<p>Requisitos: N/A. </p>
+<p>Descricao/Hipotese: Move todas as unidades de acordo com sua posicao atual (caso ja estejam em seu destino, as unidades nao se movem mais) e do tempo nescessario para se mover (o qual varia de raca para raca).</p>
+<p>Interface explicita: N/A.</p>
+<p>Interface implicita: -free_races: ponteiro do inicio da lista de unidades d usuario.</p>
+<p>Contrato/Requisitos: A matriz contendo o mapa do jogo deve estar devidamente alocada na memoria.</p>
+<dl class="return"><dt><b>Retorna:</b></dt><dd>void </dd></dl>
 
 </div>
 </div>
@@ -190,15 +171,17 @@ Funções</h2></td></tr>
 </div>
 <div class="memdoc">
 <p>Funcao: Coletar os recuros.</p>
-<p>Descricao: Faz com que os hobbits coltem os recursos caso eles estejam perto da construcao a qual estao trabalhando. Caso eles estejam perto da fortaleza, eles depositam os recursos.</p>
+<p>Descricao/Hipotese: Faz com que os hobbits coltem os recursos caso eles estejam perto da construcao a qual estao trabalhando. Caso eles estejam perto da fortaleza, eles depositam os recursos.</p>
+<p>Interface explicita: </p>
 <dl class="params"><dt><b>Parâmetros:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">chr</td><td>Unidade que esta coletando os recursos.</td></tr>
+    <tr><td class="paramname">chr</td><td>Unidade coletando os recursos.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Retorna:</b></dt><dd>void</dd></dl>
-<p>Requisitos: map != NULL e chr != NULL </p>
+<p>Interface implicita: -build_top: ponteiro do inicio da lista contendo as informacoes das costrucoes do usario.</p>
+<p>Contrato/Requisitos: Tanto o mapa quanto a unidade coletando os recursos devem estar alocados na memoria, ou seja diferente de NULL. </p>
+<dl class="return"><dt><b>Retorna:</b></dt><dd>void </dd></dl>
 
 </div>
 </div>
@@ -217,15 +200,17 @@ Funções</h2></td></tr>
 </div>
 <div class="memdoc">
 <p>Funcao: Desbloquear a proxima raca aliada.</p>
-<p>Descricao: Permite o usuario desbloquear a proxima raca aliada e comecar a produzir unidades dessa raca.</p>
+<p>Descricao/Hipotese: Permite o usuario desbloquear a proxima raca aliada e comecar a produzir unidades dessa raca.</p>
+<p>Interface explicita: </p>
 <dl class="params"><dt><b>Parâmetros:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">col</td><td>??</td></tr>
+    <tr><td class="paramname">col</td><td>Indica o numero da coluna da opcao de gerar uma tropa foi clicada.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Retorna:</b></dt><dd>void</dd></dl>
-<p>Reqquisitos: N/A. </p>
+<p>Interface implicita: -user: variavel contendo as informacoes do usuario. -frodo_house.level: contem o nivel atual da fortaleza do usuario.</p>
+<p>Contrato/Requisito: N/A.</p>
+<dl class="return"><dt><b>Retorna:</b></dt><dd>void </dd></dl>
 
 </div>
 </div>
@@ -243,9 +228,13 @@ Funções</h2></td></tr>
 </div>
 <div class="memdoc">
 <p>Funcao: Ler as ascii art das racas.</p>
-<p>Descricao: Le os arquivos .txt contendo as ascii art de cada raca e suas sombras, e as colocas em suas respecitivas matrizes.</p>
-<dl class="return"><dt><b>Retorna:</b></dt><dd>1, caso tudo tenha dado certo.</dd></dl>
-<p>Requisitos: Os .txt contendo as ascii art de cada raca. </p>
+<p>Descricao/Hipotese: Le os arquivos .txt contendo as ascii art de cada raca e suas sombras, e as colocas em suas respecitivas matrizes.</p>
+<p>Interface explicita: N/A.</p>
+<p>Interface implicita: -mat_races: matriz contendo as ascii art dos personagens. -mat_shadows: matriz contendo as sombras dos personagens.</p>
+<p>Contrato/Requisitos: Os arquivos contendo as ascii art de cada personagem e suas sombras devem estar na mesma pasta deste arquivo: <a class="el" href="logic_8h.html" title="Header contendo todas funçoes logicas do programa.">logic.h</a></p>
+<dl class="return"><dt><b>Retorna:</b></dt><dd>1, caso tudo tenha dado certo. </dd>
+<dd>
+-1, caso falhe. </dd></dl>
 
 </div>
 </div>
@@ -263,9 +252,11 @@ Funções</h2></td></tr>
 </div>
 <div class="memdoc">
 <p>Funcao: Recuperar o inicio da lista de construcoes.</p>
-<p>Descricao: Encapsula o ponteiro de inicio da lista de construcoes do usauario. Assim, apenas as funcoes que preicam da da lista tem acesso 'as construcoes.</p>
-<dl class="return"><dt><b>Retorna:</b></dt><dd>build_top, inicio da lista de construcoes do usuario.</dd></dl>
-<p>Requisitos: N/A. </p>
+<p>Descricao/Hipotese: Encapsula o ponteiro de inicio da lista de construcoes do usauario. Assim, apenas as funcoes que preicam da da lista tem acesso 'as construcoes.</p>
+<p>Interface explicita: N/A.</p>
+<p>Interface implicita: -build_top: ponteiro do inicio da lista contendo as informacoes das construcoes do usuario.</p>
+<p>Contrato/Requisitos: N/A.</p>
+<dl class="return"><dt><b>Retorna:</b></dt><dd>build_top, inicio da lista de construcoes do usuario. </dd></dl>
 
 </div>
 </div>
@@ -283,9 +274,11 @@ Funções</h2></td></tr>
 </div>
 <div class="memdoc">
 <p>Funcao: Recupercao das informacoes de eventos.</p>
-<p>Descricao: ??</p>
-<dl class="return"><dt><b>Retorna:</b></dt><dd>event</dd></dl>
-<p>Requisitos: N/A. </p>
+<p>Descricao/Hipotese: ??</p>
+<p>Interface explicita: N/A.</p>
+<p>Interface implicita: ??</p>
+<p>Contrato/Requisitos: N/A.</p>
+<dl class="return"><dt><b>Retorna:</b></dt><dd>event </dd></dl>
 
 </div>
 </div>
@@ -303,9 +296,11 @@ Funções</h2></td></tr>
 </div>
 <div class="memdoc">
 <p>Funcao: Recuperar a variavel free_races.</p>
-<p>Descricao: Encapsula o ponteiro de inicio da lista das unidades do usuario. Assim, apenas as funcoes que precisam desta variavel podem ter acesso 'a lista das unidades.</p>
-<dl class="return"><dt><b>Retorna:</b></dt><dd>free_races</dd></dl>
-<p>Requisitos: N/A. </p>
+<p>Descricao/Hipotese: Encapsula o ponteiro do inicio da lista das unidades do usuario. Assim, apenas as funcoes que precisam desta variavel podem ter acesso 'a lista das unidades.</p>
+<p>Interace explicita: N/A.</p>
+<p>Interface implicita: -free_races: ponteiro do inicio da lista de unidades do usuario.</p>
+<p>Contrato/Requisitos: N/A.</p>
+<dl class="return"><dt><b>Retorna:</b></dt><dd>free_races </dd></dl>
 
 </div>
 </div>
@@ -322,10 +317,12 @@ Funções</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
-<p>Funcao: Recuperacao do status do jogo.</p>
-<p>Descricao: Encapsula a variavel de status do jogo. Assim, apenas funcoes que precisam dessa variavel conseguem recuperar seu valor.</p>
-<dl class="return"><dt><b>Retorna:</b></dt><dd>status, estado atual do jogo.</dd></dl>
-<p>Requisitos: N/A. </p>
+<p>Funcao: Recuperar do status do jogo.</p>
+<p>Descricao/Hipotese: Encapsula a variavel de status do jogo. Assim, apenas funcoes que precisam dessa variavel conseguem recuperar seu valor.</p>
+<p>Interface explifica: N/A.</p>
+<p>Interface Implicita: -status: contem o status atual do jogo.</p>
+<p>Contrato/Requisitos: N/A.</p>
+<dl class="return"><dt><b>Retorna:</b></dt><dd>status, estado atual do jogo. </dd></dl>
 
 </div>
 </div>
@@ -342,10 +339,12 @@ Funções</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
-<p>Funcao: Recuperacao do status das chaves (?)</p>
-<p>Descricao: ??</p>
-<dl class="return"><dt><b>Retorna:</b></dt><dd>status, estado atual do jogo.</dd></dl>
-<p>Requisitos: N/A </p>
+<p>Funcao: Recuperacao do status das chaves.</p>
+<p>Descricao/Hipotese: Encapsula a variavel de status das chaves. Assim, Apenas funcoes que precisam mudar o status tem acesso 'a variavel.</p>
+<p>Interface explicita: N/A.</p>
+<p>Interface implicita: -status: contem o status atual do jogo.</p>
+<p>Contrato/Requisitos: N/A.</p>
+<dl class="return"><dt><b>Retorna:</b></dt><dd>status, estado atual do jogo. </dd></dl>
 
 </div>
 </div>
@@ -363,9 +362,10 @@ Funções</h2></td></tr>
 </div>
 <div class="memdoc">
 <p>Funcao: Recuperar as informacoes de scroll do mapa.</p>
-<p>Descricao: Encapsula a variavel contendo as informacoes do scroll do mapa. Assim, apenas as funcoes que precisam saber desse valor tem acesso.</p>
-<dl class="return"><dt><b>Retorna:</b></dt><dd>srcll</dd></dl>
-<p>Requisitos: N/A. </p>
+<p>Descricao/Hipotese: Encapsula a variavel contendo as informacoes do scroll do mapa. Assim, apenas as funcoes que precisam saber desse valor tem acesso.</p>
+<p>Interface explicita: N/A.</p>
+<p>Interface implicita: -map_scrol:l contem as informacoes do scroll do mapa. Contrato/Requisitos: N/A.</p>
+<dl class="return"><dt><b>Retorna:</b></dt><dd>srcll </dd></dl>
 
 </div>
 </div>
@@ -383,9 +383,11 @@ Funções</h2></td></tr>
 </div>
 <div class="memdoc">
 <p>Funcao: Recuperacao da quantidade de colunas do terminal.</p>
-<p>Descricao: Encapsula a variavel que contem a quantidade de colunas do terminal. Assim, apenas as funcoes que precisam saber do valor da variavel possuem acesso.</p>
-<dl class="return"><dt><b>Retorna:</b></dt><dd>term_col</dd></dl>
-<p>Requisitos: N/A. </p>
+<p>Descricao/Hipotese: Encapsula a variavel que contem a quantidade de colunas do terminal. Assim, apenas as funcoes que precisam saber do valor da variavel possuem acesso.</p>
+<p>Interface explicita: N/A.</p>
+<p>Interface implicita: -term_co:l contem a quantidade de colunas que o terminal do usuario possui.</p>
+<p>Contrato/Requisitos: N/A.</p>
+<dl class="return"><dt><b>Retorna:</b></dt><dd>term_col </dd></dl>
 
 </div>
 </div>
@@ -402,10 +404,12 @@ Funções</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
-<p>Funcao: Recuperacao das informacoes do usuario.</p>
-<p>Descricao: Encpasula as informacoes do usuario para nao serem alteradas por qualquer funcao.</p>
-<dl class="return"><dt><b>Retorna:</b></dt><dd>user, estrutura contendo as informacoes do usaurio.</dd></dl>
-<p>Requisitos: N/A. </p>
+<p>Funcao: Recuperar as informacoes do usuario.</p>
+<p>Descricao/Hipotese: Encpasula as informacoes do usuario para nao serem alteradas por qualquer funcao.</p>
+<p>Interface explicita: N/A.</p>
+<p>Interface implicita: -user: contem as informacoes do usuario.</p>
+<p>Contrato/Requisitos: N/A.</p>
+<dl class="return"><dt><b>Retorna:</b></dt><dd>user, estrutura contendo as informacoes do usaurio. </dd></dl>
 
 </div>
 </div>
@@ -423,9 +427,11 @@ Funções</h2></td></tr>
 </div>
 <div class="memdoc">
 <p>Funcao: Atualizar o armazem das construcoes.</p>
-<p>Descricao: Atualiza o armazem de acordo com a renda de cada construcao, se o armazem ja nao estiver em sua capacidade maxima.</p>
-<dl class="return"><dt><b>Retorna:</b></dt><dd>void</dd></dl>
-<p>Requisitos: build_top != NULL </p>
+<p>Descricao/Hipotese: Atualiza o armazem das construcoes de acordo com a producao de cada construcao. Se o armazem ja nao estiver em sua capacidade maxima, ele para de produzir recursos.</p>
+<p>Interface explicita: N/A.</p>
+<p>Interface implicita: -build_top: indica o inicio da lista encadeada contendo as informacoes das construcoes do jogador.</p>
+<p>Contrato/Requisitos: Para que se possa atualizar o armazem das construcoes, deve existir pelomenos uma, logo build_top deve ser diferente de NULL.</p>
+<dl class="return"><dt><b>Retorna:</b></dt><dd>void </dd></dl>
 
 </div>
 </div>
@@ -454,16 +460,10 @@ Funções</h2></td></tr>
 </div>
 <div class="memdoc">
 <p>Funcao: Mover os hobbits para a construcao.</p>
-<p>Descricao: Move os hobbits para a construcao a qual eles estao trabalhando.</p>
-<dl class="params"><dt><b>Parâmetros:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramname">chr</td><td>Unidade que sera movida.</td></tr>
-    <tr><td class="paramname">n_build</td><td>Indica que construcao o a unidade deve ir.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="return"><dt><b>Retorna:</b></dt><dd>void</dd></dl>
-<p>Requisitos: map != NULL, chr != NULL, n_build entre 1 e 6. </p>
+<p>Descricao/Hipotese: Move os hobbits para a construcao a qual eles estao trabalhando.</p>
+<p>Interface explicita: -chr: unidade a ser movida para sua construcao. -n_build: identificador da construcao a qual a unidade esta trablhando.</p>
+<p>Contrato/Requisitos: Tanto o mapa quanto a unidade devem estar alocados na memoria, ou seja diferentes de NULL. A variavel n_builds deve estar enre 1 e 6.</p>
+<dl class="return"><dt><b>Retorna:</b></dt><dd>void </dd></dl>
 
 </div>
 </div>
@@ -481,9 +481,10 @@ Funções</h2></td></tr>
 </div>
 <div class="memdoc">
 <p>Funcao: Inicializa a matriz de opcoes.</p>
-<p>Descricao: Le dos arquivos .txt as ascii art das opcoes, e as colocas na matriz de opcoes.</p>
-<dl class="return"><dt><b>Retorna:</b></dt><dd>void</dd></dl>
-<p>Requisitos: Os arquivos .txt contendo as ascii art das opcoes. </p>
+<p>Descricao/Hipotese: Le dos arquivos contendo as ascii art das opcoes do menu, e as colocas em suas devidas posicoes na matriz de opcoes.</p>
+<p>Interface explicita: N/A.</p>
+<p>Interface implicita: -options: matriz que contem as ascii art das opcoes do menu. Contrato/Requisitos: A matriz de opcoes do menu deve estar alocada, ou seja diferente de NULL. </p>
+<dl class="return"><dt><b>Retorna:</b></dt><dd>void </dd></dl>
 
 </div>
 </div>
@@ -501,16 +502,18 @@ Funções</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
-<p>Funcao: ??</p>
-<p>Descricao: ??</p>
+<p>Funcao: Imprimir as opcoes da fortaleza do usaurio.</p>
+<p>Descricao/Hipotese: Imprime o menu de opces da fortaleza do usuario, as quais sao: Aumentar o nivel da fortaleza e comprar uma unidade de uma raca, se a fortaleza estiver com nivel suficiente para produzir a raca.</p>
+<p>Interface explicita: </p>
 <dl class="params"><dt><b>Parâmetros:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">n</td><td>??</td></tr>
+    <tr><td class="paramname">int</td><td>n Indica qual opcao sera impressa.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Retorna:</b></dt><dd>void</dd></dl>
-<p>Requisitos: map != NULL, .txt das ascii art das opcoes do usuario (?) </p>
+<p>Interface implicita: -map: matriz contendo o mapa atual do jogo.</p>
+<p>Contrato/Requisito: O mapa deve estar devidamente alocado na memoria e os arquivos contendo as ascii art das opcoes devem estar na mesma pasta desse arquivo (<a class="el" href="logic_8h.html" title="Header contendo todas funçoes logicas do programa.">logic.h</a>).</p>
+<dl class="return"><dt><b>Retorna:</b></dt><dd>void </dd></dl>
 
 </div>
 </div>
@@ -528,9 +531,11 @@ Funções</h2></td></tr>
 </div>
 <div class="memdoc">
 <p>Funcao: Prencher o mapa com espacos.</p>
-<p>Descricao: Prenche a matriz do mapa com espacos ' ' onde tem '\0'.</p>
-<dl class="return"><dt><b>Retorna:</b></dt><dd>void</dd></dl>
-<p>Requisitos: map != NULL </p>
+<p>Descricao/Hipotese: Prenche a matriz do mapa com espacos ' ' onde tem '\0'.</p>
+<p>Interface explicita: N/A.</p>
+<p>Interface implicita: -map: matriz contendo mapa do jogo.</p>
+<p>Contrato/Requisitos: A matriz do mapa devera ter sido devidamente alocada, ou seja, ela devera ser diferente de NULL (map != NULL).</p>
+<dl class="return"><dt><b>Retorna:</b></dt><dd>void </dd></dl>
 
 </div>
 </div>
@@ -549,15 +554,17 @@ Funções</h2></td></tr>
 </div>
 <div class="memdoc">
 <p>Funcao: Aumentar o nivel da fortaleza.</p>
-<p>Descricao: Permite o usuario a aumentar o nivel de suas construcoes, liberando novas racas aliadas para produzir unidades. Caso a construcao ja esteja no nivel maximo, a opcao de comprar niveis e' apagada do mapa.</p>
+<p>Descricao/Hipotese: Permite o usuario a aumentar o nivel de suas construcoes, liberando novas racas aliadas para produzir unidades. Caso a construcao ja esteja no nivel maximo, a opcao de comprar niveis e' apagada do mapa.</p>
+<p>Interface explicita: </p>
 <dl class="params"><dt><b>Parâmetros:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">level</td><td>Indica nivel atual da construcao.</td></tr>
+    <tr><td class="paramname">level</td><td>Indica o nivel atual da fortaleza do usuario.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Retorna:</b></dt><dd>void</dd></dl>
-<p>Requisitos: map != NULL, level entre 1 e 4 </p>
+<p>Interface implicita: -map: matriz contendo o mapa do jogo.</p>
+<p>Contrato/Requisitos: A matriz contendo o mapa do jogo deve estar devidamente alocada na memoria. A variavel level deve estar entre 1 e 4.</p>
+<dl class="return"><dt><b>Retorna:</b></dt><dd>void </dd></dl>
 
 </div>
 </div>
@@ -575,9 +582,17 @@ Funções</h2></td></tr>
 </div>
 <div class="memdoc">
 <p>Funcao: Imprimir a quantidade de recursos.</p>
-<p>Descricao: Imprime a quantidade de recusros armazendas em cada construcao.</p>
-<dl class="return"><dt><b>Retorna:</b></dt><dd>void</dd></dl>
-<p>Requisitos: map != NULL </p>
+<p>Descricao/Hipotese: Imprime a quantidade de recusros armazendas em cada construcao.</p>
+<p>Interface explicita: </p>
+<dl class="params"><dt><b>Parâmetros:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">build_top</td><td>Ponteiro do inicio da lista contendo as informacoes das construcoes do usuario.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Interface implicita: -map: matriz contendo o mapa do jogo.</p>
+<p>Contrato/Requisitos: Tanto as construcoes tanto quanto o mapa devem estar alocados na memoria, ou seja diferente de NULL.</p>
+<dl class="return"><dt><b>Retorna:</b></dt><dd>void </dd></dl>
 
 </div>
 </div>
@@ -596,15 +611,17 @@ Funções</h2></td></tr>
 </div>
 <div class="memdoc">
 <p>Funcao: Imprimir uma unidade no mapa.</p>
-<p>Descricao: Imprime uma unidade na matriz do mapa em sua devida posicao.</p>
+<p>Descricao/Hipotese: Imprime uma unidade na matriz do mapa em sua devida posicao.</p>
+<p>Interface explicita: </p>
 <dl class="params"><dt><b>Parâmetros:</b></dt><dd>
   <table class="params">
     <tr><td class="paramname">chr</td><td>Indica qual unidade sera impressa no mapa.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Retorna:</b></dt><dd>void</dd></dl>
-<p>Requisitos: chr != NULL </p>
+<p>Interface implicita: -l_unit: promove um mecanismo de sincronizacao que visa impedir que a lista encadeada que guarda as unidades seja modificada por mais de uma thread ao mesmo tempo. -map: matriz contendo o mapa do jogo.</p>
+<p>Contrato/Requisitos: O ponteiro da unidade a ser impressa no mapa e o mapa deverao ter sido alocados corretamente, ou seja diferente de NULL.</p>
+<dl class="return"><dt><b>Retorna:</b></dt><dd>void </dd></dl>
 
 </div>
 </div>
@@ -622,7 +639,10 @@ Funções</h2></td></tr>
 </div>
 <div class="memdoc">
 <p>Funcao: ??</p>
-<p>Descricao: ??</p>
+<p>Descricao/Hipotese: ??</p>
+<p>Interface explicita: N/A.</p>
+<p>Interface implicita: ??</p>
+<p>Contrato/ Requisitos: N/A.</p>
 <dl class="return"><dt><b>Retorna:</b></dt><dd>void</dd></dl>
 <p>Requisitos: N/A. </p>
 
@@ -643,15 +663,17 @@ Funções</h2></td></tr>
 </div>
 <div class="memdoc">
 <p>Funcao: Conferir qual opcao o usuario clicou e seguir de acordo.</p>
-<p>Descricao: ??</p>
+<p>Descricao/Hipotese: Confirma qual opcao o usuario selecionou no menu de opcoes in-game e segue de acordo. Caso o usuario clicou em Resume, ele voltara ao jogo. Caso ele clicou em Exit, ele saira do jogo.</p>
+<p>Interface explifica: </p>
 <dl class="params"><dt><b>Parâmetros:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">option</td><td>Indica qual opcao o usuario clicou.</td></tr>
+    <tr><td class="paramname">options,:</td><td>indica qual opcao foi selecionada.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Retorna:</b></dt><dd>void, nao possui retorno.</dd></dl>
-<p>Requisitos: A variavel option deve estar entre 1 e 3. </p>
+<p>Interface implicita: -status: contem o status atual do jogo.</p>
+<p>Contrato/Requisitos: N/A.</p>
+<dl class="return"><dt><b>Retorna:</b></dt><dd>void, nao possui retorno. </dd></dl>
 
 </div>
 </div>
@@ -680,16 +702,18 @@ Funções</h2></td></tr>
 </div>
 <div class="memdoc">
 <p>Funcao: Incializar uma nova unidade.</p>
-<p>Descricao: Inicializa uma nova unidade de acordo com os atributos de cada raca.</p>
+<p>Descricao/Hipotese: Inicializa uma nova unidade de acordo com os atributos de cada raca.</p>
+<p>Interface explicita: </p>
 <dl class="params"><dt><b>Parâmetros:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">chr</td><td>Ponteiro da unidade a ser incializada.</td></tr>
+    <tr><td class="paramname">chr</td><td>Ponteiro da unidade a ser inicializada. </td></tr>
     <tr><td class="paramname">race</td><td>Indica a qual raca a nova unidade pertence.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Retorna:</b></dt><dd>void</dd></dl>
-<p>Requisitos: chr != NULL e race deve estar entre 1 e 8. </p>
+<p>Interface implicita: N/A.</p>
+<p>Contrato/Requisitos: o ponteiro da unidade a ser inicializada deve ser diferente de NULL (char != NULL). E a entrada de race deve estar entre 1 e 8.</p>
+<dl class="return"><dt><b>Retorna:</b></dt><dd>void </dd></dl>
 
 </div>
 </div>
@@ -708,15 +732,17 @@ Funções</h2></td></tr>
 </div>
 <div class="memdoc">
 <p>Funcao: Ler qual opcao esta sendo clicada.</p>
-<p>Descricao: ??</p>
+<p>Descricao/Hipotese: ??</p>
+<p>Interface explicita: </p>
 <dl class="params"><dt><b>Parâmetros:</b></dt><dd>
   <table class="params">
     <tr><td class="paramname">arg</td><td>??</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Retorna:</b></dt><dd>void, nao possui retorno.</dd></dl>
-<p>Requisitos: ?? </p>
+<p>Interface implicita: ??</p>
+<p>Contrato/Requisitos:??</p>
+<dl class="return"><dt><b>Retorna:</b></dt><dd>void, nao possui retorno. </dd></dl>
 
 </div>
 </div>
@@ -745,11 +771,19 @@ Funções</h2></td></tr>
 </div>
 <div class="memdoc">
 <p>Funcao: ??</p>
-<p>Descricao: ??</p>
+<p>Descricao/Hipotese: ??</p>
+<p>Interface explicita: </p>
+<dl class="params"><dt><b>Parâmetros:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">mouse_row</td><td>Linha atual do mouse no terminal.  mouse_col Coluna atual do mouse no terminal.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Interface implicita: ??</p>
+<p>Contrato/Requisitos: ??</p>
 <dl class="return"><dt><b>Retorna:</b></dt><dd>1, se... </dd>
 <dd>
-0, se...</dd></dl>
-<p>Requisitos:?? </p>
+0, se... </dd></dl>
 
 </div>
 </div>
@@ -768,15 +802,17 @@ Funções</h2></td></tr>
 </div>
 <div class="memdoc">
 <p>Funcao: Atribuir um novo inicio para lista de construcoes.</p>
-<p>Descricao: Encapsula o ponteiro de inicio da lista de construcoes do usuario. Assim, apenas as funcoes que criam construcoes podem mudar o inicio da lista.</p>
+<p>Descricao/Hipotese: Encapsula o ponteiro de inicio da lista de construcoes do usuario. Assim, apenas as funcoes que criam construcoes podem mudar o inicio da lista.</p>
+<p>Interface explicita: </p>
 <dl class="params"><dt><b>Parâmetros:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">top</td><td>Inicio da lista construcoes do usuario.</td></tr>
+    <tr><td class="paramname">top</td><td>Nova construcao a ser adicionada 'a lista de construcoes do usuario.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Retorna:</b></dt><dd>void</dd></dl>
-<p>Requisitos: N/A. </p>
+<p>Interface implicita: -build_top: ponteiro do inicio da lista contendo as informacoes das construcoes do usuario.</p>
+<p>Contrato/Requisitos: N/A.</p>
+<dl class="return"><dt><b>Retorna:</b></dt><dd>void </dd></dl>
 
 </div>
 </div>
@@ -795,15 +831,17 @@ Funções</h2></td></tr>
 </div>
 <div class="memdoc">
 <p>Funcao: Atribuir um novo inicio para a lista de unidades.</p>
-<p>Descricao: Encapsula o ponteiro de inicio da lista de uniades do usuario. Assim, apenas as funcoes que criam ou removem novas unidades podem mudar o inicio da lista.</p>
+<p>Descricao/Hipotese: Encapsula o ponteiro de inicio da lista de uniades do usuario. Assim, apenas as funcoes que criam ou removem novas unidades podem mudar o inicio da lista.</p>
+<p>Interface explicita: </p>
 <dl class="params"><dt><b>Parâmetros:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">top</td><td>Inicio da lista de unidades do usuario.</td></tr>
+    <tr><td class="paramname">top</td><td>Nova unidade a ser incluida na lista de unidades.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Retorna:</b></dt><dd>void</dd></dl>
-<p>Requisitos: N/A. </p>
+<p>Interface implicita: -free_races: ponteiro do inicio da lista de unidades do usuario.</p>
+<p>Contrato/Requisitos: N/A.</p>
+<dl class="return"><dt><b>Retorna:</b></dt><dd>void </dd></dl>
 
 </div>
 </div>
@@ -822,15 +860,17 @@ Funções</h2></td></tr>
 </div>
 <div class="memdoc">
 <p>Funcao: Atribuir um novo valor ao status do jogo.</p>
-<p>Descricao: Encapsula a variavel de status do jogo. Deste modo, apenas as as funcoes que precisam mudar o valor do status do jogo conseguem ter acesso.</p>
+<p>Descricao/Hipotese: Encapsula a variavel de status do jogo. Deste modo, apenas as as funcoes que precisam mudar o valor do status do jogo conseguem ter acesso.</p>
+<p>Interface explicita: </p>
 <dl class="params"><dt><b>Parâmetros:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">key_status</td><td>Novo valor a ser atribuido ao status do jogo.</td></tr>
+    <tr><td class="paramname">key_status</td><td>Indica o novo valor do status do jogo.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Retorna:</b></dt><dd>void, nao possui retorno.</dd></dl>
-<p>Requisitos: N/A. </p>
+<p>Interface implicita: -status: contem o status atual do jogo.</p>
+<p>Contrato/Requisitos: N/A.</p>
+<dl class="return"><dt><b>Retorna:</b></dt><dd>void, nao possui retorno. </dd></dl>
 
 </div>
 </div>
@@ -848,16 +888,18 @@ Funções</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
-<p>Funcao: Atribuir um novo valor para o status das chaves (?)</p>
-<p>Descricao: Encapusla a variavel de status das chaves. Assim, apenas funcoes que precisam mudar o status tem acesso 'a variavel. (?)</p>
+<p>Funcao: Atribuir um novo valor para o status das chaves.</p>
+<p>Descricao/Hipotese: Encapusla a variavel de status das chaves. Assim, apenas funcoes que precisam mudar o status tem acesso 'a variavel.</p>
+<p>Interface explicita: </p>
 <dl class="params"><dt><b>Parâmetros:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">key_status</td><td>Variavel que contem o status das chaves (?)</td></tr>
+    <tr><td class="paramname">key_status</td><td>Indica o novo status da chave.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Retorna:</b></dt><dd>void, nao possui retorno.</dd></dl>
-<p>Requisitos: N/A. </p>
+<p>Interface implicita: -status: contem o status atual do jogo.</p>
+<p>Contrato/Requisitos: N/A.</p>
+<dl class="return"><dt><b>Retorna:</b></dt><dd>void, nao possui retorno. </dd></dl>
 
 </div>
 </div>
@@ -876,9 +918,17 @@ Funções</h2></td></tr>
 </div>
 <div class="memdoc">
 <p>Funcao: Atribuir um valor para o limite do mapa.</p>
-<p>Descricao: Encapsula a variavel que contem o limite do mapa. Assim, apenas as funcoes que precisam alterar esse valor possuem acesso 'a variavel.</p>
-<dl class="return"><dt><b>Retorna:</b></dt><dd>void</dd></dl>
-<p>Requisitos: N/A. </p>
+<p>Descricao/Hipotese: Encapsula a variavel que contem o limite do mapa. Assim, apenas as funcoes que precisam alterar esse valor possuem acesso 'a variavel.</p>
+<p>Interface explicita: </p>
+<dl class="params"><dt><b>Parâmetros:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">lim</td><td>Indica o novo limite do mapa.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Interface implicita: -lim_map: contem o limite do mapa.</p>
+<p>Contrato/Requisitos: N/A.</p>
+<dl class="return"><dt><b>Retorna:</b></dt><dd>void </dd></dl>
 
 </div>
 </div>
@@ -897,9 +947,17 @@ Funções</h2></td></tr>
 </div>
 <div class="memdoc">
 <p>Funcao: Atribuir um novo valor para o scroll do mapa.</p>
-<p>Descricao: Encapsula a variavel contendo as informacoes do scroll do mapa. Assim, apenas as funcoes que precisam mudar esse valor podem ter ter acesso 'a variavel.</p>
-<dl class="return"><dt><b>Retorna:</b></dt><dd>void.</dd></dl>
-<p>Requisitos: N/A. </p>
+<p>Descricao/Hipotese: Encapsula a variavel contendo as informacoes do scroll do mapa. Assim, apenas as funcoes que precisam mudar esse valor podem ter acesso 'a variavel.</p>
+<p>Interface explicita: </p>
+<dl class="params"><dt><b>Parâmetros:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">scroll_map</td><td>Contem as novas informacoes sobre o scroll do mapa.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Interface implicita: -map_scroll: contem as informacoes sobre o scroll do mapa.</p>
+<p>Contrato/Requisitos: N/A.</p>
+<dl class="return"><dt><b>Retorna:</b></dt><dd>void. </dd></dl>
 
 </div>
 </div>
@@ -909,7 +967,7 @@ Funções</h2></td></tr>
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>Todos</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Arquivos</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Funções</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>Todos</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Arquivos</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Funções</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variáveis</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -921,7 +979,7 @@ Funções</h2></td></tr>
 
 
 <hr class="footer"/><address class="footer"><small>
-Gerado em Sexta, 4 de Julho de 2014 17:46:01 para The Lord os Strategy por &#160;<a href="http://www.doxygen.org/index.html">
+Gerado em Sábado, 5 de Julho de 2014 02:13:45 para The Lord of Strategy por &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.6.1
 </small></address>
