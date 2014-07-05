@@ -475,8 +475,7 @@ void printmap_unit(unit chr)
 	{
 		for (j = 0; j < RACE_WIDTH; j++)
 		{
-			if ((mat_shadows[chr.race-1][i][j] == 'r') &&
-			   (row < MAP_ROW) && (col < get_sizecol()))
+			if (mat_shadows[chr.race-1][i][j] == 'r')
 				map[row][col] = mat_races[chr.race-1][i][j];
 			col++;
 		}
@@ -494,8 +493,7 @@ void clear_unit(unit chr)
 	for (i = RACE_HEIGHT - chr.height; i < RACE_HEIGHT; i++)
 	{
 		for (j = 0; j < RACE_WIDTH; j++)
-			if ((row < MAP_ROW) && (col < get_sizecol()))
-				map[row][col++] = ' ';
+			map[row][col++] = ' ';
 		col = chr.position[1];
 		row++;
 	}
