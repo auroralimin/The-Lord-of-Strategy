@@ -565,6 +565,70 @@ void option_upgrade(int level);
   */
 void all_move();
 
+/** Funcao: Salvar o estado atual do jogo.
+  *
+  * Descricao/Hipotese: Salva o estado atual do jogo em arquivos binarios, para
+  *                     que o usuario possa continuar de onde parou sem nenhuma
+  *                     perda.
+  *
+  * Interface explicita: @param save_game Nome do diretoria a se salvar o jogo.
+  *
+  * Interface implicita: -free_races: ponteiro do inicio da lista encadeada das
+  *                                   unidades do usuario.
+  *                      -build_top: ponteiro do inicio da lista encadeada das
+  *                                  construcoes do usuario.
+  *                      -user: variavel contendo as informcaoes do usuario,
+  *                             como quantidade de cada recurso que ele possui.
+  *
+  *
+  * Contrato/Requisitos: N/A.
+  *
+  * @return void, sem retorno.
+  */
 void save(char *save_name);
+
+/** Funcao: Carregar um jogo salvo.
+  *
+  * Descricao/Hipotese: O programa carrega um jogo salvo anteriormente. Assim,
+  *                     o usuario podera continuar a sua campanha do momento em
+  *                     que salvou.
+  *
+  * Interface explicita: @param load_dir Nome do diretorio a ser carregado o
+  *                                      os dados salvos.
+  *
+  * Interface implicita: -free_races: ponteiro do inicio da lista encadeada das
+  *                                   unidades do usuario.
+  *                      -build_top: ponteiro do inicio da lista encadeada das
+  *                                  construcoes do usuario.
+  *                      -user: varivale contendo as informacoes do usuario,
+  *                             como a quantidade de cada recurso que ele possui.
+  *
+  * Contrato/Requisitos: Para que se carregue um jogo, deve existir um diretorio
+  *                      contendo um jogo salvo. Caso nao exista, o programa
+  *                      exibe uma mensagem de erro dizendo que nao exite
+  *                      nenhum jogo salvo. Caso exista, o programa ira
+  *                      carregar o jogo e o usuario podera continuar de onde
+  *                      parou.
+  *
+  * @return void, sem retorno.
+  */
 void load(char *load_dir);
+
+/** Funcao: Mostrar as opcoes de load game.
+  *
+  * Descricao/Hipotese: Mostra as opcoes de load game, e dependendo da opcao
+  *                     que o usuario selecionou, o programa segue de acordo.
+  *                     Por exemplo: se o usuario selecionou load, o programa
+  *                     ira carregar o ultimo save que foi feito.
+  *
+  * Interface explicita: @param options Opcao que o usuario selecionou.
+  *
+  * Interface implicita: -status: variavel que contem o estado atual do jogo.
+  *                      -free_races: ponteiro do inicio da lista encadeada das
+  *                                   unidades do usuario.
+  *
+  * Contrato/Requisito: N/A.
+  *
+  * @return void, sem retorno.
+  */
 void load_select(int option);
