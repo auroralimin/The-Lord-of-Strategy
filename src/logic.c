@@ -635,7 +635,7 @@ void load_houseoption(int n)
 
 void fortress_buy(int col)
 {
-	int i, j, option = 0, level = frodo_house.level;;
+	int i, j, option = 0, level = frodo_house.level;
 	unit *aux;
 
 	for (i = 5; i < 80; i+=15)

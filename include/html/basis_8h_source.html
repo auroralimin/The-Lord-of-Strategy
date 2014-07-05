@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
-<title>The Lord os Strategy: Código-Fonte de include/basis.h</title>
+<title>The Lord of Strategy: Código-Fonte de basis.h</title>
 
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
@@ -27,7 +27,7 @@
   
   
   <td style="padding-left: 0.5em;">
-   <div id="projectname">The Lord os Strategy
+   <div id="projectname">The Lord of Strategy
    
    </div>
    
@@ -76,7 +76,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Busca');
 </div>
 <div class="header">
   <div class="headertitle">
-<div class="title">include/basis.h</div>  </div>
+<div class="title">basis.h</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="basis_8h.html">Vá para a documentação deste arquivo.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 
@@ -157,91 +157,85 @@ var searchBox = new SearchBox("searchBox", "search",false,'Busca');
 <a name="l00080"></a>00080 <span class="preprocessor"></span><span class="preprocessor">#define CURRENT_INCOME(x) 20 + x * 10</span>
 <a name="l00081"></a>00081 <span class="preprocessor"></span><span class="preprocessor">#define MAX_FORTRESS_HP 100000;</span>
 <a name="l00082"></a>00082 <span class="preprocessor"></span>
-<a name="l00113"></a><a class="code" href="structstr__unit.html">00113</a> <span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="structstr__unit.html" title="Estrutura contendo as informacoes de cada unidade.">str_unit</a>
-<a name="l00114"></a>00114 {
-<a name="l00115"></a>00115         <span class="keywordtype">int</span> race;
-<a name="l00116"></a>00116         <span class="keywordtype">int</span> hp;
-<a name="l00117"></a>00117         <span class="keywordtype">int</span> spd_delay;
-<a name="l00118"></a>00118         <span class="keywordtype">int</span> count_delay;
-<a name="l00119"></a>00119         <span class="keywordtype">int</span> dmg;
-<a name="l00120"></a>00120         <span class="keywordtype">int</span> height;
-<a name="l00121"></a>00121         <span class="keywordtype">int</span> position[2];
-<a name="l00122"></a>00122         <span class="keywordtype">int</span> destination[2];
-<a name="l00123"></a>00123         <span class="keywordtype">int</span> good_type;
-<a name="l00124"></a>00124         <span class="keywordtype">int</span> backpack;
-<a name="l00125"></a>00125         <span class="keyword">struct </span><a class="code" href="structstr__unit.html" title="Estrutura contendo as informacoes de cada unidade.">str_unit</a> *next;
-<a name="l00126"></a>00126 } <a class="code" href="structstr__unit.html" title="Estrutura contendo as informacoes de cada unidade.">unit</a>;
-<a name="l00127"></a>00127 
-<a name="l00146"></a><a class="code" href="structstr__build.html">00146</a> <span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="structstr__build.html" title="Estrutura contendo as informacoes de cada construcao.">str_build</a>
-<a name="l00147"></a>00147 {
-<a name="l00148"></a>00148         <span class="keywordtype">int</span> id;
-<a name="l00149"></a>00149         <span class="keywordtype">int</span> level;
-<a name="l00150"></a>00150         <span class="keywordtype">int</span> storage;
-<a name="l00151"></a>00151         <span class="keywordtype">int</span> income;
-<a name="l00152"></a>00152         <span class="keywordtype">int</span> position[2];
-<a name="l00153"></a>00153         <span class="keyword">struct </span><a class="code" href="structstr__build.html" title="Estrutura contendo as informacoes de cada construcao.">str_build</a> *next;
-<a name="l00154"></a>00154 } <a class="code" href="structstr__build.html" title="Estrutura contendo as informacoes de cada construcao.">build</a>;
-<a name="l00155"></a>00155 
-<a name="l00156"></a>00156 
-<a name="l00169"></a><a class="code" href="structstr__fortress.html">00169</a> <span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="structstr__fortress.html" title="Estrutura que contem as informacoes da fortaleza.">str_fortress</a>
-<a name="l00170"></a>00170 {
-<a name="l00171"></a>00171         <span class="keywordtype">int</span> id;
-<a name="l00172"></a>00172         <span class="keywordtype">int</span> hp;
-<a name="l00173"></a>00173         <span class="keywordtype">int</span> level;
-<a name="l00174"></a>00174         <span class="keywordtype">int</span> work_time;
-<a name="l00175"></a>00175 } <a class="code" href="structstr__fortress.html" title="Estrutura que contem as informacoes da fortaleza.">fortress</a>;
-<a name="l00176"></a>00176 
-<a name="l00185"></a><a class="code" href="structstr__player.html">00185</a> <span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="structstr__player.html" title="Estrutura contendo as informacoes do jogador.">str_player</a>
-<a name="l00186"></a>00186 {
-<a name="l00187"></a>00187         <span class="keywordtype">int</span> id;
-<a name="l00188"></a>00188         <span class="keywordtype">int</span> good[4];
-<a name="l00189"></a>00189 } <a class="code" href="structstr__player.html" title="Estrutura contendo as informacoes do jogador.">player</a>;
-<a name="l00190"></a>00190 
-<a name="l00191"></a>00191 <span class="keyword">extern</span> <span class="keywordtype">int</span> click_sync;
-<a name="l00192"></a>00192 <span class="keyword">extern</span> pthread_mutex_t l_key, l_scroll, l_printmap, l_pause, l_unit;
-<a name="l00193"></a>00193 <span class="keyword">extern</span> <span class="keywordtype">char</span> **map;
-<a name="l00194"></a>00194 <span class="keyword">extern</span> <span class="keywordtype">char</span> **options[N_OPTIONS];
-<a name="l00195"></a>00195 
-<a name="l00196"></a>00196 
-<a name="l00205"></a>00205 <span class="keywordtype">void</span> <a class="code" href="basis_8h.html#ad169a14f6846ec207ca2f590cdb59d1d">init_locks</a>();
-<a name="l00206"></a>00206 
-<a name="l00207"></a>00207 
-<a name="l00217"></a>00217 <span class="keywordtype">void</span> <a class="code" href="basis_8h.html#af228cf2e259932f2152e82aab80a6491">init_thread</a>();
-<a name="l00218"></a>00218 
-<a name="l00227"></a>00227 <span class="keywordtype">void</span> <a class="code" href="basis_8h.html#aaa34914d01e63bf6e3da8c4ebbaf0c83">prepare_map</a>();
-<a name="l00228"></a>00228 
-<a name="l00237"></a>00237 <span class="keywordtype">void</span> <a class="code" href="basis_8h.html#a33638623c52e2527b74e82c293ec4d15">aloc_map</a>();
-<a name="l00238"></a>00238 
-<a name="l00247"></a>00247 <span class="keywordtype">void</span> <a class="code" href="basis_8h.html#a5f1586659681cf692359f7c8c003dd8b">init_map</a>();
-<a name="l00248"></a>00248 
-<a name="l00259"></a>00259 <span class="keywordtype">void</span> <a class="code" href="basis_8h.html#a1ad441c88c1265f71560f9babd30894f">free_map</a>();
-<a name="l00260"></a>00260 
-<a name="l00274"></a>00274 FILE* <a class="code" href="basis_8h.html#a98c307e3daac44a1d49d4b9d227d663b">read_file</a>(<span class="keywordtype">char</span> *name);
-<a name="l00275"></a>00275 
-<a name="l00284"></a>00284 <span class="keywordtype">void</span> <a class="code" href="basis_8h.html#a1c2ca09b031a5af5db7030bf505a96ba">aloc_options</a>();
-<a name="l00285"></a>00285 
-<a name="l00295"></a>00295 <span class="keywordtype">void</span> <a class="code" href="basis_8h.html#ad76ca90c215ac484469c2e39c50a9ce2">free_options</a>();
-<a name="l00296"></a>00296 
-<a name="l00309"></a>00309 <span class="keywordtype">int</span> <a class="code" href="basis_8h.html#af4527faf6fd4ff0ae40657e219352194">insert_unit</a>(<a class="code" href="structstr__unit.html" title="Estrutura contendo as informacoes de cada unidade.">unit</a> **top, <span class="keywordtype">int</span> race);
-<a name="l00310"></a>00310 
-<a name="l00322"></a>00322 <span class="keywordtype">void</span> <a class="code" href="basis_8h.html#a7c9dc6ef670c44792eaa28c82912df9a">free_units</a>(<a class="code" href="structstr__unit.html" title="Estrutura contendo as informacoes de cada unidade.">unit</a> **top);
-<a name="l00323"></a>00323 
-<a name="l00334"></a>00334 <span class="keywordtype">void</span> <a class="code" href="basis_8h.html#af1a04a0ca4ea8eea8c72547b77836d96">create_listbuild</a>();
-<a name="l00335"></a>00335 
-<a name="l00348"></a>00348 <span class="keywordtype">int</span> <a class="code" href="basis_8h.html#a21cc85b983657cbadc43be3bb29c9c44">insert_build</a>(<span class="keywordtype">int</span> <span class="keywordtype">id</span>);
-<a name="l00349"></a>00349 
-<a name="l00359"></a>00359 <span class="keywordtype">void</span> <a class="code" href="basis_8h.html#a84f048b2cd91babb6ae62b75966dd068">free_build</a>();
-<a name="l00360"></a>00360 
-<a name="l00370"></a>00370 <span class="keywordtype">int</span> <a class="code" href="basis_8h.html#a785c782c0d20ae3efe0794434b888ac3">get_goodcol</a>(<span class="keywordtype">int</span> i);
-<a name="l00371"></a>00371 
-<a name="l00379"></a>00379 <span class="keywordtype">int</span> <a class="code" href="basis_8h.html#afd7728c9e6ae89e5932e641b54556aba">exit_game</a>();
+<a name="l00116"></a><a class="code" href="structstr__unit.html">00116</a> <span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="structstr__unit.html" title="Estrutura contendo as informacoes de cada unidade.">str_unit</a>
+<a name="l00117"></a>00117 {
+<a name="l00118"></a>00118         <span class="keywordtype">int</span> race;
+<a name="l00119"></a>00119         <span class="keywordtype">int</span> hp;
+<a name="l00120"></a>00120         <span class="keywordtype">int</span> spd_delay;
+<a name="l00121"></a>00121         <span class="keywordtype">int</span> count_delay;
+<a name="l00122"></a>00122         <span class="keywordtype">int</span> dmg;
+<a name="l00123"></a>00123         <span class="keywordtype">int</span> height;
+<a name="l00124"></a>00124         <span class="keywordtype">int</span> position[2];
+<a name="l00125"></a>00125         <span class="keywordtype">int</span> destination[2];
+<a name="l00126"></a>00126         <span class="keywordtype">int</span> good_type;
+<a name="l00127"></a>00127         <span class="keywordtype">int</span> backpack;
+<a name="l00128"></a>00128         <span class="keyword">struct </span><a class="code" href="structstr__unit.html" title="Estrutura contendo as informacoes de cada unidade.">str_unit</a> *next;
+<a name="l00129"></a>00129 } <a class="code" href="structstr__unit.html" title="Estrutura contendo as informacoes de cada unidade.">unit</a>;
+<a name="l00130"></a>00130 
+<a name="l00149"></a><a class="code" href="structstr__build.html">00149</a> <span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="structstr__build.html" title="Estrutura contendo as informacoes de cada construcao.">str_build</a>
+<a name="l00150"></a>00150 {
+<a name="l00151"></a>00151         <span class="keywordtype">int</span> id;
+<a name="l00152"></a>00152         <span class="keywordtype">int</span> level;
+<a name="l00153"></a>00153         <span class="keywordtype">int</span> storage;
+<a name="l00154"></a>00154         <span class="keywordtype">int</span> income;
+<a name="l00155"></a>00155         <span class="keywordtype">int</span> position[2];
+<a name="l00156"></a>00156         <span class="keyword">struct </span><a class="code" href="structstr__build.html" title="Estrutura contendo as informacoes de cada construcao.">str_build</a> *next;
+<a name="l00157"></a>00157 } <a class="code" href="structstr__build.html" title="Estrutura contendo as informacoes de cada construcao.">build</a>;
+<a name="l00158"></a>00158 
+<a name="l00159"></a>00159 
+<a name="l00174"></a><a class="code" href="structstr__fortress.html">00174</a> <span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="structstr__fortress.html" title="Estrutura que contem as informacoes da fortaleza.">str_fortress</a>
+<a name="l00175"></a>00175 {
+<a name="l00176"></a>00176         <span class="keywordtype">int</span> id;
+<a name="l00177"></a>00177         <span class="keywordtype">int</span> hp;
+<a name="l00178"></a>00178         <span class="keywordtype">int</span> level;
+<a name="l00179"></a>00179         <span class="keywordtype">int</span> work_time;
+<a name="l00180"></a>00180 } <a class="code" href="structstr__fortress.html" title="Estrutura que contem as informacoes da fortaleza.">fortress</a>;
+<a name="l00181"></a>00181 
+<a name="l00192"></a><a class="code" href="structstr__player.html">00192</a> <span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="structstr__player.html" title="Estrutura contendo as informacoes do jogador.">str_player</a>
+<a name="l00193"></a>00193 {
+<a name="l00194"></a>00194         <span class="keywordtype">int</span> id;
+<a name="l00195"></a>00195         <span class="keywordtype">int</span> good[4];
+<a name="l00196"></a>00196 } <a class="code" href="structstr__player.html" title="Estrutura contendo as informacoes do jogador.">player</a>;
+<a name="l00197"></a>00197 
+<a name="l00198"></a>00198 
+<a name="l00227"></a>00227 <span class="keyword">extern</span> pthread_mutex_t <a class="code" href="basis_8h.html#af489224ab0fb8df3bb8b5a12106749d7" title="Promove um mecanismo de sincronizacao que impede que o status do teclado seja acessao/modificado ao m...">l_key</a>, <a class="code" href="basis_8h.html#ac5f4925879d17249d669377c600f8159" title="Promove um mecanismo de sincronizacao que impede que o scroll do mapa entre em conflito com outras at...">l_scroll</a>, <a class="code" href="basis_8h.html#aade2bdee52c85aaa21bb59f44571af70" title="Promove um mecanismo de sincronizacao que visa impedir que a interface seja atualizada ao mesmo tempo...">l_printmap</a>, <a class="code" href="basis_8h.html#ace32ed564b660f1d92ba45fdba5485cd" title="Possibilita que uma thread mande outra dormir para que o jogo fique pausado.">l_pause</a>, <a class="code" href="basis_8h.html#a0c1be44dc9a7cc1ae5c72317994491c3" title="Promove um Mecanismo de sincronizacao que visa impedir que a lista encadeada que guarda as unidades s...">l_unit</a>;
+<a name="l00228"></a>00228 <span class="keyword">extern</span> <span class="keywordtype">char</span> **<a class="code" href="basis_8h.html#a5cc1d2b7f50deccb33c86942ee40614d" title="Matriz que guarda o mapa do jogo paa ser impresso.">map</a>;
+<a name="l00229"></a>00229 <span class="keyword">extern</span> <span class="keywordtype">char</span> **<a class="code" href="basis_8h.html#a3544c8292e6e9f3e0f4ed3d1dc24ee3d" title="Matriz que guarda as ascii art das opcoes do menu.">options</a>[N_OPTIONS];
+<a name="l00230"></a>00230 <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">int</span> good_col[] =
+<a name="l00231"></a>00231 {HOBBIT_GOLD, HOBBIT_FOOD, HOBBIT_WOOD, HOBBIT_METAL};
+<a name="l00232"></a>00232 
+<a name="l00250"></a>00250 <span class="keywordtype">void</span> <a class="code" href="basis_8h.html#ad169a14f6846ec207ca2f590cdb59d1d">init_locks</a>();
+<a name="l00251"></a>00251 
+<a name="l00270"></a>00270 <span class="keywordtype">void</span> <a class="code" href="basis_8h.html#af228cf2e259932f2152e82aab80a6491">init_thread</a>();
+<a name="l00271"></a>00271 
+<a name="l00288"></a>00288 <span class="keywordtype">void</span> <a class="code" href="basis_8h.html#aaa34914d01e63bf6e3da8c4ebbaf0c83">prepare_map</a>();
+<a name="l00289"></a>00289 
+<a name="l00305"></a>00305 <span class="keywordtype">void</span> <a class="code" href="basis_8h.html#a1ad441c88c1265f71560f9babd30894f">free_map</a>();
+<a name="l00306"></a>00306 
+<a name="l00325"></a>00325 FILE* <a class="code" href="basis_8h.html#a33eeed052b5a4b324801dbad3e6fd8c7">open_file</a>(<span class="keywordtype">char</span> *name);
+<a name="l00326"></a>00326 
+<a name="l00341"></a>00341 <span class="keywordtype">void</span> <a class="code" href="basis_8h.html#a1c2ca09b031a5af5db7030bf505a96ba">aloc_options</a>();
+<a name="l00342"></a>00342 
+<a name="l00358"></a>00358 <span class="keywordtype">void</span> <a class="code" href="basis_8h.html#ad76ca90c215ac484469c2e39c50a9ce2">free_options</a>();
+<a name="l00359"></a>00359 
+<a name="l00382"></a>00382 <span class="keywordtype">int</span> <a class="code" href="basis_8h.html#af4527faf6fd4ff0ae40657e219352194">insert_unit</a>(<a class="code" href="structstr__unit.html" title="Estrutura contendo as informacoes de cada unidade.">unit</a> **top, <span class="keywordtype">int</span> race);
+<a name="l00383"></a>00383 
+<a name="l00400"></a>00400 <span class="keywordtype">void</span> <a class="code" href="basis_8h.html#a7c9dc6ef670c44792eaa28c82912df9a">free_units</a>(<a class="code" href="structstr__unit.html" title="Estrutura contendo as informacoes de cada unidade.">unit</a> **top);
+<a name="l00401"></a>00401 
+<a name="l00419"></a>00419 <span class="keywordtype">void</span> <a class="code" href="basis_8h.html#af1a04a0ca4ea8eea8c72547b77836d96">create_listbuild</a>();
+<a name="l00420"></a>00420 
+<a name="l00438"></a>00438 <span class="keywordtype">void</span> <a class="code" href="basis_8h.html#a84f048b2cd91babb6ae62b75966dd068">free_build</a>();
+<a name="l00439"></a>00439 
+<a name="l00457"></a>00457 <span class="keywordtype">int</span> <a class="code" href="basis_8h.html#a785c782c0d20ae3efe0794434b888ac3">get_goodcol</a>(<span class="keywordtype">int</span> i);
+<a name="l00458"></a>00458 
+<a name="l00473"></a>00473 <span class="keywordtype">int</span> <a class="code" href="basis_8h.html#afd7728c9e6ae89e5932e641b54556aba">exit_game</a>();
 </pre></div></div><!-- contents -->
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>Todos</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Arquivos</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Funções</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>Todos</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Arquivos</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Funções</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variáveis</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -253,7 +247,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Busca');
 
 
 <hr class="footer"/><address class="footer"><small>
-Gerado em Sexta, 4 de Julho de 2014 17:46:01 para The Lord os Strategy por &#160;<a href="http://www.doxygen.org/index.html">
+Gerado em Sábado, 5 de Julho de 2014 02:13:45 para The Lord of Strategy por &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.6.1
 </small></address>

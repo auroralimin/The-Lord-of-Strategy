@@ -1,5 +1,5 @@
-\hypertarget{basis_8h}{\section{\-Referência do \-Arquivo include/basis.h}
-\label{basis_8h}\index{include/basis.\-h@{include/basis.\-h}}
+\hypertarget{basis_8h}{\section{\-Referência do \-Arquivo basis.\-h}
+\label{basis_8h}\index{basis.\-h@{basis.\-h}}
 }
 
 
@@ -231,13 +231,9 @@ void \hyperlink{basis_8h_af228cf2e259932f2152e82aab80a6491}{init\-\_\-thread} ()
 \item 
 void \hyperlink{basis_8h_aaa34914d01e63bf6e3da8c4ebbaf0c83}{prepare\-\_\-map} ()
 \item 
-void \hyperlink{basis_8h_a33638623c52e2527b74e82c293ec4d15}{aloc\-\_\-map} ()
-\item 
-void \hyperlink{basis_8h_a5f1586659681cf692359f7c8c003dd8b}{init\-\_\-map} ()
-\item 
 void \hyperlink{basis_8h_a1ad441c88c1265f71560f9babd30894f}{free\-\_\-map} ()
 \item 
-\-F\-I\-L\-E $\ast$ \hyperlink{basis_8h_a98c307e3daac44a1d49d4b9d227d663b}{read\-\_\-file} (char $\ast$name)
+\-F\-I\-L\-E $\ast$ \hyperlink{basis_8h_a33eeed052b5a4b324801dbad3e6fd8c7}{open\-\_\-file} (char $\ast$name)
 \item 
 void \hyperlink{basis_8h_a1c2ca09b031a5af5db7030bf505a96ba}{aloc\-\_\-options} ()
 \item 
@@ -249,8 +245,6 @@ void \hyperlink{basis_8h_a7c9dc6ef670c44792eaa28c82912df9a}{free\-\_\-units} (\h
 \item 
 void \hyperlink{basis_8h_af1a04a0ca4ea8eea8c72547b77836d96}{create\-\_\-listbuild} ()
 \item 
-int \hyperlink{basis_8h_a21cc85b983657cbadc43be3bb29c9c44}{insert\-\_\-build} (int id)
-\item 
 void \hyperlink{basis_8h_a84f048b2cd91babb6ae62b75966dd068}{free\-\_\-build} ()
 \item 
 int \hyperlink{basis_8h_a785c782c0d20ae3efe0794434b888ac3}{get\-\_\-goodcol} (int i)
@@ -260,104 +254,111 @@ int \hyperlink{basis_8h_afd7728c9e6ae89e5932e641b54556aba}{exit\-\_\-game} ()
 \subsection*{\-Variáveis}
 \begin{DoxyCompactItemize}
 \item 
-\hypertarget{basis_8h_aec28bec063fa06e86e106998906c4b2b}{int {\bfseries click\-\_\-sync}}\label{basis_8h_aec28bec063fa06e86e106998906c4b2b}
+\hypertarget{basis_8h_af489224ab0fb8df3bb8b5a12106749d7}{pthread\-\_\-mutex\-\_\-t \hyperlink{basis_8h_af489224ab0fb8df3bb8b5a12106749d7}{l\-\_\-key}}\label{basis_8h_af489224ab0fb8df3bb8b5a12106749d7}
 
-\item 
-\hypertarget{basis_8h_af489224ab0fb8df3bb8b5a12106749d7}{pthread\-\_\-mutex\-\_\-t {\bfseries l\-\_\-key}}\label{basis_8h_af489224ab0fb8df3bb8b5a12106749d7}
+\begin{DoxyCompactList}\small\item\em \-Promove um mecanismo de sincronizacao que impede que o status do teclado seja acessao/modificado ao mesmo tempo por mais de uma thread. \end{DoxyCompactList}\item 
+\hypertarget{basis_8h_ac5f4925879d17249d669377c600f8159}{pthread\-\_\-mutex\-\_\-t \hyperlink{basis_8h_ac5f4925879d17249d669377c600f8159}{l\-\_\-scroll}}\label{basis_8h_ac5f4925879d17249d669377c600f8159}
 
-\item 
-\hypertarget{basis_8h_ac5f4925879d17249d669377c600f8159}{pthread\-\_\-mutex\-\_\-t {\bfseries l\-\_\-scroll}}\label{basis_8h_ac5f4925879d17249d669377c600f8159}
+\begin{DoxyCompactList}\small\item\em \-Promove um mecanismo de sincronizacao que impede que o scroll do mapa entre em conflito com outras atualizacoes do mapa. \end{DoxyCompactList}\item 
+\hypertarget{basis_8h_aade2bdee52c85aaa21bb59f44571af70}{pthread\-\_\-mutex\-\_\-t \hyperlink{basis_8h_aade2bdee52c85aaa21bb59f44571af70}{l\-\_\-printmap}}\label{basis_8h_aade2bdee52c85aaa21bb59f44571af70}
 
-\item 
-\hypertarget{basis_8h_aade2bdee52c85aaa21bb59f44571af70}{pthread\-\_\-mutex\-\_\-t {\bfseries l\-\_\-printmap}}\label{basis_8h_aade2bdee52c85aaa21bb59f44571af70}
+\begin{DoxyCompactList}\small\item\em \-Promove um mecanismo de sincronizacao que visa impedir que a interface seja atualizada ao mesmo tempo por mais de uma thread. \end{DoxyCompactList}\item 
+\hypertarget{basis_8h_ace32ed564b660f1d92ba45fdba5485cd}{pthread\-\_\-mutex\-\_\-t \hyperlink{basis_8h_ace32ed564b660f1d92ba45fdba5485cd}{l\-\_\-pause}}\label{basis_8h_ace32ed564b660f1d92ba45fdba5485cd}
 
-\item 
-\hypertarget{basis_8h_ace32ed564b660f1d92ba45fdba5485cd}{pthread\-\_\-mutex\-\_\-t {\bfseries l\-\_\-pause}}\label{basis_8h_ace32ed564b660f1d92ba45fdba5485cd}
+\begin{DoxyCompactList}\small\item\em \-Possibilita que uma thread mande outra dormir para que o jogo fique pausado. \end{DoxyCompactList}\item 
+\hypertarget{basis_8h_a0c1be44dc9a7cc1ae5c72317994491c3}{pthread\-\_\-mutex\-\_\-t \hyperlink{basis_8h_a0c1be44dc9a7cc1ae5c72317994491c3}{l\-\_\-unit}}\label{basis_8h_a0c1be44dc9a7cc1ae5c72317994491c3}
 
-\item 
-\hypertarget{basis_8h_a0c1be44dc9a7cc1ae5c72317994491c3}{pthread\-\_\-mutex\-\_\-t {\bfseries l\-\_\-unit}}\label{basis_8h_a0c1be44dc9a7cc1ae5c72317994491c3}
+\begin{DoxyCompactList}\small\item\em \-Promove um \-Mecanismo de sincronizacao que visa impedir que a lista encadeada que guarda as unidades seja modificada por mais de uma thread ao mesmo tempo. \end{DoxyCompactList}\item 
+\hypertarget{basis_8h_a5cc1d2b7f50deccb33c86942ee40614d}{char $\ast$$\ast$ \hyperlink{basis_8h_a5cc1d2b7f50deccb33c86942ee40614d}{map}}\label{basis_8h_a5cc1d2b7f50deccb33c86942ee40614d}
 
-\item 
-\hypertarget{basis_8h_aeae16276ebf8ada04308d7b7ff9c3000}{char $\ast$$\ast$ {\bfseries map}}\label{basis_8h_aeae16276ebf8ada04308d7b7ff9c3000}
+\begin{DoxyCompactList}\small\item\em \-Matriz que guarda o mapa do jogo paa ser impresso. \end{DoxyCompactList}\item 
+\hypertarget{basis_8h_a3544c8292e6e9f3e0f4ed3d1dc24ee3d}{char $\ast$$\ast$ \hyperlink{basis_8h_a3544c8292e6e9f3e0f4ed3d1dc24ee3d}{options} \mbox{[}\-N\-\_\-\-O\-P\-T\-I\-O\-N\-S\mbox{]}}\label{basis_8h_a3544c8292e6e9f3e0f4ed3d1dc24ee3d}
 
-\item 
-\hypertarget{basis_8h_a14f91f4512470a3b5d71d88e22008262}{char $\ast$$\ast$ {\bfseries options} \mbox{[}\-N\-\_\-\-O\-P\-T\-I\-O\-N\-S\mbox{]}}\label{basis_8h_a14f91f4512470a3b5d71d88e22008262}
-
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em \-Matriz que guarda as ascii art das opcoes do menu. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \subsection{\-Descrição \-Detalhada}
 \-Header contendo todos os defines e funcoes basicas do programa. 
 
 \subsection{\-Funções}
-\hypertarget{basis_8h_a33638623c52e2527b74e82c293ec4d15}{\index{basis.\-h@{basis.\-h}!aloc\-\_\-map@{aloc\-\_\-map}}
-\index{aloc\-\_\-map@{aloc\-\_\-map}!basis.h@{basis.\-h}}
-\subsubsection[{aloc\-\_\-map}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf aloc\-\_\-map} (
-\begin{DoxyParamCaption}
-{}
-\end{DoxyParamCaption}
-)}}\label{basis_8h_a33638623c52e2527b74e82c293ec4d15}
-\-Funcao\-: \-Alocar o espaco nescessario na memoria para o uso do mapa.
-
-\-Descricao\-: \-Aloca uma matriz na memoria para guardar o mapa.
-
-\begin{DoxyReturn}{\-Retorna}
-\-Nao possui retorno.
-\end{DoxyReturn}
-\-Requisitos\-: \-N/\-A. \hypertarget{basis_8h_a1c2ca09b031a5af5db7030bf505a96ba}{\index{basis.\-h@{basis.\-h}!aloc\-\_\-options@{aloc\-\_\-options}}
+\hypertarget{basis_8h_a1c2ca09b031a5af5db7030bf505a96ba}{\index{basis.\-h@{basis.\-h}!aloc\-\_\-options@{aloc\-\_\-options}}
 \index{aloc\-\_\-options@{aloc\-\_\-options}!basis.h@{basis.\-h}}
 \subsubsection[{aloc\-\_\-options}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf aloc\-\_\-options} (
 \begin{DoxyParamCaption}
 {}
 \end{DoxyParamCaption}
 )}}\label{basis_8h_a1c2ca09b031a5af5db7030bf505a96ba}
-\-Funcao\-: \-Aloca o espaco na memoria para a matriz de opcoes.
+\-Funcao\-: \-Aloca o espaco na memoria para a matriz de opcoes do mapa.
 
-\-Descricao\-: \-Aloca uma matriz na memoria para guardar as opcoes
+\-Descricao/\-Hipotese\-: \-Aloca uma matriz na memoria para guardar as opcoes, a partir de um ponteiro de ponteiro de char.
+
+\-Interface explicita\-: \-N/\-A.
+
+\-Interface implicita\-: -\/ options\-: matriz onde sera alocado o espaco para guardar as \-A\-S\-C\-I\-I art das opcoes do mapa
+
+\-Contrato/\-Requisitos\-: \-N/\-A.
 
 \begin{DoxyReturn}{\-Retorna}
-\-Nao possui retorno.
+\-Nao possui retorno. 
 \end{DoxyReturn}
-\-Requisitos\-: \-N/\-A. \hypertarget{basis_8h_af1a04a0ca4ea8eea8c72547b77836d96}{\index{basis.\-h@{basis.\-h}!create\-\_\-listbuild@{create\-\_\-listbuild}}
+\hypertarget{basis_8h_af1a04a0ca4ea8eea8c72547b77836d96}{\index{basis.\-h@{basis.\-h}!create\-\_\-listbuild@{create\-\_\-listbuild}}
 \index{create\-\_\-listbuild@{create\-\_\-listbuild}!basis.h@{basis.\-h}}
 \subsubsection[{create\-\_\-listbuild}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf create\-\_\-listbuild} (
 \begin{DoxyParamCaption}
 {}
 \end{DoxyParamCaption}
 )}}\label{basis_8h_af1a04a0ca4ea8eea8c72547b77836d96}
-\-Funcao\-: \-Cria a lista de construcoes.
+\-Funcao\-: \-Cria a lista encadeada de construcoes.
 
-\-Descricao\-: \-Cria a lista de construcoes a serem usadas. \-Caso nao seja possivel criar a lista, o programa mostra uma mensaem de erro, e sai.
+\-Descricao/\-Hipotese\-: \-Cria a lista encadeada de construcoes que serao utilizadas no jogo. \-Caso nao seja possivel criar a lista, o programa mostra uma mensaem de erro, da exit passando o parametro 1.
+
+\-Interface explicita\-: \-N/\-A.
+
+\-Interface implicita\-: -\/build\-\_\-top\-: ponteiro para o inicio da lista que ira guardar as contrucoes.
+
+\-Contrato/\-Requisito\-: \-A variavel build\-\_\-top, que faz parte de outro modulo, deve ser inicializada como \-N\-U\-L\-L.
 
 \begin{DoxyReturn}{\-Retorna}
-\-Nao possui retorno.
+\-Nao possui retorno. 
 \end{DoxyReturn}
-\-Requisitos\-: \-N/\-A. \hypertarget{basis_8h_afd7728c9e6ae89e5932e641b54556aba}{\index{basis.\-h@{basis.\-h}!exit\-\_\-game@{exit\-\_\-game}}
+\hypertarget{basis_8h_afd7728c9e6ae89e5932e641b54556aba}{\index{basis.\-h@{basis.\-h}!exit\-\_\-game@{exit\-\_\-game}}
 \index{exit\-\_\-game@{exit\-\_\-game}!basis.h@{basis.\-h}}
 \subsubsection[{exit\-\_\-game}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf exit\-\_\-game} (
 \begin{DoxyParamCaption}
 {}
 \end{DoxyParamCaption}
 )}}\label{basis_8h_afd7728c9e6ae89e5932e641b54556aba}
-\-Funcao\-: \-Sai do jogo.
+\-Funcao\-: \-Sair do jogo.
 
-\-Descricao\-: \-Chama as funcoes de liberar construcoes e mapa na ordem, e sai do programa.
+\-Descricao/\-Hipotese\-: \-Chama as funcoes de liberar construcoes e mapa, libera a interface e sai do programa passando o parametro 1 para a funcao exit.
 
-\-Requisitos\-: \-N/\-A. \hypertarget{basis_8h_a84f048b2cd91babb6ae62b75966dd068}{\index{basis.\-h@{basis.\-h}!free\-\_\-build@{free\-\_\-build}}
+\-Interface explicita\-: \-N/\-A.
+
+\-Interface implicita\-: \-N/\-A.
+
+\-Contrato/\-Requisito\-: \-N/\-A.
+
+\-Nao possui retorno. \hypertarget{basis_8h_a84f048b2cd91babb6ae62b75966dd068}{\index{basis.\-h@{basis.\-h}!free\-\_\-build@{free\-\_\-build}}
 \index{free\-\_\-build@{free\-\_\-build}!basis.h@{basis.\-h}}
 \subsubsection[{free\-\_\-build}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf free\-\_\-build} (
 \begin{DoxyParamCaption}
 {}
 \end{DoxyParamCaption}
 )}}\label{basis_8h_a84f048b2cd91babb6ae62b75966dd068}
-\-Funcao\-: \-Liberar a lista de construcoes.
+\-Funcao\-: \-Liberar a lista encadeada de construcoes.
 
-\-Descricao\-: \-Libera a lista encadeada de construcoes. \-Se a lista for liberada corretamente, a variavel build\-\_\-top e' igualada 'a \-N\-U\-L\-L.
+\-Descricao/\-Hipotese\-: \-Libera, elemento a elemento, a lista encadeada de construcoes. \-Se a lista for liberada corretamente, a variavel build\-\_\-top e' igualada 'a \-N\-U\-L\-L.
+
+\-Interface explicita\-: \-N/\-A.
+
+\-Interface implicita\-: -\/build\-\_\-top\-: \-Ponteiro para o inicio da lista que guarda as construcoes.
+
+\-Contrato/\-Requisito\-: \-A variavel build\-\_\-top, que faz parte de outro modulo, deve ser diferente de \-N\-U\-L\-L, caso contrario nao ha nada para ser liberado.
 
 \begin{DoxyReturn}{\-Retorna}
-\-Nao possui retorno.
+\-Nao possui retorno. 
 \end{DoxyReturn}
-\-Requisitos\-: \-N/\-A \hypertarget{basis_8h_a1ad441c88c1265f71560f9babd30894f}{\index{basis.\-h@{basis.\-h}!free\-\_\-map@{free\-\_\-map}}
+\hypertarget{basis_8h_a1ad441c88c1265f71560f9babd30894f}{\index{basis.\-h@{basis.\-h}!free\-\_\-map@{free\-\_\-map}}
 \index{free\-\_\-map@{free\-\_\-map}!basis.h@{basis.\-h}}
 \subsubsection[{free\-\_\-map}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf free\-\_\-map} (
 \begin{DoxyParamCaption}
@@ -366,125 +367,127 @@ int \hyperlink{basis_8h_afd7728c9e6ae89e5932e641b54556aba}{exit\-\_\-game} ()
 )}}\label{basis_8h_a1ad441c88c1265f71560f9babd30894f}
 \-Funcao\-: \-Liberar a matriz do mapa.
 
-\-Descricao\-: \-Libera a matriz, contendo o mapa, da memoria do computador. \-Se a matriz foi liberada corretamente, a variavel mapa e' igualada a \-N\-U\-L\-L.
+\-Descricao/\-Hipotese\-: \-Libera a matriz, que contem o mapa, da memoria do computador. \-Se a matriz foi liberada corretamente, a variavel mapa e' igualada a \-N\-U\-L\-L.
+
+\-Interface explicita\-: \-N/\-A
+
+\-Interface implicita\-: -\/ map\-: ponteiro de ponteiro no qual a matriz dp mapa deve estar alocada.
+
+\-Contrato/\-Requisitos\-: \-N/\-A.
 
 \begin{DoxyReturn}{\-Retorna}
-\-Nao possui retorno.
+\-Nao possui retorno. 
 \end{DoxyReturn}
-\-Requisitos\-: \-N/\-A. \hypertarget{basis_8h_ad76ca90c215ac484469c2e39c50a9ce2}{\index{basis.\-h@{basis.\-h}!free\-\_\-options@{free\-\_\-options}}
+\hypertarget{basis_8h_ad76ca90c215ac484469c2e39c50a9ce2}{\index{basis.\-h@{basis.\-h}!free\-\_\-options@{free\-\_\-options}}
 \index{free\-\_\-options@{free\-\_\-options}!basis.h@{basis.\-h}}
 \subsubsection[{free\-\_\-options}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf free\-\_\-options} (
 \begin{DoxyParamCaption}
 {}
 \end{DoxyParamCaption}
 )}}\label{basis_8h_ad76ca90c215ac484469c2e39c50a9ce2}
-\-Funcao\-: \-Libera a matriz de opcoes.
+\-Funcao\-: \-Libera a matriz de opcoes do menu.
 
-\-Descricao\-: \-Libera o espaco alocado para a matriz de opcoes. \-Se a matriz for liberada corretamente, a variavel options e' igualada 'a \-N\-U\-L\-L.
+\-Descricao/\-Hipotese\-: \-Libera o espaco alocado para a matriz de opcoes do menu. \-Se a matriz for liberada corretamente, a variavel options e' igualada 'a \-N\-U\-L\-L.
+
+\-Interface explicita\-: \-N/\-A.
+
+\-Inteface implicita\-: -\/ options\-: matriz onde deve ter sido alocado o espaco para guardar as \-A\-S\-C\-I\-I art das opcoes do mapa.
+
+\-Contrato/\-Requisitos\-: \-N/\-A.
 
 \begin{DoxyReturn}{\-Retorna}
-\-Nao possui rentorno.
+\-Nao possui rentorno. 
 \end{DoxyReturn}
-\-Requisitos\-: options != \-N\-U\-L\-L. \hypertarget{basis_8h_a7c9dc6ef670c44792eaa28c82912df9a}{\index{basis.\-h@{basis.\-h}!free\-\_\-units@{free\-\_\-units}}
+\hypertarget{basis_8h_a7c9dc6ef670c44792eaa28c82912df9a}{\index{basis.\-h@{basis.\-h}!free\-\_\-units@{free\-\_\-units}}
 \index{free\-\_\-units@{free\-\_\-units}!basis.h@{basis.\-h}}
 \subsubsection[{free\-\_\-units}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf free\-\_\-units} (
 \begin{DoxyParamCaption}
 \item[{{\bf unit} $\ast$$\ast$}]{top}
 \end{DoxyParamCaption}
 )}}\label{basis_8h_a7c9dc6ef670c44792eaa28c82912df9a}
-\-Funcao\-: \-Libera as unidades.
+\-Funcao\-: \-Libera a lista encadeada de unidades.
 
-\-Descricao\-: \-Libera a lista encadeada de unidades. \-Se a lista for liberada corretamente, a variavel top e' igualada 'a \-N\-U\-L\-L.
+\-Descricao/\-Hipotese\-: \-Libera elemento a elemento da lista encadeada de unidades. \-Se a lista for liberada corretamente, a variavel top e' igualada 'a \-N\-U\-L\-L.
 
-
+\-Interface explicita\-: 
 \begin{DoxyParams}{\-Parâmetros}
 {\em top} & \-Ponteiro de ponteiro contendo o topo da lista de unidades.\\
 \hline
 \end{DoxyParams}
+\-Interface implicita\-: \-N/\-A.
+
+\-Contrato/\-Requisito\-: \-A variavel top deve ser diferente de \-N\-U\-L\-L, caso contrario nao a nada a ser liberado.
+
 \begin{DoxyReturn}{\-Retorna}
-\-Nao possui retorno.
+\-Nao possui retorno. 
 \end{DoxyReturn}
-\-Requistos\-: \-N/\-A. \hypertarget{basis_8h_a785c782c0d20ae3efe0794434b888ac3}{\index{basis.\-h@{basis.\-h}!get\-\_\-goodcol@{get\-\_\-goodcol}}
+\hypertarget{basis_8h_a785c782c0d20ae3efe0794434b888ac3}{\index{basis.\-h@{basis.\-h}!get\-\_\-goodcol@{get\-\_\-goodcol}}
 \index{get\-\_\-goodcol@{get\-\_\-goodcol}!basis.h@{basis.\-h}}
 \subsubsection[{get\-\_\-goodcol}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf get\-\_\-goodcol} (
 \begin{DoxyParamCaption}
 \item[{int}]{i}
 \end{DoxyParamCaption}
 )}}\label{basis_8h_a785c782c0d20ae3efe0794434b888ac3}
-\-Funcao\-: \-Encapsulamento da variavel good\-\_\-col.
+\-Funcao\-: \-Fornecer o valor da variavel good\-\_\-col para outros modulos.
 
+\-Descricao/\-Hipotese\-: \-Como boa pratica de programacao, a variavel good\-\_\-col, foi encapsulada. \-Essa funcao retorna os valores de posicoes desse vetor, para que outros modulos tenham acesso a esses valores.
 
+\-Interface explicita\-: 
 \begin{DoxyParams}{\-Parâmetros}
-{\em i} & \-Indica qual das construcoes do usuario deseja-\/se saber o numero de colunas.\\
+{\em i} & \-Indica qual das construcoes do usuario deseja-\/se saber a posicao.\\
 \hline
 \end{DoxyParams}
+\-Interface implicita\-: -\/good\-\_\-col\-: variavel que guarda as colunas onde se deve recolher os recursos dos predios.
+
+\-Contrato/\-Requisito\-: \-O parametro i deve estar entre 0 e 3.
+
 \begin{DoxyReturn}{\-Retorna}
-good\-\_\-col\mbox{[}i\mbox{]}
+good\-\_\-col\mbox{[}i\mbox{]} 
 \end{DoxyReturn}
-\-Requisitos\-: \-N/\-A. \hypertarget{basis_8h_ad169a14f6846ec207ca2f590cdb59d1d}{\index{basis.\-h@{basis.\-h}!init\-\_\-locks@{init\-\_\-locks}}
+\hypertarget{basis_8h_ad169a14f6846ec207ca2f590cdb59d1d}{\index{basis.\-h@{basis.\-h}!init\-\_\-locks@{init\-\_\-locks}}
 \index{init\-\_\-locks@{init\-\_\-locks}!basis.h@{basis.\-h}}
 \subsubsection[{init\-\_\-locks}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf init\-\_\-locks} (
 \begin{DoxyParamCaption}
 {}
 \end{DoxyParamCaption}
 )}}\label{basis_8h_ad169a14f6846ec207ca2f590cdb59d1d}
-\-Funcao\-: ??.
+\-Funcao\-: \-Inicializar os locks, tambem conhecidos como mutex
 
-\-Descricao\-: ??
+\-Descricao/\-Hipotese\-: \-Inicializa as variaveis que serao responsaveis pela sincronizacao das threads do projeto.
 
-\begin{DoxyReturn}{\-Retorna}
-\-Nao possui retorno.
-\end{DoxyReturn}
-\-Requistos\-: \-N/\-A. \hypertarget{basis_8h_a5f1586659681cf692359f7c8c003dd8b}{\index{basis.\-h@{basis.\-h}!init\-\_\-map@{init\-\_\-map}}
-\index{init\-\_\-map@{init\-\_\-map}!basis.h@{basis.\-h}}
-\subsubsection[{init\-\_\-map}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf init\-\_\-map} (
-\begin{DoxyParamCaption}
-{}
-\end{DoxyParamCaption}
-)}}\label{basis_8h_a5f1586659681cf692359f7c8c003dd8b}
-\-Funcao\-: \-Inicializar a matriz do mapa.
+\-Interface explicita\-: \-N/\-A
 
-\-Descricao\-: \-Inicializa a matriz contendo o mapa do jogo com espacos ' '.
+\-Interface implicita\-: l\-\_\-key, l\-\_\-scroll, l\-\_\-printmap, l\-\_\-pause, l\-\_\-unit.
+
+\-Contrato/\-Requistos\-: \-N/\-A.
 
 \begin{DoxyReturn}{\-Retorna}
-\-Nao possui retorno.
+\-Nao possui retorno. 
 \end{DoxyReturn}
-\-Requisitos\-: \-N/\-A. \hypertarget{basis_8h_af228cf2e259932f2152e82aab80a6491}{\index{basis.\-h@{basis.\-h}!init\-\_\-thread@{init\-\_\-thread}}
+\hypertarget{basis_8h_af228cf2e259932f2152e82aab80a6491}{\index{basis.\-h@{basis.\-h}!init\-\_\-thread@{init\-\_\-thread}}
 \index{init\-\_\-thread@{init\-\_\-thread}!basis.h@{basis.\-h}}
 \subsubsection[{init\-\_\-thread}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf init\-\_\-thread} (
 \begin{DoxyParamCaption}
 {}
 \end{DoxyParamCaption}
 )}}\label{basis_8h_af228cf2e259932f2152e82aab80a6491}
-\-Funcao\-: \-Inicializar as threas usadas no programa.
+\-Funcao\-: \-Inicializar a segunda thread usada no projeto.
 
-\-Descricao\-: \-Inicializa uma thread, caso nao seja possivel inicializar a thread, a funcao mostra um erro na tela e sai do programa.
+\-Descricao/\-Hipotese\-: \-Inicializa a thread que coleta e trata entrada de dados. \-Caso nao seja possivel inicializa-\/la, a funcao mostra mensagem de erro e da exit passando -\/1 como parametro de saida.
+
+\-Interface explicita\-: \-N/\-A
+
+\-Interface implicita\-: -\/ key\-\_\-thread\-: thread que sera criada.
+\begin{DoxyItemize}
+\item read\-\_\-key\-: funcao/metodo que a nova thread ira executar como sendo a principal.
+\end{DoxyItemize}
+
+\-Contrato/\-Requistos\-: \-N/\-A.
 
 \begin{DoxyReturn}{\-Retorna}
-\-Nao possui retorno.
+\-Nao possui retorno. 
 \end{DoxyReturn}
-\-Requisitos\-: \-N/\-A. \hypertarget{basis_8h_a21cc85b983657cbadc43be3bb29c9c44}{\index{basis.\-h@{basis.\-h}!insert\-\_\-build@{insert\-\_\-build}}
-\index{insert\-\_\-build@{insert\-\_\-build}!basis.h@{basis.\-h}}
-\subsubsection[{insert\-\_\-build}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf insert\-\_\-build} (
-\begin{DoxyParamCaption}
-\item[{int}]{id}
-\end{DoxyParamCaption}
-)}}\label{basis_8h_a21cc85b983657cbadc43be3bb29c9c44}
-\-Funcao\-: \-Cria e insere uma nova construcao.
-
-\-Descricao\-: \-Cria e insere uma nova construcao na lista de construcoes. \-Caso nao seja possivel criar, o programa sai da funcao e retorna -\/1.
-
-
-\begin{DoxyParams}{\-Parâmetros}
-{\em id} & \-Indica qual tipo de construcao sera criada.\\
-\hline
-\end{DoxyParams}
-\begin{DoxyReturn}{\-Retorna}
--\/1, caso nao seja possivel alocar o espaco para a nova construcao. 
-
-1, caso consiga criar e inserir a nova construcao.
-\end{DoxyReturn}
-\-Requisitos\-: \-O parametro id deve estar entre 1 e 6. \hypertarget{basis_8h_af4527faf6fd4ff0ae40657e219352194}{\index{basis.\-h@{basis.\-h}!insert\-\_\-unit@{insert\-\_\-unit}}
+\hypertarget{basis_8h_af4527faf6fd4ff0ae40657e219352194}{\index{basis.\-h@{basis.\-h}!insert\-\_\-unit@{insert\-\_\-unit}}
 \index{insert\-\_\-unit@{insert\-\_\-unit}!basis.h@{basis.\-h}}
 \subsubsection[{insert\-\_\-unit}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf insert\-\_\-unit} (
 \begin{DoxyParamCaption}
@@ -492,53 +495,66 @@ good\-\_\-col\mbox{[}i\mbox{]}
 \item[{int}]{race}
 \end{DoxyParamCaption}
 )}}\label{basis_8h_af4527faf6fd4ff0ae40657e219352194}
-\-Funcao\-: \-Cria e insere uma unidade.
+\-Funcao\-: \-Aloca e insere uma unidade na lista encadeada de unidades.
 
-\-Descricao\-: \-Cria e insere uma nova unidade na lista de unidades.
+\-Descricao/\-Hipotese\-: \-Aloca o espaco na memoria para uma variavel do tipo unit e inicializa ela conforma a raca que devera ser essa unidade. \-Depois, insere essa variavel na lista de unidades, de ordem ordenada decrescentemente de acordo com o tamanho de cada unidade.
 
-
+\-Interface explicita\-: 
 \begin{DoxyParams}{\-Parâmetros}
-{\em top} & \-Ponteiro de ponteiro do topo da lista de unidades. \\
+{\em top} & \-Ponteiro de ponteiro do topo da lista de unidades (\-Passagem por referencia do topo da lista. \\
 \hline
-{\em race} & \-Indica qual raca o jogador deseja criar.\\
+{\em race} & \-Indica a raca da nova unidade.\\
 \hline
 \end{DoxyParams}
+\-Interface implicta\-: \-N/\-A.
+
+\-Contrato/\-Requisitos\-: \-Caso a lista de unidades esteja vazia, a variavel top deve estar inicializada com \-N\-U\-L\-L. \-Alem disso, a variavel race deve estar entre 1 e 8.
+
 \begin{DoxyReturn}{\-Retorna}
 -\/1, caso nao seja possivel criar a nova unidade. 
 
-1, caso consiga criar e inserir a nova unidade.
+1, caso consiga criar e inserir a nova unidade. 
 \end{DoxyReturn}
-\-Requisitos\-: \-O parametro race deve estar entre 1 e 8. \hypertarget{basis_8h_aaa34914d01e63bf6e3da8c4ebbaf0c83}{\index{basis.\-h@{basis.\-h}!prepare\-\_\-map@{prepare\-\_\-map}}
+\hypertarget{basis_8h_a33eeed052b5a4b324801dbad3e6fd8c7}{\index{basis.\-h@{basis.\-h}!open\-\_\-file@{open\-\_\-file}}
+\index{open\-\_\-file@{open\-\_\-file}!basis.h@{basis.\-h}}
+\subsubsection[{open\-\_\-file}]{\setlength{\rightskip}{0pt plus 5cm}\-F\-I\-L\-E$\ast$ {\bf open\-\_\-file} (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{name}
+\end{DoxyParamCaption}
+)}}\label{basis_8h_a33eeed052b5a4b324801dbad3e6fd8c7}
+\-Funcao\-: \-Abre um arquivo para a leitura.
+
+\-Descricao/\-Hipotese\-: \-Abre um arquivo para a leitura. \-Caso nao seja possivel, o programa mostra uma mensagem de erro, libera as possiveis alocacoes e da exit passando o parametro 1. \-Caso seja, a funcao retorna o ponteiro do arquivo.
+
+\-Interface explicita\-: 
+\begin{DoxyParams}{\-Parâmetros}
+{\em name} & \-Nome do arquivo que a funcao tentara abrir.\\
+\hline
+\end{DoxyParams}
+\-Interface implicita\-: \-N/\-A.
+
+\-Contrato/\-Requisitos\-: \-O parametro name deve ser diferente de \-N\-U\-L\-L e deve corresponder a um nome de um arquivo existente e que possa ser lido como arquivo texto.
+
+\begin{DoxyReturn}{\-Retorna}
+\-Um ponteiro de \-F\-I\-L\-E, do arquivo que foi aberto para a leitura. 
+\end{DoxyReturn}
+\hypertarget{basis_8h_aaa34914d01e63bf6e3da8c4ebbaf0c83}{\index{basis.\-h@{basis.\-h}!prepare\-\_\-map@{prepare\-\_\-map}}
 \index{prepare\-\_\-map@{prepare\-\_\-map}!basis.h@{basis.\-h}}
 \subsubsection[{prepare\-\_\-map}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf prepare\-\_\-map} (
 \begin{DoxyParamCaption}
 {}
 \end{DoxyParamCaption}
 )}}\label{basis_8h_aaa34914d01e63bf6e3da8c4ebbaf0c83}
-\-Funcao\-: \-Chama as funcoes de preparacao do mapa na ordem correta.
+\-Funcao\-: \-Prepara a matriz de caracteres que ira conter o mapa.
 
-\-Descricao\-: ??
+\-Descricao/\-Hipotese\-: \-Aloca o espaco para o mapa a partir de um ponteiro de ponteiro de char, inicializa tudo com espacos, coloca as \-A\-S\-C\-I\-I art de predios e fortalezas no mapa e coloca espacoes onde possivelmente existam marcadores '$\backslash$0'.
+
+\-Interface explicita\-: \-N/\-A
+
+\-Interface implicita\-: -\/ map\-: ponteiro de ponteiro no qual sera alocada a matriz do mapa.
+
+\-Contrato/\-Requistos\-: \-A variavel map deve estar inicializada como \-N\-U\-L\-L.
 
 \begin{DoxyReturn}{\-Retorna}
-\-Nao possui retorno.
+\-Nao possui retorno. 
 \end{DoxyReturn}
-\-Requisitos\-: \-N/\-A. \hypertarget{basis_8h_a98c307e3daac44a1d49d4b9d227d663b}{\index{basis.\-h@{basis.\-h}!read\-\_\-file@{read\-\_\-file}}
-\index{read\-\_\-file@{read\-\_\-file}!basis.h@{basis.\-h}}
-\subsubsection[{read\-\_\-file}]{\setlength{\rightskip}{0pt plus 5cm}\-F\-I\-L\-E$\ast$ {\bf read\-\_\-file} (
-\begin{DoxyParamCaption}
-\item[{char $\ast$}]{name}
-\end{DoxyParamCaption}
-)}}\label{basis_8h_a98c307e3daac44a1d49d4b9d227d663b}
-\-Funcao\-: \-Abre o arquivo .txt a ser usado.
-
-\-Descricao\-: \-Abre o arquivo .txt. \-Caso nao seja possivel abrir o arquivo, o programa mostra uma mensagem de erro, libera as possiveis alocacoes e sai. \-Caso consiga abrir, a funcao retorna o ponteiro do arquivo.
-
-
-\begin{DoxyParams}{\-Parâmetros}
-{\em name} & \-Contem o endereco do arquivo .txt a ser aberto.\\
-\hline
-\end{DoxyParams}
-\begin{DoxyReturn}{\-Retorna}
-\-O ponteiro do arquivo .txt.
-\end{DoxyReturn}
-\-Requisitos\-: \-Possuir os arquivos .txt nescessarios para o programa. 
