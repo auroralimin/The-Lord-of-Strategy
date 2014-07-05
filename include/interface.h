@@ -97,18 +97,19 @@ WINDOW* get_mapwin();
   */
 void menu();
 
-/** Funcao: Criar um ponteiro da janela do mapa.
+/** Funcao: Criar a janela do mapa.
   *
-  * Descricao/Hipotese: Cria um ponteiro para a janela que contera o mapa.
+  * Descricao/Hipotese: Aloca um ponteiro com o tamanho da janela que contera
+  *                     o mapa.
   *
   * Interface explicita: N/A.
   *
   * Interface implicita: -map_win: variavel da n_curses. Ponteiro para janela do
   *                                mapa.
-  *                       -map_panel: associada 'a janela do mapa (map_win),
-  *                                   permite que a janela do mapa possa sobrepor
-  *                                   outras janelas, esconder a janela, mover
-  *                                   o mapa de lugar, etc.
+  *                      -map_panel: associada 'a janela do mapa (map_win),
+  *                                  permite que a janela do mapa possa
+  *                                  sobrepor outras janelas, esconder a
+  *                                  janela, mover o mapa de lugar, etc.
   *
   * Contrato/Requisitos: N/A.
   *
@@ -165,10 +166,10 @@ int createmsg_win();
   */
 void refresh_allgame();
 
-/** Funcao: Verificar em qual opcao de upgrade foi clicada.
+/** Funcao: Verificar em qual opcao de compra na fortaleza foi clicada.
   *
   * Descricao/Hipotese: Verifica se o usuario clicou em alguma opcao de upgrade
-  *                     e qual opcao ele selecionou.
+  *                     da fortaleza ou de compra de unidades.
   *
   * Interface explicitas: N/A.
   *
@@ -225,8 +226,8 @@ void change_hobbit(int row, int col);
   *                                  sobrepor, ser sobreposta, ser movida,
   *                                  escondida e mostrada.
   *                      -map_panel: associada 'a janela do mapa (map_win),
-  *                                  permite que a janela do mapa possa sobrepor,
-  *                                  ser sobreposta, ser movida, escondida e
+  *                                  permite que a janela do mapa possa ser
+  *                                  sobreposta, ser movida, escondida e
   *                                  mostrada.
   *
   * Contrato/Requisito: N/A.

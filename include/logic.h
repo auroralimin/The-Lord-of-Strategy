@@ -8,15 +8,19 @@
   * @brief Estrutura contendo as informacoes nescessarias para realizar o
   *	   side-scrolling do mapa.
   *
-  * @param col Indica a coluna do mapa.
+  * @param col Indica o numero de colunas do scroll.
   *
-  * @param row Indica a linha do mapa
+  * @param row Indica em que linha do terminal esta desenhado o scroll.
   *
   * @param position Indica a posicao no mapa.
   *
-  * @param proportion Indica a proporcao ...?
+  * @param proportion Indica a proporcao de numero de colunas do mapa pelo
+  * numero de colunas do scroll
   *
-  * @param residue ???
+  * @param residue Quando um personagem e' simbolizado no scroll, sua posicao
+  * pode estar entre um traco do scroll e outro. E feito uma conta para
+  * arredondar isso e saber em que traco do scroll o personagem e' desenhado
+  * Essa variavel guarda a sobra (residuo) dessa conta.
   */
 typedef struct str_scrll
 {
@@ -28,17 +32,38 @@ typedef struct str_scrll
 }scrll;
 
 
-/** Funcao: Ler qual opcao esta sendo clicada.
+/** Funcao: Le e interpreta a entrada de dados do usuario
   *
-  * Descricao/Hipotese: ??
+  * Descricao/Hipotese: Essa funcao foi feita pra ser executada por uma thread
+  *                     paralela a principal e tem como proposito captar a
+  *                     entrada de dados do teclado e do mouse, interpretar
+  *                     esses dados e chamar as funcoes necessarias dependendo
+  *                     dos dados. Desta forma, ela tem o poder de interpretar
+  *                     uma acao do usuario e reponder mudando o status do jogo,
+  *                     deixando-o pausado, por exemplo. Alem do pause ela pode
+  *                     comandar o "save", o "load" e "quit". Tambem e' a
+  *                     responsavel por comandar o scroll do jogo e pela
+  *                     interpretacao de cliques em botoes no mapa.
   *
-  * Interface explicita: @param arg ??
+  * Interface explicita: @param arg Parametro inutilizado, mas necessario para
+  *                      a funcao se adequar a assinatura padrao necessaria para
+  *                      criar uma thread baseando ela como funcao principal.
   *
-  * Interface implicita: ??
+  * Interface implicita: -event: Variavel global que guarda os dados captados
+  *                      por movimentos do mouse.
+  *                      -l_key: Variavel externa do modulo basis que serve como
+  *                      mecanismo de sincronizacao.
   *
-  * Contrato/Requisitos:??
+  * Contrato/Requisitos: Deve ser chamada por uma funcao que cria uma thread
+  *                      (funcao create_thread) e nao somente com "read_key()".
+  *                      Alem disso, antes de ser chamada, todos os mecanismos
+  *                      de sincronizacao declarados como extern na basis (os
+  *                      mutex) devem estar inicializados.
   *
-  * @return void, nao possui retorno.
+  * @return Ponteiro de void. Mas esse valor de retorno nao e' importante, so
+  *         existe porque como a funcao e' feita para ser executada como sendo
+  *         a principal de uma thread paralela, o padrao determina que ela deve
+  *         ter como retorno um ponteiro de void.
   */
 void* read_key(void *arg);
 
@@ -74,43 +99,46 @@ void quit_select(int option);
   */
 player get_user();
 
-/** Funcao: Recupercao das informacoes de eventos.
+/** Funcao: Recupercao das informacoes de eventos do mouse.
   *
-  * Descricao/Hipotese: ??
+  * Descricao/Hipotese: Encapsula a variavel que guarda as informacoes da
+  *                     movimentacao do mouse.
   *
   * Interface explicita: N/A.
   *
-  * Interface implicita: ??
+  * Interface implicita: -event: Variavel global que guarda as informacoes das
+  *                      movimentacoes do mouse.
   *
   * Contrato/Requisitos: N/A.
   *
-  * @return event
+  * @return event, informacoes da movimentacao do mouse.
   */
 MEVENT get_event();
 
-/** Funcao: Recuperacao do status das chaves.
+/** Funcao: Recuperacao do status das teclas.
   *
-  * Descricao/Hipotese: Encapsula a variavel de status das chaves. Assim,
-  *                     Apenas funcoes que precisam mudar o status tem acesso
-  *                     'a variavel.
+  * Descricao/Hipotese: Encapsula a variavel que guarda o status da entrada
+  *                     de dados. Assim, apenas funcoes que precisam mudar o
+  *                     status tem acesso 'a variavel.
   *
   * Interface explicita: N/A.
   *
-  * Interface implicita: -status: contem o status atual do jogo.
+  * Interface implicita: -status: contem o status atual da entrada de dados do
+  *                       jogo.
   *
   * Contrato/Requisitos: N/A.
   *
-  * @return status, estado atual do jogo.
+  * @return status, estado atual da entrada de dados do jogo.
   */
 int get_keystatus();
 
-/** Funcao: Atribuir um novo valor para o status das chaves.
+/** Funcao: Atribuir um novo valor para o status das teclas.
   *
-  * Descricao/Hipotese: Encapusla a variavel de status das chaves. Assim, apenas
+  * Descricao/Hipotese: Encapusla a variavel de status das teclas. Assim, apenas
   *                     funcoes que precisam mudar o status tem acesso 'a
   *                     variavel.
   *
-  * Interface explicita: @param key_status Indica o novo status da chave.
+  * Interface explicita: @param key_status Indica o novo status das teclas.
   *
   * Interface implicita: -status: contem o status atual do jogo.
   *
@@ -188,7 +216,7 @@ void set_maplim(int lim);
 
 /** Funcao: Inicializa a matriz de opcoes.
   *
-  * Descricao/Hipotese: Le dos arquivos contendo as ascii art das opcoes do
+  * Descricao/Hipotese: Le dos arquivos contendo as ASCII art das opcoes do
   *                     menu, e as colocas em suas devidas posicoes na matriz
   *                     de opcoes.
   *
@@ -202,19 +230,22 @@ void set_maplim(int lim);
   */
 void init_options();
 
-/** Funcao: ??
+/** Funcao: Interpreta que opcao do menu foi clicada.
   *
-  * Descricao/Hipotese: ??
+  * Descricao/Hipotese: Recebe como parametro as coordanadas de onde o usuario
+  *                     clicou no menu e interpreta isso. Retorna a opcao
+  *                     clicada.
   *
-  * Interface explicita: @param mouse_row Linha atual do mouse no terminal.
-  *                      @aram mouse_col Coluna atual do mouse no terminal.
+  * Interface explicita: @param mouse_row Linha que o mouse clicou no terminal.
+  *                      @aram mouse_col Coluna que o mouse clicou no terminal.
   *
-  * Interface implicita: ??
+  * Interface implicita: N/A.
   *
-  * Contrato/Requisitos: ??
+  * Contrato/Requisitos: N/A.
   *
-  * @return 1, se...
-  * @return 0, se...
+  * @return A opcao selecionada, se o usuario clicou em um campo correspondente
+  *         a uma opcao do menu.
+  * @return 0, caso contrario.
   */
 int report_option(int mouse_row, int mouse_col);
 
@@ -226,8 +257,8 @@ int report_option(int mouse_row, int mouse_col);
   *
   * Interface explicita: N/A.
   *
-  * Interface implicita: -map_scrol:l contem as informacoes do scroll do
-  *                                        mapa.
+  * Interface implicita: -map_scrol:l contem as informacoes do scroll do mapa.
+  *
   * Contrato/Requisitos: N/A.
   *
   * @return srcll
@@ -270,9 +301,9 @@ void set_mapscroll(scrll scroll_map);
   */
 void race_init(unit *chr, int race);
 
-/** Funcao: Ler as ascii art das racas.
+/** Funcao: Ler as ASCII art das racas.
   *
-  * Descricao/Hipotese: Le os arquivos .txt contendo as ascii art de cada raca
+  * Descricao/Hipotese: Le os arquivos .txt contendo as ASCII art de cada raca
   *            e suas sombras, e as colocas em suas respecitivas matrizes.
   *
   * Interface explicita: N/A.
@@ -291,15 +322,23 @@ void race_init(unit *chr, int race);
   */
 int get_art();
 
-/** Funcao: ??
+/** Funcao: Coloca no mapa os predios produtores de recursos.
   *
-  * Descricao/Hipotese: ??
+  * Descricao/Hipotese: Le todos os arquivos .txt que contem as artes dos
+  *                     predios e coloca-os nos lugares devidos na matriz do
+  *                     mapa;
   *
   * Interface explicita: N/A.
   *
-  * Interface implicita: ??
+  * Interface implicita: -map: Variavel externa do modulo basis que guarda o
+  *                      mapa do jogo.
+  *                      -builds: vetor de elementos de struct build_art que
+  *                      guarda as informacoes necessarias para saber qual o
+  *                      nome do arquivo texto que guarda as artes de um dado
+  *                      predio e as coordenadas de onde ele deve ser inserido
+  *                      no mapa.
   *
-  * Contrato/ Requisitos: N/A.
+  * Contrato/ Requisitos: Os arquivos texto que guardas as artes devem existir.
   *
   * @return void
   *
@@ -316,7 +355,8 @@ void put_builds();
   * Interface implicita: -map: matriz contendo mapa do jogo.
   *
   * Contrato/Requisitos: A matriz do mapa devera ter sido devidamente alocada,
-  *                      ou seja, ela devera ser diferente de NULL (map != NULL).
+  *                      ou seja, ela devera ser diferente de NULL
+  *                      (map != NULL).
   *
   * @return void
   */
@@ -480,7 +520,7 @@ void check_good(unit *chr);
   *
   * Interface explicita: -chr: unidade a ser movida para sua construcao.
   *                      -n_build: identificador da construcao a qual a
-  *                                     unidade esta trablhando.
+  *                       unidade esta trablhando.
   *
   * Contrato/Requisitos: Tanto o mapa quanto a unidade devem estar alocados na
   *                      memoria, ou seja diferentes de NULL. A variavel
@@ -509,10 +549,10 @@ void goto_build(unit *chr, int n_build);
   */
 void load_houseoption(int n);
 
-/** Funcao: Desbloquear a proxima raca aliada.
+/** Funcao: Desbloquear a proxima raca aliada ou comprar unidades.
   *
   * Descricao/Hipotese: Permite o usuario desbloquear a proxima raca aliada e
-  *                     comecar a produzir unidades dessa raca.
+  *                     comecar a produzir unidades de alguma raca liberada
   *
   * Interface explicita: @param col Indica o numero da coluna da opcao de gerar
   *                                 uma tropa foi clicada.
@@ -534,7 +574,8 @@ void fortress_buy(int col);
  *                     Caso a construcao ja esteja no nivel maximo, a opcao de
  *                     comprar niveis e' apagada do mapa.
  *
- * Interface explicita: @param level Indica o nivel atual da fortaleza do usuario.
+ * Interface explicita: @param level Indica o nivel atual da fortaleza do
+ *                      usuario.
  *
  * Interface implicita: -map: matriz contendo o mapa do jogo.
  *
@@ -601,7 +642,8 @@ void save(char *save_name);
   *                      -build_top: ponteiro do inicio da lista encadeada das
   *                                  construcoes do usuario.
   *                      -user: varivale contendo as informacoes do usuario,
-  *                             como a quantidade de cada recurso que ele possui.
+  *                             como a quantidade de cada recurso que ele
+  *                             possui.
   *
   * Contrato/Requisitos: Para que se carregue um jogo, deve existir um diretorio
   *                      contendo um jogo salvo. Caso nao exista, o programa
