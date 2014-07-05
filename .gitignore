@@ -17,3 +17,7 @@ gmon.out
 
 #save directory
 saves/*
+
+#doxygen files
+include/html/*
+include/latex/*
