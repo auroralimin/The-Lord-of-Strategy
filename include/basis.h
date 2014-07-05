@@ -22,13 +22,13 @@
 #define STATUS_MENU 0
 #define STATUS_GAME 1
 #define STATUS_PAUSED 2
+#define STATUS_SAVING 3
 #define STATUS_EXIT -1
 
 #define EXIT 'q'
 #define ENTER '\n'
 #define PAUSE 'p'
-#define YES 'y'
-#define NO 'n'
+#define SAVE 's'
 
 #define SCROLL_RIGHT 9
 #define SCROLL_LEFT -9

@@ -6,6 +6,8 @@
 #include <pthread.h>
 #include <math.h>
 #include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 #include "basis.h"
 #include "interface.h"
 #include "logic.h"
@@ -28,6 +30,7 @@ void print_gamebar();
 void print_msghobbit();
 void print_msgpaused();
 void print_msgquit();
+void print_msgsaved();
 
 void init_interface()
 {
@@ -174,8 +177,17 @@ void menu()
 
 int click_option(int option)
 {
+	struct stat st;
+
 	if ((option == 1) || (option == 2))
 	{
+		if ((option == 2) && (stat("saves/save1", &st) == -1))
+		{
+			move((size[0]-MENU_ROW)/2-1, (size[1]-MENU_COL)/2);
+			printw("Nothing is saved");
+			refresh();
+			return 1;
+		}
 		free_options();
 		destroy_win(&menu_win);
 		set_gamestatus(STATUS_GAME);
@@ -189,13 +201,14 @@ int click_option(int option)
 		load_houseoption(1);
 		if (option == 2)
 			load("saves/save1");
-		return 0;
 
+		return 0;
 	}
 	if (option == 3)
 	{
 		free_options();
 		endwin();
+
 		exit(1);
 	}
 
@@ -315,6 +328,9 @@ void refresh_allgame()
 				werase(msg_win);
 				print_msgpaused();
 				break;
+			case (STATUS_SAVING):
+				werase(msg_win);
+				print_msgsaved();
 		}
 		box(msg_win, 0, 0);
 
@@ -374,7 +390,17 @@ void print_msgquit()
 {
 	mvwprintw(msg_win, 2, 12, "ARE YOU");
 	mvwprintw(msg_win, 3, 4, "SURE YOU WANT TO QUIT?");
-	mvwprintw(msg_win, 7, 9, "[YES]   [NO]");
+	mvwprintw(msg_win, 5, 12, "CANCEL");
+	mvwprintw(msg_win, 7, 8, "QUIT AND SAVE");
+	mvwprintw(msg_win, 9, 5, "QUIT WITHOUT SAVING");
+}
+
+void print_msgsaved()
+{
+	mvwprintw(msg_win, 3, 3, "__             ___  _");
+	mvwprintw(msg_win, 4, 3, "|    /\\  |   | |   | \\");
+	mvwprintw(msg_win, 5, 3,  " \\  /__\\  \\ /  |-- |  |");
+	mvwprintw(msg_win, 6, 3, "__| |  |   |   |__ |_/");
 }
 
 int click_frodooption()
@@ -476,11 +502,13 @@ void quit_answer()
 
 	wmouse_trafo(msg_win, &event.y, &event.x, false);
 
-	if ((event.y == 7) && (get_gamestatus() == STATUS_EXIT))
+	if (get_gamestatus() == STATUS_EXIT)
 	{
-		if (event.x < 16)
+		if (event.y == 5)
 			quit_select(2);
-		else
+		else if (event.y == 7)
 			quit_select(3);
+		else if (event.y == 9)
+			quit_select(4);
 	}
 }

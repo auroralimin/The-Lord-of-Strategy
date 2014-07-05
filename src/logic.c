@@ -98,6 +98,7 @@ void term_coltest();
 int load_build(char *file_name, int art_row, int art_col);
 void clear_unit(unit chr);
 void move_unit(unit *chr);
+void save_select();
 
 void* read_key(void *arg)
 {
@@ -140,16 +141,13 @@ void* read_key(void *arg)
 					arrow_scroll(SCROLL_LEFT);
 				break;
 
-			case (YES):
-				quit_select(2);
+			case (SAVE):
+				if (status[1] == STATUS_GAME)
+					save_select();
 				break;
-
-			case (NO):
-				quit_select(3);
-				break;
-
 			case (EXIT):
-				if (status[1] != STATUS_MENU)
+				if ((status[1] != STATUS_MENU) &&
+				   (status[1] != STATUS_EXIT))
 					quit_select(1);
 				break;
 
@@ -181,13 +179,28 @@ void mouse_clicked()
 
 		else if (event.x > term_col - 7)
 			quit_select(1);
+
+		else if ((event.x > term_col -12) && (event.x < term_col - 8))
+			save_select();
 	}
+
 	else if ((status[1] != STATUS_PAUSED) &&
 		(event.y >= map_scroll.row-1) && (event.y <= map_scroll.row+1))
 		mouse_scroll(event.x);
 
 	else if ((status[1] != STATUS_PAUSED) && (!click_frodooption()))
 		change_hobbit(event.y, event.x);
+}
+
+void save_select()
+{
+	game_paused();
+	status[1] = STATUS_SAVING;
+	save("saves/save1");
+	refresh_allgame();
+	usleep(500000);
+	status[1] = STATUS_PAUSED;
+	game_paused();
 }
 
 void quit_select(int option)
@@ -207,16 +220,16 @@ void quit_select(int option)
 		case 2:
 			if (status[1] == STATUS_EXIT)
 			{
-				save("saves/save1");
-				exit_game();
+				status[1] = STATUS_PAUSED;
+				game_paused();
 			}
 			break;
 		case 3:
 			if (status[1] == STATUS_EXIT)
-				{
-					status[1] = STATUS_PAUSED;
-					game_paused();
-				}
+				save("saves/save1");
+		case 4:
+			if (status[1] == STATUS_EXIT)
+				exit_game();
 	}
 }
 
@@ -761,48 +774,42 @@ void save(char *save_dir)
 void load(char *load_dir)
 {
 	char *unit_file, *build_file, *player_file;
-	struct stat st;
 	unit *aux_u = (unit*) calloc(1, sizeof(unit));
 	build *aux_b1 = (build*) calloc(1, sizeof(build));
 	build *aux_b2 = build_top;
 	FILE *fp;
 
-	if (stat(load_dir, &st) != -1)
+	unit_file = (char*) calloc(strlen(load_dir)+11, sizeof(char));
+	strcpy(unit_file, load_dir);
+	strcat(unit_file, "/units.bin");
+	fp = open_file(unit_file, "rb");
+	while (fread(aux_u, sizeof(unit), 1, fp) > 0)
+		insert_unit(&free_races, aux_u->race, aux_u);
+	fclose(fp);
+
+	build_file = (char*) calloc(strlen(load_dir)+12, sizeof(char));
+	strcpy(build_file, load_dir);
+	strcat(build_file, "/builds.bin");
+	fp = open_file(build_file, "rb");
+	while (fread(aux_b1, sizeof(build), 1, fp) > 0)
 	{
-		unit_file = (char*) calloc(strlen(load_dir)+11, sizeof(char));
-		strcpy(unit_file, load_dir);
-		strcat(unit_file, "/units.bin");
-		fp = open_file(unit_file, "rb");
-		while (fread(aux_u, sizeof(unit), 1, fp) > 0)
-			insert_unit(&free_races, aux_u->race, aux_u);
-		fclose(fp);
-
-		build_file = (char*) calloc(strlen(load_dir)+12, sizeof(char));
-		strcpy(build_file, load_dir);
-		strcat(build_file, "/builds.bin");
-		fp = open_file(build_file, "rb");
-		while (fread(aux_b1, sizeof(build), 1, fp) > 0)
+		if (aux_b2 != NULL)
 		{
-			if (aux_b2 != NULL)
-			{
-				aux_b2->level = aux_b1->level;
-				aux_b2->storage = aux_b1->storage;
-				aux_b2->income = aux_b1->income;
-				aux_b2 = aux_b2->next;
-			}
+			aux_b2->level = aux_b1->level;
+			aux_b2->storage = aux_b1->storage;
+			aux_b2->income = aux_b1->income;
+			aux_b2 = aux_b2->next;
 		}
-		fclose(fp);
-
-		player_file = (char*) calloc(strlen(load_dir)+13,sizeof(char));
-		strcpy(player_file, load_dir);
-		strcat(player_file, "/players.bin");
-		fp = open_file(player_file, "rb");
-		fread(&user, sizeof(player), 1, fp);
-		fclose(fp);
-
-		free(aux_u);
-		free(aux_b1);
 	}
-	else
-		exit_game();
+	fclose(fp);
+
+	player_file = (char*) calloc(strlen(load_dir)+13,sizeof(char));
+	strcpy(player_file, load_dir);
+	strcat(player_file, "/players.bin");
+	fp = open_file(player_file, "rb");
+	fread(&user, sizeof(player), 1, fp);
+	fclose(fp);
+
+	free(aux_u);
+	free(aux_b1);
 }
