@@ -422,7 +422,7 @@ void print_msgload()
 {
 	mvwprintw(msg_win, 2, 12, "ARE YOU");
 	mvwprintw(msg_win, 3, 4, "SURE YOU WANT TO LOAD?");
-	mvwprintw(msg_win, 4, 3, "YOU WILL LOSE EVERYTHING");
+	mvwprintw(msg_win, 4, 3, "YOU WILL LOSE THIS GAME");
 	mvwprintw(msg_win, 7, 9, "[YES]    [NO]");
 }
 
@@ -463,6 +463,7 @@ void frodo_colect(unit *chr)
 					chr->destination[0] = 30;
 					chr->destination[1] = 40;
 					chr->good_type = (event.y - 4) / 2;
+					change_nworkers(chr->good_type, 1);
 				}
 				break;
 			}
@@ -491,6 +492,7 @@ void change_hobbit(int row, int col)
 			aux->destination[0] = aux->position[0];
 			aux->destination[1] = aux->position[1];
 
+			change_nworkers(aux->good_type, -1);
 			frodo_colect(aux);
 
 			if ((aux->position[0] == aux->destination[0]) &&

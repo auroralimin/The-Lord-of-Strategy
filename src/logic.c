@@ -87,7 +87,7 @@ MEVENT event;
 build *build_top = NULL;
 unit *free_races = NULL;
 fortress frodo_house = {1, 15000, 1, 0};
-player user = {1, {10000, 10000, 10000, 10000}};
+player user = {1, {500, 500, 0, 0}};
 char *hobbit_good[] = {"GOLD ", "FOOD ", "WOOD ", "METAL"};
 
 void mouse_clicked();
@@ -154,16 +154,17 @@ void* read_key(void *arg)
 				break;
 
 			case (YES):
-				load_select(2);
+				if (status[1] == STATUS_LOAD)
+					load_select(2);
 				break;
 
 			case (NO):
-				load_select(3);
+				if (status[1] == STATUS_LOAD)
+					load_select(3);
 				break;
 
 			case (EXIT):
-				if ((status[1] == STATUS_GAME) ||
-				   (status[1] == STATUS_EXIT))
+				if (status[1] == STATUS_GAME)
 					quit_select(1);
 				break;
 
@@ -631,8 +632,11 @@ void good_generator()
 
 	for (aux = build_top; aux != NULL; aux = aux->next)
 	{
-		if (aux->storage != pow(10, aux->level+2) / 2)
+		aux->income = (aux->n_workers + 1) * 5;
+		if (aux->storage + aux->income < 1500)
 			aux->storage+=aux->income;
+		else
+			aux->storage = 1500;
 	}
 }
 
@@ -881,7 +885,7 @@ void load(char *load_dir)
 	{
 		if (aux_b2 != NULL)
 		{
-			aux_b2->level = aux_b1->level;
+			aux_b2->n_workers = aux_b1->n_workers;
 			aux_b2->storage = aux_b1->storage;
 			aux_b2->income = aux_b1->income;
 			aux_b2 = aux_b2->next;
@@ -905,4 +909,16 @@ void load(char *load_dir)
 
 	free(aux_u);
 	free(aux_b1);
+}
+
+void change_nworkers(int id, int add)
+{
+	build *aux;
+
+	for (aux = build_top; aux != NULL; aux = aux->next)
+		if (aux->id == id)
+		{
+			aux->n_workers+=add;
+			break;
+		}
 }

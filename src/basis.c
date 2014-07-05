@@ -217,9 +217,9 @@ int insert_build(int id)
 		return -1;
 
 	new->id = id;
-	new->level = 1;
+	new->n_workers = 0;
 	new->storage = 0;
-	new->income = 50;
+	new->income = 10;
 	new->position[0] = GOOD_ROW;
 	new->position[1] = good_col[id];
 

@@ -139,7 +139,8 @@ typedef struct str_unit
   *
   * @param id Indentificador unico que diferencias as construcoes.
   *
-  * @param level Indica o nivel de aprimoramento da construcao.
+  * @param n_workers Contador do numero de unidades que estao produzindo
+  *                  recursos nesse predio.
   *
   * @param storage Indica a quantidade de recurso que construcao possui
   *                armazenado.
@@ -154,7 +155,7 @@ typedef struct str_unit
 typedef struct str_build
 {
 	int id;
-	int level;
+	int n_workers;
 	int storage;
 	int income;
 	int position[2];

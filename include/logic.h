@@ -689,3 +689,21 @@ void load(char *load_dir);
   * @return void, sem retorno.
   */
 void load_select(int option);
+
+
+/** Funcao: Modificar o valor de n_workers de um predio de recursos.
+  *
+  * Descricao/Hipotese: Procura o predio com o id igual ao primeiro parametro
+  *                     passado e, se encontar, acrescenta o valor do segundo
+  *                     parametro ao valor de n_workers do predio.
+  *
+  * Interface explicita: @param id: Identificador do predio de recursos.
+  *                      @param add: Valor a ser somado ao valor de n_workers.
+  *
+  * Interface implicita: -build_top: Topo da lista de predios
+  *
+  * Contrato/Requisito: O valor de id ser o id de um predio existente
+  *
+  * @return void, sem retorno.
+  */
+void change_nworkers(int id, int add);
