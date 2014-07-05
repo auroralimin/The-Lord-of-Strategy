@@ -9,6 +9,8 @@ char **options[N_OPTIONS];
 
 pthread_t key_thread;
 static const int options_len[] = { NEW_GAME, LOAD_GAME, EXIT_GAME};
+static const int good_col[] =
+{HOBBIT_GOLD, HOBBIT_FOOD, HOBBIT_WOOD, HOBBIT_METAL};
 
 void aloc_map();
 void init_map();
@@ -77,12 +79,11 @@ void free_map()
 	}
 }
 
-/* le os arquivos .txt contendo a ascii art do jogo */
-FILE* open_file(char *name)
+FILE* open_file(char *name, char *mode)
 {
 	FILE *fp = NULL;
 
-	fp = fopen(name, "r");
+	fp = fopen(name, mode);
 	if (fp == NULL)
 	{
 		endwin();
@@ -126,7 +127,7 @@ void free_options()
 	}
 }
 
-int insert_unit(unit **top, int race)
+int insert_unit(unit **top, int race, unit *saved)
 {
 	unit *aux, *new = (unit*) calloc(1, sizeof(unit));
 
@@ -138,6 +139,17 @@ int insert_unit(unit **top, int race)
 	}
 
 	race_init(new, race);
+	if (saved != NULL)
+	{
+		new->hp = saved->hp;
+		new->count_delay = saved->count_delay;
+		new->position[0] = saved->position[0];
+		new->position[1] = saved->position[1];
+		new->destination[0] = saved->destination[0];
+		new->destination[1] = saved->destination[1];
+		new->good_type = saved->good_type;
+		new->backpack = saved->backpack;
+	}
 
 	if (*top == NULL)
 	{

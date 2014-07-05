@@ -174,12 +174,23 @@ void menu()
 
 int click_option(int option)
 {
-	if (option == 1)
+	if ((option == 1) || (option == 2))
 	{
 		free_options();
 		destroy_win(&menu_win);
 		set_gamestatus(STATUS_GAME);
+		init_interface();
+		keypad(stdscr, TRUE);
+		create_listbuild();
+		prepare_map();
+		createmap_win();
+		createmsg_win();
+		load_houseoption(0);
+		load_houseoption(1);
+		if (option == 2)
+			load("saves/save1");
 		return 0;
+
 	}
 	if (option == 3)
 	{
@@ -420,6 +431,7 @@ void change_hobbit(int row, int col)
 
 	wmouse_trafo(map_win, &row, &col, false);
 
+	pthread_mutex_lock(&l_unit);
 	for (aux = get_freeraces(); aux != NULL; aux = aux->next)
 		if ((aux->race == HOBBIT) &&
 		   (row >= aux->position[0]) && (row <= aux->position[0]+10) &&
@@ -441,6 +453,7 @@ void change_hobbit(int row, int col)
 			}
 			break;
 		}
+	pthread_mutex_unlock(&l_unit);
 }
 
 void move_msg(int n)

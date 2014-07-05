@@ -1,6 +1,10 @@
 #include <stdio.h>
 #include <unistd.h>
+#include <string.h>
 #include <stdlib.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
 #include <ncurses.h>
 #include <pthread.h>
 #include <math.h>
@@ -202,7 +206,10 @@ void quit_select(int option)
 			break;
 		case 2:
 			if (status[1] == STATUS_EXIT)
+			{
+				save("saves/save1");
 				exit_game();
+			}
 			break;
 		case 3:
 			if (status[1] == STATUS_EXIT)
@@ -278,7 +285,7 @@ void init_options()
 
 	for (i = 0; i < N_OPTIONS; i++)
 	{
-		fp = open_file(options_files[i]);
+		fp = open_file(options_files[i], "r");
 		for (j = 0; j < OPTIONS_WIDTH; j++)
 		{
 			fscanf(fp, "%[^\n]s", options[i][j]);
@@ -396,7 +403,7 @@ int load_build(char *file_name, int art_row, int art_col)
 	int i;
 	FILE *fp = NULL;
 
-	fp = open_file(file_name);
+	fp = open_file(file_name, "r");
 
 	for (i = art_row; i < MAP_ROW; i++)
 	{
@@ -426,8 +433,8 @@ int get_art()
 
 	for (i = 0; i < N_RACES; i++)
 	{
-		fp1 = open_file(name_filearts[i]);
-		fp2 = open_file(name_fileshadows[i]);
+		fp1 = open_file(name_filearts[i], "r");
+		fp2 = open_file(name_fileshadows[i], "r");
 		for (j = 0; j < 15; j++)
 		{
 			fscanf(fp1, "%[^\n]s", mat_races[i][j]);
@@ -461,8 +468,8 @@ void printmap_unit(unit chr)
 
 	pthread_mutex_lock(&l_unit);
 	if (chr.good_type >= 0)
-		sprintf(map[row+1]+col+13, "%s", hobbit_good[chr.good_type]);
-	sprintf(map[row]+col+13, "HP:%3d", chr.hp);
+		snprintf(map[row+1]+col+13, 6,"%s", hobbit_good[chr.good_type]);
+	snprintf(map[row]+col+13, 7,  "HP:%3d", chr.hp);
 
 	for (i = RACE_HEIGHT - chr.height; i < RACE_HEIGHT; i++)
 	{
@@ -483,6 +490,7 @@ void clear_unit(unit chr)
 {
 	int i, j, row = chr.position[0], col = chr.position[1];
 
+	pthread_mutex_lock(&l_unit);
 	for (i = RACE_HEIGHT - chr.height; i < RACE_HEIGHT; i++)
 	{
 		for (j = 0; j < RACE_WIDTH; j++)
@@ -497,12 +505,14 @@ void clear_unit(unit chr)
 	else if (col >= builds[1].col - RACE_WIDTH)
 		load_build(builds[1].name, builds[1].row, builds[1].col);
 	map_spaces();
+	pthread_mutex_unlock(&l_unit);
 }
 
 void move_unit(unit *chr)
 {
 	int dest = 1, n = 1;
 
+	pthread_mutex_lock(&l_unit);
 	if (chr->race > 4)
 		dest = -1;
 	if ((chr->position[1]*dest >= chr->destination[1]*dest) &&
@@ -522,6 +532,7 @@ void move_unit(unit *chr)
 		if (chr->position[n]*dest > chr->destination[n]*dest)
 			chr->position[n] = chr->destination[n];
 	}
+	pthread_mutex_unlock(&l_unit);
 }
 
 void good_generator()
@@ -562,7 +573,7 @@ void print_good()
 
 	for (aux = build_top; aux != NULL; aux = aux->next)
 	{
-		sprintf(map[0] + builds[n++].col, "%5d", aux->storage);
+		snprintf(map[0] + builds[n++].col, 6, "%5d", aux->storage);
 	}
 }
 
@@ -612,7 +623,7 @@ void goto_build(unit *chr, int n_build)
 void load_houseoption(int n)
 {
 	int i, j;
-	FILE *fp = open_file(options_frodo[n]);
+	FILE *fp = open_file(options_frodo[n], "r");
 
 	for (i = 0; i < 6; i++)
 	{
@@ -625,6 +636,7 @@ void load_houseoption(int n)
 void fortress_buy(int col)
 {
 	int i, j, option = 0, level = frodo_house.level;;
+	unit *aux;
 
 	for (i = 5; i < 80; i+=15)
 	{
@@ -640,9 +652,20 @@ void fortress_buy(int col)
 
 				for (j = 0; j < 3; j++)
 					user.good[j]-=prices[option-1][j];
-				insert_unit(&free_races, option);
+				insert_unit(&free_races, option, NULL);
 				if (option == 1)
-					frodo_colect(free_races);
+				{
+					aux = free_races;
+					while (aux != NULL)
+					{
+						if (aux->race == HOBBIT)
+						{
+							frodo_colect(aux);
+							break;
+						}
+						aux = aux->next;
+					}
+				}
 				break;
 			}
 			else if ((option == 0) && (frodo_house.level < 4))
@@ -700,4 +723,88 @@ void all_move()
 			}
 		}
 	}
+}
+
+void save(char *save_dir)
+{
+	char *unit_file, *build_file, *player_file;
+	struct stat st;
+	unit *aux_u;
+	build *aux_b;
+	FILE *fp;
+
+	if (stat(save_dir, &st) == -1)
+	    	mkdir(save_dir, 0700);
+
+	unit_file = (char*) calloc(strlen(save_dir)+11, sizeof(char));
+	strcpy(unit_file, save_dir);
+	strcat(unit_file, "/units.bin");
+	fp = open_file(unit_file, "wb");
+	for (aux_u = free_races; aux_u != NULL; aux_u = aux_u->next)
+		fwrite(aux_u, sizeof(unit), 1, fp);
+	fclose(fp);
+
+	build_file = (char*) calloc(strlen(save_dir)+12, sizeof(char));
+	strcpy(build_file, save_dir);
+	strcat(build_file, "/builds.bin");
+	fp = open_file(build_file, "wb");
+	for (aux_b = build_top; aux_b != NULL; aux_b = aux_b->next)
+		fwrite(aux_b, sizeof(build), 1, fp);
+	fclose(fp);
+
+	player_file = (char*) calloc(strlen(save_dir)+13,sizeof(char));
+	strcpy(player_file, save_dir);
+	strcat(player_file, "/players.bin");
+	fp = open_file(player_file, "wb");
+	fwrite(&user, sizeof(player), 1, fp);
+	fclose(fp);
+}
+
+void load(char *load_dir)
+{
+	char *unit_file, *build_file, *player_file;
+	struct stat st;
+	unit *aux_u = (unit*) calloc(1, sizeof(unit));
+	build *aux_b1 = (build*) calloc(1, sizeof(build));
+	build *aux_b2 = build_top;
+	FILE *fp;
+
+	if (stat(load_dir, &st) != -1)
+	{
+		unit_file = (char*) calloc(strlen(load_dir)+11, sizeof(char));
+		strcpy(unit_file, load_dir);
+		strcat(unit_file, "/units.bin");
+		fp = open_file(unit_file, "rb");
+		while (fread(aux_u, sizeof(unit), 1, fp) > 0)
+			insert_unit(&free_races, aux_u->race, aux_u);
+		fclose(fp);
+
+		build_file = (char*) calloc(strlen(load_dir)+12, sizeof(char));
+		strcpy(build_file, load_dir);
+		strcat(build_file, "/builds.bin");
+		fp = open_file(build_file, "rb");
+		while (fread(aux_b1, sizeof(build), 1, fp) > 0)
+		{
+			if (aux_b2 != NULL)
+			{
+				aux_b2->level = aux_b1->level;
+				aux_b2->storage = aux_b1->storage;
+				aux_b2->income = aux_b1->income;
+				aux_b2 = aux_b2->next;
+			}
+		}
+		fclose(fp);
+
+		player_file = (char*) calloc(strlen(load_dir)+13,sizeof(char));
+		strcpy(player_file, load_dir);
+		strcat(player_file, "/players.bin");
+		fp = open_file(player_file, "rb");
+		fread(&user, sizeof(player), 1, fp);
+		fclose(fp);
+
+		free(aux_u);
+		free(aux_b1);
+	}
+	else
+		exit_game();
 }

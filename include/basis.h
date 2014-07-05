@@ -191,8 +191,6 @@ typedef struct str_player
 extern pthread_mutex_t l_key, l_scroll, l_printmap, l_pause, l_unit;
 extern char **map;
 extern char **options[N_OPTIONS];
-static const int good_col[] =
-{HOBBIT_GOLD, HOBBIT_FOOD, HOBBIT_WOOD, HOBBIT_METAL};
 
 /** Funcao: Inicializar os locks, tambem conhecidos como mutex
   *
@@ -268,15 +266,18 @@ void prepare_map();
   */
 void free_map();
 
-/** Funcao: Abre um arquivo para a leitura.
+/** Funcao: Abre um arquivo.
   *
-  * Descricao/Hipotese: Abre um arquivo para a leitura. Caso nao seja possivel,
-  *                     o programa mostra uma mensagem de erro, libera as
-  *                     possiveis alocacoes e da exit passando o parametro 1.
-  *                     Caso seja, a funcao retorna o ponteiro do arquivo.
+  * Descricao/Hipotese: Abre um arquivo para o modo especificado pelo segundo
+  *                     parametro. Caso nao seja possivel, o programa mostra
+  *                     uma mensagem de erro, libera as possiveis alocacoes e
+  *                     da exit passando o parametro 1. Caso seja, a funcao
+  *                     retorna o ponteiro do arquivo.
   *
   * Interface explicita: @param char *name: nome do arquivo que a funcao
   *                      tentara abrir.
+  *                      @param char *mode: como o arquivo sera aberto, por
+  *                      exemplo, "r", "w" e etc.
   *
   * Interface implicita: N/A.
   *
@@ -284,9 +285,9 @@ void free_map();
   *                      corresponder a um nome de um arquivo existente e que
   *                      possa ser lido como arquivo texto.
   *
-  * @return Um ponteiro de FILE, do arquivo que foi aberto para a leitura.
+  * @return Um ponteiro de FILE, do arquivo que foi aberto.
   */
-FILE* open_file(char *name);
+FILE* open_file(char *name, char *mode);
 
 /** Funcao: Aloca o espaco na memoria para a matriz de opcoes do mapa.
   *
@@ -333,6 +334,8 @@ void free_options();
   *                      lista de unidades (Passagem por referencia do topo
   *                      da lista.
   *                      @param int race: indica a raca da nova unidade.
+  *                      @param unit *saved: ponteiro para uma unidade que possa
+  *                      estar sendo carregado em um load.
   *
   * Contrato/Requisitos: Caso a lista de unidades esteja vazia, a variavel
   *                      top deve estar inicializada com NULL. Alem disso, a
@@ -341,7 +344,7 @@ void free_options();
   * @return -1, caso nao seja possivel criar a nova unidade.
   * @return  1, caso consiga criar e inserir a nova unidade.
   */
-int insert_unit(unit **top, int race);
+int insert_unit(unit **top, int race, unit *saved);
 
 /** Funcao: Libera a lista encadeada de unidades.
   *

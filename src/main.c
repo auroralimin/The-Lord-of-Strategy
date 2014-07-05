@@ -15,15 +15,6 @@ int main()
 	init_thread();
 
 	menu();
-	init_interface();
-	keypad(stdscr, TRUE);
-
-	create_listbuild();
-	prepare_map();
-	createmap_win();
-	createmsg_win();
-	load_houseoption(0);
-	load_houseoption(1);
 
 	while(1)
 	{

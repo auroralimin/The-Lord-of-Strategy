@@ -1,4 +1,4 @@
-CC = clang
+CC = gcc
 
 SDIR = src
 IDIR = include
@@ -15,10 +15,11 @@ LIBS = -lncurses -lm -pthread -lpanel -lcunit
 SPLINT = splint
 SPLINTFLAGS = -weak -type +sysdirerrors -retvalother\
                +line-len 80 -warnposix +infloops -fixedformalarray \
-	      -annotationerror
+	      -annotationerror -varuse
 SPLINT_SOURCE = src/basis.c src/logic.c src/interface.c src/main.c
 
 $(ODIR)/%.o: $(SDIR)/%.c
+	@mkdir -p saves
 	@mkdir -p $(@D)
 	$(CC) -c -o $@ $< $(CFLAGS)
 

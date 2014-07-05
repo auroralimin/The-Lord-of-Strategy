@@ -410,4 +410,5 @@ void all_move();
   *
   * Requisitos: N/A.
   */
-void change_hobbit();
+void save(char *save_name);
+void load(char *load_dir);
