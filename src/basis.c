@@ -3,15 +3,16 @@
 #include "basis.h"
 #include "logic.h"
 
-int click_sync = 0;
 pthread_mutex_t l_key, l_scroll, l_printmap, l_pause, l_unit;
 char **map = NULL;
 char **options[N_OPTIONS];
 
 pthread_t key_thread;
 static const int options_len[] = { NEW_GAME, LOAD_GAME, EXIT_GAME};
-static const int good_col[] =
-{HOBBIT_GOLD, HOBBIT_FOOD, HOBBIT_WOOD, HOBBIT_METAL};
+
+void aloc_map();
+void init_map();
+int insert_build(int id);
 
 void init_locks()
 {
@@ -77,7 +78,7 @@ void free_map()
 }
 
 /* le os arquivos .txt contendo a ascii art do jogo */
-FILE* read_file(char *name)
+FILE* open_file(char *name)
 {
 	FILE *fp = NULL;
 

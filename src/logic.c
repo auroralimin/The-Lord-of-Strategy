@@ -278,7 +278,7 @@ void init_options()
 
 	for (i = 0; i < N_OPTIONS; i++)
 	{
-		fp = read_file(options_files[i]);
+		fp = open_file(options_files[i]);
 		for (j = 0; j < OPTIONS_WIDTH; j++)
 		{
 			fscanf(fp, "%[^\n]s", options[i][j]);
@@ -396,7 +396,7 @@ int load_build(char *file_name, int art_row, int art_col)
 	int i;
 	FILE *fp = NULL;
 
-	fp = read_file(file_name);
+	fp = open_file(file_name);
 
 	for (i = art_row; i < MAP_ROW; i++)
 	{
@@ -426,8 +426,8 @@ int get_art()
 
 	for (i = 0; i < N_RACES; i++)
 	{
-		fp1 = read_file(name_filearts[i]);
-		fp2 = read_file(name_fileshadows[i]);
+		fp1 = open_file(name_filearts[i]);
+		fp2 = open_file(name_fileshadows[i]);
 		for (j = 0; j < 15; j++)
 		{
 			fscanf(fp1, "%[^\n]s", mat_races[i][j]);
@@ -612,7 +612,7 @@ void goto_build(unit *chr, int n_build)
 void load_houseoption(int n)
 {
 	int i, j;
-	FILE *fp = read_file(options_frodo[n]);
+	FILE *fp = open_file(options_frodo[n]);
 
 	for (i = 0; i < 6; i++)
 	{

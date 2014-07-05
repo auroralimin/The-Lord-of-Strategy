@@ -188,192 +188,246 @@ typedef struct str_player
 	int good[4];
 } player;
 
-extern int click_sync;
 extern pthread_mutex_t l_key, l_scroll, l_printmap, l_pause, l_unit;
 extern char **map;
 extern char **options[N_OPTIONS];
+static const int good_col[] =
+{HOBBIT_GOLD, HOBBIT_FOOD, HOBBIT_WOOD, HOBBIT_METAL};
 
-
-/** Funcao: ??.
+/** Funcao: Inicializar os locks, tambem conhecidos como mutex
   *
-  * Descricao: ??
+  * Descricao/Hipotese: Inicializa as variaveis que serao responsaveis pela
+  *	                sincronizacao das threads do projeto.
+  *
+  * Interface explicita: N/A
+  *
+  * Interface implicita: pthread_mutex_t l_key
+  *                      pthread_mutex_t l_scroll
+  *                      pthread_mutex_t l_printmap
+  *                      pthread_mutex_t l_pause
+  *                      pthread_mutex_t l_unit
+  *
+  * Contrato/Requistos: N/A.
   *
   * @return Nao possui retorno.
-  *
-  * Requistos: N/A.
   */
 void init_locks();
 
-
-/** Funcao: Inicializar as threas usadas no programa.
+/** Funcao: Inicializar a segunda thread usada no projeto.
   *
-  * Descricao: Inicializa uma thread, caso nao seja possivel inicializar a
-  *            thread, a funcao mostra um erro na tela e sai do programa.
+  * Descricao/Hipotese: Inicializa a thread que coleta e trata entrada de
+  *                     dados. Caso nao seja possivel inicializa-la, a funcao
+  *                     mostra mensagem de erro e da exit passando -1 como
+  *                     parametro de saida.
+  *
+  * Interface explicita: N/A
+  *
+  * Interface implicita: pthread_t key_thread: thread que sera criada.
+  *                      void read_key: funcao/metodo que a nova thread ira
+  *                                     executar como sendo a principal.
+  *
+  * Contrato/Requistos: N/A.
   *
   * @return Nao possui retorno.
-  *
-  * Requisitos: N/A.
   */
+
 void init_thread();
 
-/** Funcao: Chama as funcoes de preparacao do mapa na ordem correta.
+/** Funcao: Prepara a matriz de caracteres que ira conter o mapa.
   *
-  * Descricao: ??
+  * Descricao/Hipotese: Aloca o espaco para o mapa a partir de um ponteiro de
+  *                     ponteiro de char, inicializa tudo com espacos, coloca
+  *                     as ASCII art de predios e fortalezas no mapa e coloca
+  *                     espacoes onde possivelmente existam marcadores '\0'.
+  *
+  * Interface explicita: N/A
+  *
+  * Interface implicita: char **map: ponteiro de ponteiro no qual sera alocada
+  *                                  a matriz do mapa.
+  *
+  * Contrato/Requistos: A variavel map deve estar inicializada como NULL.
   *
   * @return Nao possui retorno.
-  *
-  * Requisitos: N/A.
   */
 void prepare_map();
 
-/** Funcao: Alocar o espaco nescessario na memoria para o uso do mapa.
-  *
-  * Descricao: Aloca uma matriz na memoria para guardar o mapa.
-  *
-  * @return Nao possui retorno.
-  *
-  * Requisitos: N/A.
-  */
-void aloc_map();
-
-/** Funcao: Inicializar a matriz do mapa.
-  *
-  * Descricao: Inicializa a matriz contendo o mapa do jogo com espacos ' '.
-  *
-  * @return Nao possui retorno.
-  *
-  * Requisitos: N/A.
-  */
-void init_map();
-
 /** Funcao: Liberar a matriz do mapa.
   *
-  * Descricao: Libera a matriz, contendo o mapa, da memoria do computador. Se a
-  *            matriz foi liberada corretamente, a variavel mapa e' igualada a 
-  *            NULL.
+  * Descricao/Hipotese: Libera a matriz, que contem o mapa, da memoria do
+  *                     computador. Se a matriz foi liberada corretamente, a
+  *                     variavel mapa e' igualada a NULL.
+  *
+  * Interface explicita: N/A
+  *
+  * Interface implicita: char **map: ponteiro de ponteiro no qual a matriz dp
+  *                                  mapa deve estar alocada.
+  *
+  * Contrato/Requisitos: N/A.
   *
   * @return Nao possui retorno.
-  *
-  * Requisitos: N/A.
   */
 void free_map();
 
-/** Funcao: Abre o arquivo .txt a ser usado.
+/** Funcao: Abre um arquivo para a leitura.
   *
-  * Descricao: Abre o arquivo .txt. Caso nao seja possivel abrir o arquivo, o
-  *            programa mostra uma mensagem de erro, libera as possiveis
-  *            alocacoes e sai. Caso consiga abrir, a funcao retorna o ponteiro
-  *            do arquivo.
+  * Descricao/Hipotese: Abre um arquivo para a leitura. Caso nao seja possivel,
+  *                     o programa mostra uma mensagem de erro, libera as
+  *                     possiveis alocacoes e da exit passando o parametro 1.
+  *                     Caso seja, a funcao retorna o ponteiro do arquivo.
   *
-  * @param name Contem o endereco do arquivo .txt a ser aberto.
+  * Interface explicita: @param char *name: nome do arquivo que a funcao
+  *                      tentara abrir.
   *
-  * @return O ponteiro do arquivo .txt.
+  * Interface implicita: N/A.
   *
-  * Requisitos: Possuir os arquivos .txt nescessarios para o programa.
+  * Contrato/Requisitos: O parametro name deve ser diferente de NULL e deve
+  *                      corresponder a um nome de um arquivo existente e que
+  *                      possa ser lido como arquivo texto.
+  *
+  * @return Um ponteiro de FILE, do arquivo que foi aberto para a leitura.
   */
-FILE* read_file(char *name);
+FILE* open_file(char *name);
 
-/** Funcao: Aloca o espaco na memoria para a matriz de opcoes.
+/** Funcao: Aloca o espaco na memoria para a matriz de opcoes do mapa.
   *
-  * Descricao: Aloca uma matriz na memoria para guardar as opcoes
+  * Descricao/Hipotese: Aloca uma matriz na memoria para guardar as opcoes, a
+  *                     partir de um ponteiro de ponteiro de char.
+  *
+  * Interface explicita: N/A.
+  *
+  * Interface implicita: @param char **options[]: onde sera alocado o espaco
+  *                      para guardar as ASCII art das opcoes do mapa
+  *
+  * Contrato/Requisitos: N/A.
   *
   * @return Nao possui retorno.
-  *
-  * Requisitos: N/A.
   */
 void aloc_options();
 
-/** Funcao: Libera a matriz de opcoes.
+/** Funcao: Libera a matriz de opcoes do menu.
   *
-  * Descricao: Libera o espaco alocado para a matriz de opcoes. Se a matriz for
-  *            liberada corretamente, a variavel options e' igualada 'a NULL.
+  * Descricao/Hipotese: Libera o espaco alocado para a matriz de opcoes do
+  *                     menu. Se a matriz for  liberada corretamente, a
+  *                     variavel options e' igualada 'a NULL.
+  *
+  * Interface explicita: N/A.
+  *
+  * Inteface implicita: char **options[]: onde deve ter sido alocado o espaco
+  *                     para guardar as ASCII art das opcoes do mapa.
+  *
+  * Contrato/Requisitos: N/A.
   *
   * @return Nao possui rentorno.
-  *
-  * Requisitos: options != NULL.
   */
 void free_options();
 
-/** Funcao: Cria e insere uma unidade.
+/** Funcao: Aloca e insere uma unidade na lista encadeada de unidades.
   *
-  * Descricao: Cria e insere uma nova unidade na lista de unidades.
+  * Descricao/Hipotese: Aloca o espaco na memoria para uma variavel do tipo
+  *                     unit e inicializa ela conforma a raca que devera ser
+  *                     essa unidade. Depois, insere essa variavel na lista
+  *                     de unidades, de ordem ordenada decrescentemente de
+  *                     acordo com o tamanho de cada unidade.
   *
-  * @param top Ponteiro de ponteiro do topo da lista de unidades.
-  * @param race Indica qual raca o jogador deseja criar.
+  * Interface explicita: @param unit **top: ponteiro de ponteiro do topo da
+  *                      lista de unidades (Passagem por referencia do topo
+  *                      da lista.
+  *                      @param int race: indica a raca da nova unidade.
+  *
+  * Contrato/Requisitos: Caso a lista de unidades esteja vazia, a variavel
+  *                      top deve estar inicializada com NULL. Alem disso, a
+  *                      variavel race deve estar entre 1 e 8.
   *
   * @return -1, caso nao seja possivel criar a nova unidade.
   * @return  1, caso consiga criar e inserir a nova unidade.
-  *
-  * Requisitos: O parametro race deve estar entre 1 e 8.
   */
 int insert_unit(unit **top, int race);
 
-/** Funcao: Libera as unidades.
+/** Funcao: Libera a lista encadeada de unidades.
   *
-  * Descricao: Libera a lista encadeada de unidades. Se a lista for liberada
-  *            corretamente, a variavel top e' igualada 'a NULL.
+  * Descricao/Hipotese: Libera elemento a elemento da lista encadeada de
+  *                     unidades. Se a lista for liberada corretamente, a
+  *                     variavel top e' igualada 'a NULL.
   *
-  * @param top Ponteiro de ponteiro contendo o topo da lista de unidades.
+  * Interface explicita: @param unit **top: ponteiro de ponteiro contendo o
+  *                      topo da lista de unidades.
+  *
+  * Contrato/Requisito: A variavel top deve ser diferente de NULL, caso
+  *                     contrario nao a nada a ser liberado.
   *
   * @return Nao possui retorno.
-  *
-  * Requistos: N/A.
   */
 void free_units(unit **top);
 
-/** Funcao: Cria a lista de construcoes.
+/** Funcao: Cria a lista encadeada de construcoes.
   *
-  * Descricao: Cria a lista de construcoes a serem usadas. Caso nao seja
-  *            possivel criar a lista, o programa mostra uma mensaem de erro, e
-  *            sai.
+  * Descricao/Hipotese: Cria a lista encadeada de construcoes que serao
+  *                     utilizadas no jogo. Caso nao seja possivel criar a
+  *                     lista, o programa mostra uma mensaem de erro, da exit
+  *                     passando o parametro 1.
+  *
+  * Interface explicita: N/A.
+  *
+  * Interface implicita: build *build_top: Ponteiro para o inicio da lista que
+  *                      ira guardar as contrucoes.
+  *
+  * Contrato/Requisito: A variavel build_top, que faz parte de outro modulo,
+  *                     deve ser inicializada como NULL.
   *
   * @return Nao possui retorno.
-  *
-  * Requisitos: N/A.
   */
 void create_listbuild();
 
-/** Funcao: Cria e insere uma nova construcao.
+/** Funcao: Liberar a lista encadeada de construcoes.
   *
-  * Descricao: Cria e insere uma nova construcao na lista de construcoes. Caso
-  *            nao seja possivel criar, o programa sai da funcao e retorna -1.
+  * Descricao/Hipotese: Libera, elemento a elemento, a lista encadeada de
+  *                     construcoes. Se a lista for liberada corretamente, a
+  *                     variavel build_top e' igualada 'a NULL.
   *
-  * @param id Indica qual tipo de construcao sera criada.
+  * Interface explicita: N/A.
   *
-  * @return -1, caso nao seja possivel alocar o espaco para a nova construcao.
-  * @return  1, caso consiga criar e inserir a nova construcao.
+  * Interface implicita: build *build_top: Ponteiro para o inicio da lista que
+  *                      guarda as construcoes.
   *
-  * Requisitos: O parametro id deve estar entre 1 e 6.
-  */
-int insert_build(int id);
-
-/** Funcao: Liberar a lista de construcoes.
-  *
-  * Descricao: Libera a lista encadeada de construcoes. Se a lista for liberada
-  *	       corretamente, a variavel build_top e' igualada 'a NULL.
+  * Contrato/Requisito: A variavel build_top, que faz parte de outro modulo,
+  *                     deve ser diferente de NULL, caso contrario nao ha nada
+  *                     para ser liberado.
   *
   * @return Nao possui retorno.
-  *
-  * Requisitos: N/A
   */
 void free_build();
 
-/** Funcao: Encapsulamento da variavel good_col.
+/** Funcao: Fornecer o valor da variavel good_col para outros modulos.
   *
-  * @param i Indica qual das construcoes do usuario deseja-se saber o numero de
-  *          colunas.
+  * Descricao/Hipotese: Como boa pratica de programacao, a variavel good_col,
+  *                     foi encapsulada. Essa funcao retorna os valores de
+  *                     posicoes desse vetor, para que outros modulos tenham
+  *                     acesso a esses valores.
+  *
+  * Interface explicita: @param i Indica qual das construcoes do usuario
+  *                      deseja-se saber a posicao.
+  *
+  * Interface implicita: static const int good_col[]: variavel que guarda as
+  *                      colunas onde se deve recolher os recursos dos predios.
+  *
+  * Contrato/Requisito: O parametro i deve estar entre 0 e 3.
   *
   * @return good_col[i]
-  *
-  * Requisitos: N/A.
   */
 int get_goodcol(int i);
 
-/** Funcao: Sai do jogo.
+/** Funcao: Sair do jogo.
   *
-  * Descricao: Chama as funcoes de liberar construcoes e mapa na ordem, e sai do
-  *            programa.
+  * Descricao/Hipotese: Chama as funcoes de liberar construcoes e mapa, libera
+  *                     a interface e sai do programa passando o parametro 1
+  *                     para a funcao exit.
   *
-  * Requisitos: N/A.
+  * Interface explicita: N/A.
+  *
+  * Interface implicita: N/A.
+  *
+  * Contrato/Requisito: N/A.
+  *
+  * @returm Nao possui retorno.
   */
 int exit_game();
