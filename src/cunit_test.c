@@ -20,21 +20,23 @@ int init_basis(void)
 
 int clean_basis(void)
 {
+	endwin();
+	exit_game();
 	return 0;
 }
 
 int init_logic(void)
 {
+	prepare_map();
 	aloc_options();
-	aloc_map();
-	init_map();
+	endwin();
 	return 0;
 }
 
 int clean_logic(void)
 {
-	free_options();
-	free_map();
+	endwin();
+	exit_game();
 	return 0;
 }
 
@@ -42,57 +44,40 @@ int init_interf(void)
 {
 	aloc_options();
 	init_options();
+	init_interface();
+	endwin();
 	return 0;
 }
 
 int clean_interface(void)
 {
+	endwin();
+	exit_game();
 	return 0;
 }
 
 /* basis tests fucntions */
-void aloc_map_test(void)
-{
-	int i;
-
-	aloc_map();
-	CU_ASSERT(map != NULL);
-
-	for (i = 0; i < MAP_ROW; i++)
-		CU_ASSERT(map[i] != NULL);
-}
-
-void init_map_test(void)
-{
-	int i, j;
-
-	init_map();
-	for (i = 0; i < MAP_ROW; i++)
-		for (j = 0; j < MAP_COL; j++)
-			CU_ASSERT(map[i][j] == ' ');
-}
-
 void free_map_test(void)
 {
 	free_map();
 	CU_ASSERT(map == NULL);
 }
 
-void read_file_test(void)
+void open_file_test(void)
 {
-	CU_ASSERT((read_file("ASCII art/hobbit.txt")) != NULL);
-	CU_ASSERT((read_file("ASCII art/elf.txt")) != NULL);
-	CU_ASSERT((read_file("ASCII art/dwarf.txt")) != NULL);
-	CU_ASSERT((read_file("ASCII art/ent.txt")) != NULL);
-	CU_ASSERT((read_file("ASCII art/goblin.txt")) != NULL);
-	CU_ASSERT((read_file("ASCII art/orc.txt")) != NULL);
-	CU_ASSERT((read_file("ASCII art/warg.txt")) != NULL);
-	CU_ASSERT((read_file("ASCII art/troll.txt")) != NULL);
-	CU_ASSERT((read_file("ASCII art/house_frodo.txt")) != NULL);
-	CU_ASSERT((read_file("ASCII art/mordor_tower.txt")) != NULL);
-	CU_ASSERT((read_file("ASCII art/new_game.txt")) != NULL);
-	CU_ASSERT((read_file("ASCII art/load_game.txt")) != NULL);
-	CU_ASSERT((read_file("ASCII art/exit.txt")) != NULL);
+	CU_ASSERT((open_file("ASCII art/hobbit.txt", "r")) != NULL);
+	CU_ASSERT((open_file("ASCII art/elf.txt", "r")) != NULL);
+	CU_ASSERT((open_file("ASCII art/dwarf.txt", "r")) != NULL);
+	CU_ASSERT((open_file("ASCII art/ent.txt", "r")) != NULL);
+	CU_ASSERT((open_file("ASCII art/goblin.txt", "r")) != NULL);
+	CU_ASSERT((open_file("ASCII art/orc.txt", "r")) != NULL);
+	CU_ASSERT((open_file("ASCII art/warg.txt", "r")) != NULL);
+	CU_ASSERT((open_file("ASCII art/troll.txt", "r")) != NULL);
+	CU_ASSERT((open_file("ASCII art/house_frodo.txt", "r")) != NULL);
+	CU_ASSERT((open_file("ASCII art/mordor_tower.txt", "r")) != NULL);
+	CU_ASSERT((open_file("ASCII art/new_game.txt", "r")) != NULL);
+	CU_ASSERT((open_file("ASCII art/load_game.txt", "r")) != NULL);
+	CU_ASSERT((open_file("ASCII art/exit.txt", "r")) != NULL);
 }
 
 void aloc_opt_test(void)
@@ -112,12 +97,6 @@ void free_opt_test(void)
 	CU_ASSERT(options[2] == NULL);
 }
 
-void insert_b_test(void)
-{
-	int aux = insert_build(0);
-
-	CU_ASSERT(aux == 1);
-}
 
 void free_build_test(void)
 {
@@ -156,13 +135,6 @@ void race_init_test(void)
 	CU_ASSERT(hobbit.dmg == 10);
 }
 
-void load_build_test(void)
-{
-	int aux = load_build("ASCII art/house_frodo.txt", FRODO_ROW, FRODO_COL);
-
-	CU_ASSERT(aux == 1);
-}
-
 void get_art_test(void)
 {
 	CU_ASSERT((get_art()) == 1);
@@ -174,24 +146,19 @@ void print_unit_test(void)
 	CU_ASSERT(map[hobbit.position[0]+9][hobbit.position[1]] != ' ');
 }
 
-void clear_unit_test(void)
-{
-	int aux_x = hobbit.position[1], aux_y = hobbit.position[0] + 9;
-
-	clear_unit(hobbit);
-	CU_ASSERT(map[aux_y][aux_x] == ' ');
-}
-
-void move_unit_test(void)
+void all_move_test(void)
 {
 	int aux;
 
 	aux = hobbit.position[1];
 	hobbit.destination[1] = hobbit.position[1] + 10;
-	move_unit(&hobbit);
+	set_freeraces(&hobbit);
+	all_move();
 
 	CU_ASSERT(hobbit.position[0] == MAP_ROW - hobbit.height);
 	CU_ASSERT(hobbit.position[1] == aux + 9);
+
+	free_units(&free_races);
 }
 
 void get_freer_test(void)
@@ -211,8 +178,14 @@ void set_freer_test(void)
 }
 
 /* interface tests functions */
-void click_test(void)
+void c_mapwin_test(void)
 {
-	CU_ASSERT((click_option(1)) == 0);
-	CU_ASSERT((click_option(2)) == 1);
+	CU_ASSERT(createmap_win() == 1);
+	endwin();
+}
+
+void c_msgwin_test(void)
+{
+	CU_ASSERT(createmsg_win() == 1);
+	endwin();
 }
