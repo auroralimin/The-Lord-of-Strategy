@@ -707,3 +707,5 @@ void load_select(int option);
   * @return void, sem retorno.
   */
 void change_nworkers(int id, int add);
+
+void attack_fortress();

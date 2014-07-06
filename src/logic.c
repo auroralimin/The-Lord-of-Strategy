@@ -90,9 +90,9 @@ char mat_shadows[N_RACES + 1][RACE_HEIGHT][RACE_WIDTH];
 MEVENT event;
 build *build_top = NULL;
 unit *free_races = NULL;
-fortress frodo_house = {1, 15000, 1, 0};
-fortress mordor = {2, 15000, 1, 0};
-player user = {1, {500, 500, 0, 0}};
+fortress frodo_house = {1, 300, 1, 0};
+fortress mordor = {2, 1000, 1, 0};
+player user = {1, {500000, 500000, 500000, 500000}};
 char *hobbit_good[] = {"GOLD ", "FOOD ", "WOOD ", "METAL"};
 
 void mouse_clicked();
@@ -677,7 +677,7 @@ void print_good()
 
 void print_fortresshp()
 {
-	snprintf(map[builds[0].row]+90, 9, "HP:%5d", frodo_house.hp);
+	snprintf(map[builds[0].row]+90, 9, "HP:%4d", frodo_house.hp);
 	snprintf(map[builds[1].row+10]+MAP_COL-85, 9, "HP:%5d", mordor.hp);
 }
 
@@ -932,4 +932,27 @@ void change_nworkers(int id, int add)
 			aux->n_workers+=add;
 			break;
 		}
+}
+
+void attack_fortress()
+{
+	unit *aux;
+
+	for (aux = free_races; aux != NULL; aux = aux->next)
+	{
+		if ((aux->race < 5) && (aux->position[1] == MORDOR_COL -19))
+		{
+			if (mordor.hp - aux->dmg > 0)
+				mordor.hp-=aux->dmg;
+			else
+				exit_game();
+		}
+		else if (aux->position[1] == FRODO_WIDTH)
+		{
+			if (frodo_house.hp - aux->dmg > 0)
+				frodo_house.hp-=aux->dmg;
+			else
+				exit_game();
+		}
+	}
 }

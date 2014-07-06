@@ -39,8 +39,8 @@ void init_interface()
 	scrll map_scroll;
 
 	initscr();
-	noecho();
 	raw();
+	noecho();
 	curs_set(0);
 	keypad(stdscr, TRUE);
 	get_dimension();

@@ -36,7 +36,7 @@ int main()
 		{
 			check_good(chr);
 		}
-
+		attack_fortress();
 		pthread_mutex_unlock(&l_pause);
 		usleep(REFRESH_TIME);
 	}
