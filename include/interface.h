@@ -268,3 +268,4 @@ void quit_answer();
   * @return void, sem retorno.
   */
 void load_answer();
+void delete_panels();

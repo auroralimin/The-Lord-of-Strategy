@@ -25,11 +25,15 @@ static char *options_files[] = { "ASCII art/new_game.txt",
 
 static struct build_art builds[]={
 {"ASCII art/house_frodo.txt", MAP_ROW - FRODO_ROW, FRODO_COL},
-{"ASCII art/mordor_tower.txt",  MAP_ROW - MORDOR_ROW, MORDOR_COL},
-{"ASCII art/gold_build.txt", 1,  GOLD_COL1},
+{"ASCII art/mordor_tower.txt", MAP_ROW - MORDOR_ROW, MORDOR_COL},
+{"ASCII art/gold_build.txt", 1, GOLD_COL1},
 {"ASCII art/food_build.txt", 1, FOOD_COL1},
 {"ASCII art/wood_build.txt", 1, WOOD_COL1},
-{"ASCII art/metal_build.txt", 1, METAL_COL1}
+{"ASCII art/metal_build.txt", 1, METAL_COL1},
+{"ASCII art/gold_build2.txt", 1, GOLD_COL2},
+{"ASCII art/food_build2.txt", 1, FOOD_COL2},
+{"ASCII art/wood_build2.txt", 1, WOOD_COL2},
+{"ASCII art/metal_build2.txt", 1, METAL_COL2}
 };
 
 /* matriz contendo o endereço da ascii art do jogo */
@@ -65,7 +69,7 @@ static const unit attr[] = {
 {ELF,    130, 2, 1, 40, 12, {28, 40}, {28, MORDOR_COL-19},-1, 0, NULL},
 {DWARF,  250, 3, 2, 30, 11, {29, 40}, {29, MORDOR_COL-19},-1, 0, NULL},
 {ENT,    500, 4, 3, 50, 15, {25, 40}, {25, MORDOR_COL-19},-1, 0, NULL},
-{GOBLIN, 100, 4, 3, 10, 10, {30, 34+MORDOR_COL}, {0, 0}, -1, 0, NULL},
+{GOBLIN, 100, 4, 3, 10, 10, {30, 34+MORDOR_COL}, {30,34+MORDOR_COL},-1,0, NULL},
 {ORC,    200, 3, 2, 30, 12, {28, 34+MORDOR_COL}, {28, FRODO_WIDTH},-1, 0, NULL},
 {WARG,   120, 2, 1, 25,  8, {32, 34+MORDOR_COL}, {32, FRODO_WIDTH},-1, 0, NULL},
 {TROLL,  500, 3, 2, 50, 15, {25, 34+MORDOR_COL}, {25, FRODO_WIDTH},-1, 0, NULL}
@@ -87,6 +91,7 @@ MEVENT event;
 build *build_top = NULL;
 unit *free_races = NULL;
 fortress frodo_house = {1, 15000, 1, 0};
+fortress mordor = {2, 15000, 1, 0};
 player user = {1, {500, 500, 0, 0}};
 char *hobbit_good[] = {"GOLD ", "FOOD ", "WOOD ", "METAL"};
 
@@ -101,6 +106,7 @@ void move_unit(unit *chr);
 void save_select();
 void load_select();
 void load_select(int option);
+void print_fortresshp();
 
 void* read_key(void *arg)
 {
@@ -582,7 +588,6 @@ void clear_unit(unit chr)
 {
 	int i, j, row = chr.position[0], col = chr.position[1];
 
-	pthread_mutex_lock(&l_unit);
 	for (i = RACE_HEIGHT - chr.height; i < RACE_HEIGHT; i++)
 	{
 		for (j = 0; j < RACE_WIDTH; j++)
@@ -596,7 +601,6 @@ void clear_unit(unit chr)
 	else if (col >= builds[1].col - RACE_WIDTH)
 		load_build(builds[1].name, builds[1].row, builds[1].col);
 	map_spaces();
-	pthread_mutex_unlock(&l_unit);
 }
 
 void move_unit(unit *chr)
@@ -671,6 +675,12 @@ void print_good()
 	}
 }
 
+void print_fortresshp()
+{
+	snprintf(map[builds[0].row]+90, 9, "HP:%5d", frodo_house.hp);
+	snprintf(map[builds[1].row+10]+MAP_COL-85, 9, "HP:%5d", mordor.hp);
+}
+
 void check_good(unit *chr)
 {
 	build *aux;
@@ -704,8 +714,8 @@ void goto_build(unit *chr, int n_build)
 {
 	int i;
 
-	if (chr->race == HOBBIT)
-		for (i = 0; i < N_BUILDS - 2; i++)
+	if ((chr->race == HOBBIT) || (chr->race == GOBLIN))
+		for (i = 0; i < N_BUILDS - 1; i++)
 			if (i == n_build)
 			{
 				chr->destination[0] = GOOD_ROW;
@@ -803,6 +813,7 @@ void all_move()
 {
 	unit *aux;
 
+	print_fortresshp();
 	for (aux = free_races; aux!= NULL; aux = aux->next)
 	{
 		if ((aux->position[0] != aux->destination[0]) ||

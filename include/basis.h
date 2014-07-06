@@ -4,6 +4,7 @@
   */
 
 #include <ncurses.h>
+#include <pthread.h>
 
 #define MAP_ROW 40
 #define MAP_COL 1000
@@ -46,7 +47,7 @@
 #define LOAD_GAME 116
 #define EXIT_GAME 52
 
-#define N_BUILDS 6
+#define N_BUILDS 10
 #define MORDOR_WIDTH 86
 #define MORDOR_ROW 40
 #define MORDOR_COL MAP_COL - MORDOR_WIDTH
@@ -58,10 +59,19 @@
 #define FOOD_COL1 FRODO_WIDTH + 87
 #define WOOD_COL1 FRODO_WIDTH + 176
 #define METAL_COL1 FRODO_WIDTH + 260
+#define GOLD_COL2 MORDOR_COL - 1 - 75
+#define FOOD_COL2 MORDOR_COL - 87 - 75
+#define WOOD_COL2 MORDOR_COL - 176 - 75
+#define METAL_COL2 MORDOR_COL - 260 - 75
+
 #define HOBBIT_GOLD GOLD_COL1 + 8
 #define HOBBIT_FOOD FOOD_COL1 + 2
 #define HOBBIT_WOOD WOOD_COL1 + 4
 #define HOBBIT_METAL METAL_COL1 + 23
+#define MORDOR_GOLD GOLD_COL2 + 40
+#define MORDOR_FOOD FOOD_COL2 + 50
+#define MORDOR_WOOD WOOD_COL2 + 50
+#define MORDOR_METAL METAL_COL2 + 40
 #define GOOD_ROW 6
 
 #define USER 0

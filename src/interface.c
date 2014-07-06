@@ -39,8 +39,8 @@ void init_interface()
 	scrll map_scroll;
 
 	initscr();
-	raw();
 	noecho();
+	raw();
 	curs_set(0);
 	keypad(stdscr, TRUE);
 	get_dimension();
@@ -549,4 +549,10 @@ void load_answer()
 		else
 			load_select(3);
 	}
+}
+
+void delete_panels()
+{
+	del_panel(map_panel);
+	del_panel(msg_panel);
 }

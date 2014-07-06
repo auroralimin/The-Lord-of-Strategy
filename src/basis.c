@@ -2,6 +2,7 @@
 #include <pthread.h>
 #include "basis.h"
 #include "logic.h"
+#include "interface.h"
 
 pthread_mutex_t l_key, l_scroll, l_printmap, l_pause, l_unit;
 char **map = NULL;
@@ -10,7 +11,8 @@ char **options[N_OPTIONS];
 pthread_t key_thread;
 static const int options_len[] = { NEW_GAME, LOAD_GAME, EXIT_GAME};
 static const int good_col[] =
-{HOBBIT_GOLD, HOBBIT_FOOD, HOBBIT_WOOD, HOBBIT_METAL};
+{HOBBIT_GOLD, HOBBIT_FOOD, HOBBIT_WOOD, HOBBIT_METAL,
+MORDOR_GOLD, MORDOR_FOOD, MORDOR_WOOD, MORDOR_METAL};
 
 void aloc_map();
 void init_map();
@@ -199,7 +201,7 @@ void create_listbuild()
 {
 	int i;
 
-	for (i = 3; i >= 0; i--)
+	for (i = 7; i >= 0; i--)
 		if (!insert_build(i))
 		{
 			endwin();
@@ -256,6 +258,7 @@ int get_goodcol(int i)
 
 int exit_game()
 {
+	delete_panels();
 	free_build();
 	free_map();
 	endwin();

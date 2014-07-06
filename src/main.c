@@ -15,11 +15,14 @@ int main()
 	init_thread();
 
 	menu();
+	chr = get_freeraces();
+	insert_unit(&chr, GOBLIN, NULL);
+	goto_build(chr, 7);
+	set_freeraces(chr);
 
 	while(1)
 	{
 		pthread_mutex_lock(&l_pause);
-
 		for (chr = get_freeraces(); chr != NULL; chr = chr->next)
 		{
 			printmap_unit(*chr);
