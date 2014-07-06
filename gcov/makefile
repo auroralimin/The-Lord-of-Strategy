@@ -5,10 +5,11 @@ IDIR = ../include
 OBJ = basis.o logic.o interface.o main.o
 
 CFLAGS = -I$(IDIR) -Wall -Wextra -g -fprofile-arcs -ftest-coverage -p
-LIBS = -lncurses -lm -lpanel-pthread
+LIBS = -lncurses -lm -lpanel -pthread
 
 %.o: %.c
 	@mkdir -p $(@D)
+	@mkdir -p saves
 	$(CC) -c -o $@ $< $(CFLAGS)
 
 game: $(OBJ)
