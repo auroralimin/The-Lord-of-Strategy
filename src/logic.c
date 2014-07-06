@@ -92,7 +92,7 @@ build *build_top = NULL;
 unit *free_races = NULL;
 fortress frodo_house = {1, 300, 1, 0};
 fortress mordor = {2, 1000, 1, 0};
-player user = {1, {500000, 500000, 500000, 500000}};
+player user = {1, {500, 500, 0, 0}};
 char *hobbit_good[] = {"GOLD ", "FOOD ", "WOOD ", "METAL"};
 
 void mouse_clicked();
@@ -693,12 +693,17 @@ void check_good(unit *chr)
 			chr->backpack+=aux->storage;
 			aux->storage = 0;
 			chr->destination[0] = 30;
-			chr->destination[1] = 40;
+			if (chr->race == HOBBIT)
+				chr->destination[1] = 40;
+			else if (chr->race == GOBLIN)
+				chr->destination[1] = 34 + MORDOR_COL;
 		}
-		else if ((chr->position[1] == 40) && (chr->position[0] == 30) &&
+		else if (((chr->position[1] == 40) ||
+			(chr->position[1] == 34 + MORDOR_COL))
+			&& (chr->position[0] == 30) &&
 			(chr->good_type != -1))
 		{
-			if (chr->race == HOBBIT)
+			if ((chr->race == HOBBIT) || (chr->race == GOBLIN))
 			{
 				user.good[chr->good_type]+=chr->backpack;
 				chr->backpack = 0;
@@ -869,6 +874,7 @@ void save(char *save_dir)
 	strcat(fortress_file, "/fortress.bin");
 	fp = open_file(fortress_file, "wb");
 	fwrite(&frodo_house, sizeof(player), 1, fp);
+	fwrite(&mordor, sizeof(player), 1, fp);
 	fclose(fp);
 }
 
@@ -916,6 +922,7 @@ void load(char *load_dir)
 	strcat(fortress_file, "/fortress.bin");
 	fp = open_file(fortress_file, "rb");
 	fread(&frodo_house, sizeof(fortress), 1, fp);
+	fread(&mordor, sizeof(fortress), 1, fp);
 	fclose(fp);
 
 	free(aux_u);

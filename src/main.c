@@ -17,6 +17,12 @@ int main()
 	menu();
 	chr = get_freeraces();
 	insert_unit(&chr, GOBLIN, NULL);
+	goto_build(chr, 4);
+	insert_unit(&chr, GOBLIN, NULL);
+	goto_build(chr, 5);
+	insert_unit(&chr, GOBLIN, NULL);
+	goto_build(chr, 6);
+	insert_unit(&chr, GOBLIN, NULL);
 	goto_build(chr, 7);
 	set_freeraces(chr);
 
