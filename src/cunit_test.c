@@ -20,8 +20,6 @@ int init_basis(void)
 
 int clean_basis(void)
 {
-	endwin();
-	exit_game();
 	return 0;
 }
 
@@ -36,7 +34,6 @@ int init_logic(void)
 int clean_logic(void)
 {
 	endwin();
-	exit_game();
 	return 0;
 }
 
@@ -52,7 +49,6 @@ int init_interf(void)
 int clean_interface(void)
 {
 	endwin();
-	exit_game();
 	return 0;
 }
 
@@ -144,21 +140,6 @@ void print_unit_test(void)
 {
 	printmap_unit(hobbit);
 	CU_ASSERT(map[hobbit.position[0]+9][hobbit.position[1]] != ' ');
-}
-
-void all_move_test(void)
-{
-	int aux;
-
-	aux = hobbit.position[1];
-	hobbit.destination[1] = hobbit.position[1] + 10;
-	set_freeraces(&hobbit);
-	all_move();
-
-	CU_ASSERT(hobbit.position[0] == MAP_ROW - hobbit.height);
-	CU_ASSERT(hobbit.position[1] == aux + 9);
-
-	free_units(&free_races);
 }
 
 void get_freer_test(void)
