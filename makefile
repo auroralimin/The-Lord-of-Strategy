@@ -12,12 +12,6 @@ OBJ2 = $(patsubst %,$(ODIR)/%,$(_OBJ2))
 CFLAGS = -I$(IDIR) -Wall -Wextra -g
 LIBS = -lncurses -lm -pthread -lpanel -lcunit
 
-SPLINT = splint
-SPLINTFLAGS = -weak -type +sysdirerrors -retvalother\
-               +line-len 80 -warnposix +infloops -fixedformalarray \
-	      -annotationerror -varuse
-SPLINT_SOURCE = src/basis.c src/logic.c src/interface.c src/main.c
-
 $(ODIR)/%.o: $(SDIR)/%.c
 	@mkdir -p saves
 	@mkdir -p $(@D)
@@ -28,10 +22,6 @@ game: $(OBJ1)
 
 test: $(OBJ2)
 	$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
-
-.PHONY: splinttest
-splinttest:
-	$(SPLINT) $(SPLINTFLAGS) -I $(IDIR) $(SPLINT_SOURCE)
 
 .PHONY: clean
 clean:
