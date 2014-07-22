@@ -830,9 +830,12 @@ void all_move()
 		{
 			col = aux->position[1];
 			for (aux2 = free_races; aux2 != NULL; aux2 = aux2->next)
-				if (((aux->race > 4) && (aux2->race > 4)) ||
-				   ((aux->race < 5) && (aux2->race < 5)) ||
-				   (aux->position[0] == aux->destination[0]))
+				if ((((aux->race == 1) || (aux->race == 5)) &&
+				   ((aux->destination[0] == 30) ||
+				   (aux->position[0] < 30))) ||
+				   (aux2->position[0] < 25) ||
+				   ((aux->race > 4) && (aux2->race > 4)) ||
+				   ((aux->race < 5) && (aux2->race < 5)))
 					continue;
 				else if ((col + 19 >= aux2->position[1]) &&
 					(col - 19 <= aux2->position[1]))
