@@ -1,4 +1,4 @@
-CC = gcc
+CC = clang
 
 SDIR = src
 IDIR = include
