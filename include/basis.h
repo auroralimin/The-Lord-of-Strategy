@@ -7,7 +7,7 @@
 #include <pthread.h>
 
 #define MAP_ROW 40
-#define MAP_COL 1000
+#define MAP_COL 1002
 #define REFRESH_TIME 200000
 #define MINIMUM_ROW 50
 #define MINIMUN_COL 110

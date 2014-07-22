@@ -39,7 +39,8 @@ void init_interface()
 	scrll map_scroll;
 
 	initscr();
-	raw();
+	cbreak();
+	//raw();
 	noecho();
 	curs_set(0);
 	keypad(stdscr, TRUE);

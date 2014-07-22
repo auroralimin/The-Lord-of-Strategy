@@ -90,9 +90,9 @@ char mat_shadows[N_RACES + 1][RACE_HEIGHT][RACE_WIDTH];
 MEVENT event;
 build *build_top = NULL;
 unit *free_races = NULL;
-fortress frodo_house = {1, 300, 1, 0};
-fortress mordor = {2, 1000, 1, 0};
-player user = {1, {500, 500, 0, 0}};
+fortress frodo_house = {1, 300000000, 1, 0};
+fortress mordor = {2, 99999999, 1, 0};
+player user = {1, {50000, 500000, 900000, 9000000}};
 char *hobbit_good[] = {"GOLD ", "FOOD ", "WOOD ", "METAL"};
 
 void mouse_clicked();
@@ -560,7 +560,6 @@ void map_spaces()
 				map[i][j] = ' ';
 }
 
-/* printa as unidades na tela do terminal */
 void printmap_unit(unit chr)
 {
 	int i, j, row = chr.position[0], col = chr.position[1];
@@ -681,35 +680,39 @@ void print_fortresshp()
 	snprintf(map[builds[1].row+10]+MAP_COL-85, 9, "HP:%5d", mordor.hp);
 }
 
-void check_good(unit *chr)
+void check_good()
 {
-	build *aux;
+	unit *u_aux;
+	build *b_aux;
 
-	for (aux = build_top; aux != NULL; aux = aux->next)
-	{
-		if ((chr->position[0] == aux->position[0]) &&
-		    (chr->position[1] == aux->position[1]))
+	for (u_aux = free_races; u_aux != NULL; u_aux = u_aux->next)
+		for (b_aux = build_top; b_aux != NULL; b_aux = b_aux->next)
 		{
-			chr->backpack+=aux->storage;
-			aux->storage = 0;
-			chr->destination[0] = 30;
-			if (chr->race == HOBBIT)
-				chr->destination[1] = 40;
-			else if (chr->race == GOBLIN)
-				chr->destination[1] = 34 + MORDOR_COL;
-		}
-		else if (((chr->position[1] == 40) ||
-			(chr->position[1] == 34 + MORDOR_COL))
-			&& (chr->position[0] == 30) &&
-			(chr->good_type != -1))
-		{
-			if ((chr->race == HOBBIT) || (chr->race == GOBLIN))
+			if ((u_aux->position[0] == b_aux->position[0]) &&
+		    	   (u_aux->position[1] == b_aux->position[1]))
 			{
-				user.good[chr->good_type]+=chr->backpack;
-				chr->backpack = 0;
-				chr->destination[0] = GOOD_ROW;
-				chr->destination[1] =
-				get_goodcol(chr->good_type);
+				u_aux->backpack+=b_aux->storage;
+				b_aux->storage = 0;
+				u_aux->destination[0] = 30;
+				if (u_aux->race == HOBBIT)
+					u_aux->destination[1] = 40;
+				else if (u_aux->race == GOBLIN)
+					u_aux->destination[1] = 34 + MORDOR_COL;
+			}
+	 		else if (((u_aux->position[1] == 40) ||
+				(u_aux->position[1] == 34 + MORDOR_COL)) &&
+				(u_aux->position[0] == 30) &&
+				(u_aux->good_type != -1))
+			{
+				if ((u_aux->race == HOBBIT) ||
+				   (u_aux->race == GOBLIN))
+				{
+					user.good[u_aux->good_type]+=
+					u_aux->backpack;
+					u_aux->backpack = 0;
+					u_aux->destination[0] = GOOD_ROW;
+					u_aux->destination[1] =
+					get_goodcol(u_aux->good_type);
 			}
 		}
 	}
@@ -816,20 +819,34 @@ void option_upgrade(int level)
 
 void all_move()
 {
-	unit *aux;
+	int col;
+	unit *aux, *aux2;
 
 	print_fortresshp();
-	for (aux = free_races; aux!= NULL; aux = aux->next)
+	for (aux = free_races; aux != NULL; aux = aux->next)
 	{
 		if ((aux->position[0] != aux->destination[0]) ||
      		   (aux->position[1] != aux->destination[1]))
 		{
-			aux->count_delay++;
-			if (aux->count_delay == aux->spd_delay)
+			col = aux->position[1];
+			for (aux2 = free_races; aux2 != NULL; aux2 = aux2->next)
+				if (((aux->race > 4) && (aux2->race > 4)) ||
+				   ((aux->race < 5) && (aux2->race < 5)) ||
+				   (aux->position[0] == aux->destination[0]))
+					continue;
+				else if ((col + 19 >= aux2->position[1]) &&
+					(col - 19 <= aux2->position[1]))
+					break;
+
+			if (aux2 == NULL)
 			{
-				aux->count_delay = 0;
-				clear_unit(*aux);
-				move_unit(aux);
+				aux->count_delay++;
+				if (aux->count_delay == aux->spd_delay)
+				{
+					aux->count_delay = 0;
+					clear_unit(*aux);
+					move_unit(aux);
+				}
 			}
 		}
 	}
@@ -961,5 +978,32 @@ void attack_fortress()
 			else
 				exit_game();
 		}
+	}
+}
+
+void printall_units()
+{
+	int aux_hp = 0, hp_total = 0, aux_race = 0, aux_position[2] = {0, 0};
+	unit *aux;
+
+	for (aux = free_races; aux != NULL; aux = aux->next)
+	{
+		aux_hp = aux->hp;
+		if ((aux->race == aux_race) &&
+		   (aux->position[0] == aux_position[0]) &&
+		   (aux->position[1] == aux_position[1]))
+		{
+			hp_total+=aux->hp;
+			aux->hp = hp_total;
+		}
+		else
+		{
+			aux_position[0] = aux->position[0];
+			aux_position[1] = aux->position[1];
+			aux_race = aux->race;
+			hp_total = aux->hp;
+		}
+		printmap_unit(*aux);
+		aux->hp = aux_hp;
 	}
 }

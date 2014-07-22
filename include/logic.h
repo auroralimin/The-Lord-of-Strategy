@@ -526,7 +526,7 @@ void print_good();
   *                      NULL.
   * @return void
   */
-void check_good(unit *chr);
+void check_good();
 
 /** Funcao: Mover os hobbits para a construcao.
   *
@@ -709,3 +709,4 @@ void load_select(int option);
 void change_nworkers(int id, int add);
 
 void attack_fortress();
+void printall_units();

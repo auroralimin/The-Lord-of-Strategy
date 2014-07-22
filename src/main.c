@@ -16,7 +16,7 @@ int main()
 
 	menu();
 	chr = get_freeraces();
-	insert_unit(&chr, GOBLIN, NULL);
+	insert_unit(&chr, ORC, NULL);
 	goto_build(chr, 4);
 	insert_unit(&chr, GOBLIN, NULL);
 	goto_build(chr, 5);
@@ -29,20 +29,15 @@ int main()
 	while(1)
 	{
 		pthread_mutex_lock(&l_pause);
-		for (chr = get_freeraces(); chr != NULL; chr = chr->next)
-		{
-			printmap_unit(*chr);
-		}
 
+		printall_units();
 		refresh_allgame();
 		good_generator();
 		print_good();
 		all_move();
-		for (chr = get_freeraces(); chr != NULL; chr = chr->next)
-		{
-			check_good(chr);
-		}
+		check_good(chr);
 		attack_fortress();
+
 		pthread_mutex_unlock(&l_pause);
 		usleep(REFRESH_TIME);
 	}
